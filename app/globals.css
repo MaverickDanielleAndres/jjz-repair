@@ -1,26 +1,138 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0a0a0a;
+
+  /* JJZ TECH brand palette — yellow / amber / black, derived from logo.png */
+  --jjz-amber-50: #fffbeb;
+  --jjz-amber-100: #fef3c7;
+  --jjz-amber-300: #fcd34d;
+  --jjz-amber-400: #fbbf24;
+  --jjz-amber-500: #f59e0b;
+  --jjz-amber-600: #d97706;
+  --jjz-amber-700: #b45309;
+  --jjz-ink: #0a0a0a;
+  --jjz-ink-soft: #18181b;
+  --jjz-muted: #71717a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-jjz-amber-50: var(--jjz-amber-50);
+  --color-jjz-amber-100: var(--jjz-amber-100);
+  --color-jjz-amber-300: var(--jjz-amber-300);
+  --color-jjz-amber-400: var(--jjz-amber-400);
+  --color-jjz-amber-500: var(--jjz-amber-500);
+  --color-jjz-amber-600: var(--jjz-amber-600);
+  --color-jjz-amber-700: var(--jjz-amber-700);
+  --color-jjz-ink: var(--jjz-ink);
+  --color-jjz-ink-soft: var(--jjz-ink-soft);
+  --color-jjz-muted: var(--jjz-muted);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Class-based dark mode for opt-in sections. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display utility for headlines */
+.font-display {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Brand gradient utility for hero headline — yellow → orange (matches the logo glow) */
+.text-brand-gradient {
+  background: linear-gradient(
+    90deg,
+    var(--jjz-amber-500) 0%,
+    var(--jjz-amber-300) 50%,
+    var(--jjz-amber-600) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Subtle section divider — used in the hero accent lines */
+.hero-accent-line {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(245, 158, 11, 0.25) 30%,
+    rgba(245, 158, 11, 0.25) 70%,
+    transparent
+  );
+}
+
+/* Image placeholder labels */
+[data-placeholder] {
+  position: relative;
+}
+[data-placeholder]::after {
+  content: attr(data-placeholder);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgb(161 161 170);
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 8px,
+    rgb(254 243 199) 8px,
+    rgb(254 243 199) 16px
+  );
+  pointer-events: none;
+}
+
+/* Leaflet popup styling — match brand */
+.leaflet-popup-content-wrapper {
+  border-radius: 1rem;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+.leaflet-popup-content {
+  margin: 0;
+  width: 220px !important;
+}
+.leaflet-popup-tip {
+  background: white;
+}
+
+/* Chat scrollbar */
+.chat-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: #e4e4e7;
+  border-radius: 3px;
+}
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d8;
 }
