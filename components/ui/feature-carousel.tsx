@@ -11,6 +11,8 @@ export type CarouselFeature = {
   icon: LucideIcon;
   image: string;
   description: string;
+  /** Optional tint color for the placeholder when no image is provided. */
+  tint?: string;
 };
 
 type FeatureCarouselProps = {
@@ -25,7 +27,7 @@ const wrap = (min: number, max: number, v: number) => {
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
-const CHIP_HEIGHT = 64; // uniform chip height
+const CHIP_HEIGHT = 56; // uniform chip height
 const CHIP_MIN_WIDTH = 240; // uniform min width so all ovals are the same size
 const SMOOTH = [0.4, 0, 0.2, 1] as const; // smooth easing
 
@@ -77,12 +79,12 @@ export function FeatureCarousel({
   return (
     <div className="w-full max-w-7xl mx-auto md:p-8">
       <div
-        className="relative overflow-hidden rounded-[2.5rem] lg:rounded-[4rem] flex flex-col lg:flex-row min-h-[640px] lg:min-h-[560px] border border-zinc-200 bg-white shadow-sm"
+        className="relative overflow-hidden rounded-[2.5rem] lg:rounded-[4rem] flex flex-col lg:flex-row min-h-[640px] lg:min-h-[600px] border border-zinc-200 bg-white shadow-sm"
         style={{ ['--jjz-accent' as string]: accent }}
       >
         {/* ─── Left: chip column ─────────────────────────── */}
         <div
-          className="w-full lg:w-[42%] min-h-[420px] md:min-h-[460px] lg:min-h-[560px] relative z-30 flex flex-col px-6 md:px-10 lg:pl-12 lg:pr-8 pt-14 pb-20 lg:py-10"
+          className="w-full lg:w-[40%] min-h-[420px] md:min-h-[460px] lg:min-h-[600px] relative z-30 flex flex-col px-6 md:px-10 lg:pl-12 lg:pr-8 pt-14 pb-20 lg:py-10"
           style={{ background: accent }}
         >
           {/* Top fade */}
@@ -102,7 +104,7 @@ export function FeatureCarousel({
 
           {/* Chips — fixed height, all same size, vertically centered */}
           <div
-            className="relative flex-1 flex items-center justify-center lg:justify-start overflow-y-auto lg:overflow-visible"
+            className="relative flex-1 flex items-center justify-center lg:justify-start overflow-hidden"
             style={{ scrollbarWidth: 'none' }}
           >
             <div
@@ -132,8 +134,8 @@ export function FeatureCarousel({
                     initial={false}
                     animate={{
                       y: topY,
-                      opacity: 1 - Math.min(0.6, Math.abs(wrappedDistance) * 0.18),
-                      scale: isActive ? 1 : 0.96,
+                      opacity: 1 - Math.min(0.65, Math.abs(wrappedDistance) * 0.2),
+                      scale: isActive ? 1 : 0.95,
                     }}
                     transition={{
                       duration: 0.6,
@@ -195,13 +197,14 @@ export function FeatureCarousel({
         </div>
 
         {/* ─── Right: card stack ─────────────────────────── */}
-        <div className="flex-1 min-h-[420px] md:min-h-[460px] lg:min-h-[560px] relative bg-amber-50/30 flex items-center justify-center py-12 md:py-16 px-6 md:px-10 overflow-hidden border-t lg:border-t-0 lg:border-l border-zinc-200">
-          <div className="relative w-full max-w-[420px] aspect-[4/5] flex items-center justify-center">
+        <div className="flex-1 min-h-[420px] md:min-h-[460px] lg:min-h-[600px] relative bg-amber-50/30 flex items-center justify-center py-10 md:py-14 px-6 md:px-10 overflow-hidden border-t lg:border-t-0 lg:border-l border-zinc-200">
+          <div className="relative w-full max-w-[460px] aspect-[4/5] flex items-center justify-center">
             {features.map((feature, index) => {
               const status = getCardStatus(index);
               const isActive = status === 'active';
               const isPrev = status === 'prev';
               const isNext = status === 'next';
+              const tint = feature.tint || '#27201a';
 
               return (
                 <motion.div
@@ -234,9 +237,46 @@ export function FeatureCarousel({
                     />
                   ) : (
                     <div
-                      data-placeholder={`Paste image — ${feature.label}`}
-                      className="w-full h-full bg-zinc-100"
-                    />
+                      className="relative w-full h-full flex flex-col items-center justify-center"
+                      style={{
+                        background: `radial-gradient(120% 90% at 50% 0%, ${tint} 0%, ${tint}cc 55%, ${tint}99 100%)`,
+                      }}
+                    >
+                      {/* Decorative grid lines */}
+                      <div
+                        aria-hidden
+                        className="absolute inset-0 opacity-[0.08]"
+                        style={{
+                          backgroundImage:
+                            'linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)',
+                          backgroundSize: '28px 28px',
+                        }}
+                      />
+                      {/* Soft top highlight */}
+                      <div
+                        aria-hidden
+                        className="absolute inset-x-0 top-0 h-1/2"
+                        style={{
+                          background:
+                            'radial-gradient(80% 60% at 50% 0%, rgba(255,255,255,0.18), transparent 70%)',
+                        }}
+                      />
+                      {/* Big icon */}
+                      <div className="relative z-10 flex flex-col items-center text-center px-8 -mt-4">
+                        <div className="flex items-center justify-center w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-white/10 border border-white/20 backdrop-blur-sm shadow-inner">
+                          <feature.icon
+                            className="w-12 h-12 md:w-14 md:h-14 text-white drop-shadow"
+                            strokeWidth={1.6}
+                          />
+                        </div>
+                        <p className="mt-6 text-white/80 text-[10px] md:text-xs font-semibold uppercase tracking-[0.3em]">
+                          {`0${index + 1}`.slice(-2)} / {`0${features.length}`.slice(-2)}
+                        </p>
+                        <h3 className="mt-2 text-white font-display font-bold text-2xl md:text-3xl leading-tight tracking-tight max-w-[18ch]">
+                          {feature.label}
+                        </h3>
+                      </div>
+                    </div>
                   )}
 
                   <AnimatePresence>
@@ -246,12 +286,12 @@ export function FeatureCarousel({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.4, ease: SMOOTH }}
-                        className="absolute inset-x-0 bottom-0 p-8 pt-32 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end pointer-events-none"
+                        className="absolute inset-x-0 bottom-0 p-6 md:p-7 pt-28 bg-gradient-to-t from-black/95 via-black/55 to-transparent flex flex-col justify-end pointer-events-none"
                       >
-                        <div className="bg-white text-zinc-900 px-4 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-[0.2em] w-fit shadow-lg mb-3 border border-zinc-200">
+                        <div className="bg-white text-zinc-900 px-3.5 py-1.5 rounded-full text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] w-fit shadow-lg mb-3 border border-zinc-200">
                           {index + 1} • {feature.label}
                         </div>
-                        <p className="text-white font-medium text-xl md:text-2xl leading-tight drop-shadow-md tracking-tight">
+                        <p className="text-white font-medium text-lg md:text-xl leading-snug drop-shadow-md tracking-tight max-w-[28ch]">
                           {feature.description}
                         </p>
                       </motion.div>

@@ -117,6 +117,7 @@ export function Hero() {
             height={1810}
             className="mx-auto h-full w-full rounded-2xl object-contain"
             priority
+            sizes="(max-width: 768px) 90vw, 768px"
           />
         </div>
       </ContainerScroll>

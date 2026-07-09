@@ -24,6 +24,7 @@ const features: CarouselFeature[] = [
     label: "Box / Dongle Activation",
     icon: Cpu,
     image: "",
+    tint: "#1f3a5f",
     description:
       "TSM, CM2, NCK, UMT, EFT Pro, Sigma, Chimera, Octoplus — all activations handled in-store.",
   },
@@ -32,6 +33,7 @@ const features: CarouselFeature[] = [
     label: "Schematics",
     icon: Layers,
     image: "",
+    tint: "#3a2f1a",
     description:
       "Borneo, ESTECH, ZXW, XinZhiZao, WUXINJI, JCID, DZJK — board-level reference for tricky repairs.",
   },
@@ -40,6 +42,7 @@ const features: CarouselFeature[] = [
     label: "Credits Service",
     icon: KeyRound,
     image: "",
+    tint: "#5a3a1a",
     description:
       "Instant top-ups for Xiaomi Tool Pro, Z3X, Samkey, Chimera, TFM, UMT and many more.",
   },
@@ -48,6 +51,7 @@ const features: CarouselFeature[] = [
     label: "Chip-Level Repair",
     icon: CircuitBoard,
     image: "",
+    tint: "#27201a",
     description:
       "Dead boot, short circuit, no display, water damage, motherboard, microsoldering.",
   },
@@ -56,6 +60,7 @@ const features: CarouselFeature[] = [
     label: "Remote Services",
     icon: Radio,
     image: "",
+    tint: "#1a3a3f",
     description:
       "Remote unlock, FRP, FIN / support, and tool setup — anywhere in the Philippines.",
   },
@@ -64,6 +69,7 @@ const features: CarouselFeature[] = [
     label: "Software Services",
     icon: Unlock,
     image: "",
+    tint: "#2a1a4a",
     description:
       "iOS / Android / MI account, pattern / PIN / passcode, IMEI / baseband, network unlock, custom ROM.",
   },
@@ -72,6 +78,7 @@ const features: CarouselFeature[] = [
     label: "JTAG / Reball",
     icon: Wrench,
     image: "",
+    tint: "#4a1a1a",
     description:
       "CPU reball, open-line, board-level micro-soldering for devices other shops turn away.",
   },
@@ -80,6 +87,7 @@ const features: CarouselFeature[] = [
     label: "Console Repair",
     icon: Gamepad2,
     image: "",
+    tint: "#1a4a2a",
     description:
       "PS5 / Xbox / Nintendo Switch — HDMI port, disc drive, power, overheating.",
   },
@@ -88,6 +96,7 @@ const features: CarouselFeature[] = [
     label: "Tablet Repair",
     icon: Tablet,
     image: "",
+    tint: "#2a2a4a",
     description: "iPad, Android tablets — screen, battery, charging, software.",
   },
   {
@@ -95,6 +104,7 @@ const features: CarouselFeature[] = [
     label: "Motherboard Repair",
     icon: Layers,
     image: "",
+    tint: "#3f1a3a",
     description:
       "Board-level diagnostics and component-level repair for phones, laptops, and consoles.",
   },
@@ -103,6 +113,7 @@ const features: CarouselFeature[] = [
     label: "OpenLine",
     icon: Lock,
     image: "",
+    tint: "#1a2a3f",
     description:
       "Carrier unlock, network open-line service for any model and any carrier.",
   },
@@ -111,6 +122,7 @@ const features: CarouselFeature[] = [
     label: "Microsoldering",
     icon: Zap,
     image: "",
+    tint: "#5a4a1a",
     description:
       "Component-level soldering under microscope for the jobs that need real precision.",
   },
