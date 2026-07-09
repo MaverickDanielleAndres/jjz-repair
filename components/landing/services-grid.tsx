@@ -47,14 +47,14 @@ export function ServicesGrid() {
   return (
     <section
       id="services"
-      className="bg-white border-t border-zinc-200 py-20 md:py-28"
+      className="bg-stone-50 border-t border-stone-200 py-20 md:py-28"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <div className="max-w-2xl">
+        <div className="text-center max-w-2xl mx-auto">
           <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
             Services offered
           </p>
-          <h2 className="mt-3 font-display text-3xl md:text-4xl font-bold tracking-tight text-zinc-900">
+          <h2 className="mt-3 font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900">
             Everything we can fix.
           </h2>
           <p className="mt-4 text-zinc-600 leading-relaxed">
@@ -64,7 +64,7 @@ export function ServicesGrid() {
         </div>
 
         {/* Search + filter row */}
-        <div className="mt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="mt-8 flex flex-col items-center gap-4 md:flex-row md:items-center md:justify-center md:gap-6">
           <div className="relative w-full md:max-w-md">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400"
@@ -100,7 +100,7 @@ export function ServicesGrid() {
         </div>
 
         {/* Filter pills */}
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap gap-2 justify-center">
           {FILTERS.map((f) => {
             const active = f.value === filter;
             return (
@@ -122,15 +122,18 @@ export function ServicesGrid() {
           })}
         </div>
 
-        {/* Grid */}
+        {/* Grid — flex-wrap with center justify so the last row is centered */}
         {filtered.length > 0 ? (
-          <div className="mt-10 flex flex-wrap justify-center gap-0 border-t border-l border-zinc-200">
+          <div className="mt-10 flex flex-wrap justify-center gap-4 md:gap-5">
             {filtered.map((service, i) => (
               <div
                 key={`${service.title}-${i}`}
-                className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
+                className="w-full sm:w-[calc(50%-0.625rem)] md:w-[calc(33.333%-0.83rem)] lg:w-[calc(25%-0.9375rem)]"
               >
-                <FeatureCard feature={service} />
+                <FeatureCard
+                  feature={service}
+                  className="rounded-2xl h-full"
+                />
               </div>
             ))}
           </div>

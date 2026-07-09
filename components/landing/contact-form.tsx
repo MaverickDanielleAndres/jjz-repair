@@ -65,7 +65,7 @@ export function ContactForm() {
   return (
     <section
       id="contact"
-      className="bg-white border-t border-zinc-200 py-20 md:py-28"
+      className="bg-stone-50 border-t border-stone-200 py-20 md:py-28"
     >
       <div className="mx-auto max-w-6xl px-6">
         <div className="max-w-2xl">

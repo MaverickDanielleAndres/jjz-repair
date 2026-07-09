@@ -373,6 +373,19 @@ export const EVERYTHING: Service[] = [
     description: "USB-C, Lightning, micro-USB, OTG, HDMI — all on hand.",
     category: "accessory",
   },
+  {
+    title: "Power Banks",
+    icon: BatteryCharging,
+    description:
+      "Reliable power banks for travel, long days, and emergency top-ups.",
+    category: "accessory",
+  },
+  {
+    title: "Phone Holders & Mounts",
+    icon: Smartphone,
+    description: "Car mounts, desk stands, ring holders — for hands-free use.",
+    category: "accessory",
+  },
 ];
 
 // Backwards-compatible flat lists used by the v1 sections.
@@ -453,6 +466,27 @@ export const TESTIMONIALS: Testimonial[] = [
     quote:
       "Bought a tempered glass and a fast charger here. The tech even helped me set up my new phone.",
     service: "Accessories + Setup",
+  },
+  {
+    name: "Mark T.",
+    rating: 5,
+    quote:
+      "PS5 HDMI port was loose — fixed in a day. Solid work, no shortcuts. Will be back for sure.",
+    service: "Console HDMI Repair",
+  },
+  {
+    name: "Liza C.",
+    rating: 5,
+    quote:
+      "Mabilis at maayos ang pagka-repair ng aking iPad. Magingi sila ng tempered glass pang regalo pa. Highly recommended!",
+    service: "iPad Screen + Accessories",
+  },
+  {
+    name: "Dante B.",
+    rating: 5,
+    quote:
+      "Binigyan ko ng buong tiwala ang JJZ Tech sa aking gaming laptop — galing nila sa thermal repaste at cleaning. Ngayon hindi na nag-o-overheat.",
+    service: "Laptop Overheating Fix",
   },
 ];
 

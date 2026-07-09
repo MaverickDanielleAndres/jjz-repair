@@ -5,6 +5,7 @@ import {
   InstagramIcon,
   TikTokIcon,
 } from "./brand-icons";
+import { NewsletterForm } from "./newsletter-form";
 import {
   ADDRESS,
   BRAND_NAME,
@@ -18,123 +19,210 @@ import {
   TIKTOK_URL,
 } from "./site-data";
 
+const linkColumns = [
+  {
+    title: "Services",
+    links: [
+      { label: "Cellphone Repair", href: "#services" },
+      { label: "Laptop Repair", href: "#services" },
+      { label: "Computer Repair", href: "#services" },
+      { label: "Console & Steam Deck", href: "#services" },
+      { label: "Accessories", href: "#services" },
+    ],
+  },
+  {
+    title: "Advanced",
+    links: [
+      { label: "Box / Dongle Activation", href: "#solutions" },
+      { label: "Schematics", href: "#solutions" },
+      { label: "Credits Service", href: "#solutions" },
+      { label: "Chip-Level Repair", href: "#solutions" },
+      { label: "Remote Services", href: "#solutions" },
+    ],
+  },
+  {
+    title: "Shop",
+    links: [
+      { label: "Why JJZ TECH", href: "#why" },
+      { label: "Gallery", href: "#gallery" },
+      { label: "Testimonials", href: "#reviews" },
+      { label: "FAQ", href: "#faq" },
+      { label: "Location", href: "#location" },
+    ],
+  },
+];
+
 export function Footer() {
   return (
-    <footer className="bg-white border-t border-zinc-200 text-zinc-700">
-      <div className="mx-auto max-w-6xl px-6 py-14 md:py-20 text-center">
-        {/* Logo */}
-        <a
-          href="#home"
-          aria-label="Back to top"
-          className="inline-flex items-center justify-center"
-        >
-          <Image
-            src="/logo.png"
-            alt={BRAND_NAME}
-            width={120}
-            height={120}
-            className="h-20 w-20 md:h-24 md:w-24 object-contain"
-          />
-        </a>
+    <footer className="relative bg-amber-50/40 text-zinc-700 border-t border-amber-100 overflow-hidden">
+      {/* Soft amber accent line */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent"
+      />
 
-        <p className="mt-4 font-display text-2xl md:text-3xl font-bold text-zinc-900 tracking-tight">
-          {BRAND_NAME}
-        </p>
-        <p className="mt-2 max-w-xl mx-auto text-sm md:text-base text-zinc-600">
-          Your trusted partner in gadget repair & solutions. Cellphone, laptop,
-          computer — same-day service, fair prices, quality parts.
-        </p>
+      {/* Newsletter strip */}
+      <div className="relative border-b border-amber-100/80 bg-white/60">
+        <div className="mx-auto max-w-6xl px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
+              Stay in the loop
+            </p>
+            <h3 className="mt-2 font-display text-2xl md:text-3xl font-bold text-zinc-900">
+              Tips, promos, and repair news.
+            </h3>
+            <p className="mt-1 text-sm text-zinc-600">
+              Drop your email — we&apos;ll send the occasional useful thing, no spam.
+            </p>
+          </div>
+          <NewsletterForm />
+        </div>
+      </div>
 
-        {/* Contact row */}
-        <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
-          <li className="inline-flex items-center gap-1.5">
-            <MapPin className="w-4 h-4 text-amber-600" />
-            {ADDRESS}
-          </li>
-          <li>
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="inline-flex items-center gap-1.5 hover:text-amber-700"
-            >
-              <Phone className="w-4 h-4 text-amber-600" /> {PHONE_DISPLAY}
-            </a>
-          </li>
-          <li>
-            <a
-              href={`mailto:${EMAIL_TO}`}
-              className="inline-flex items-center gap-1.5 hover:text-amber-700"
-            >
-              <Mail className="w-4 h-4 text-amber-600" /> {EMAIL_TO}
-            </a>
-          </li>
-        </ul>
+      {/* Main footer grid */}
+      <div className="relative mx-auto max-w-6xl px-6 py-14 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+          {/* Brand col */}
+          <div className="md:col-span-4">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/logo-nobg.png"
+                alt={BRAND_NAME}
+                width={64}
+                height={64}
+                className="h-16 w-16 object-contain"
+              />
+              <div>
+                <p className="font-display text-2xl font-bold text-zinc-900 tracking-tight">
+                  {BRAND_NAME}
+                </p>
+                <p className="text-xs text-amber-600">
+                  Gadget Repair Services
+                </p>
+              </div>
+            </div>
+            <p className="mt-5 text-sm text-zinc-600 leading-relaxed max-w-sm">
+              Your trusted partner in gadget repair &amp; solutions. Cellphone,
+              laptop, computer — same-day service, fair prices, quality parts.
+            </p>
+            <ul className="mt-6 space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
+                {ADDRESS}
+              </li>
+              <li>
+                <a
+                  href={`tel:${PHONE_TEL}`}
+                  className="inline-flex items-center gap-2 hover:text-amber-700"
+                >
+                  <Phone className="w-4 h-4 text-amber-600" /> {PHONE_DISPLAY}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${EMAIL_TO}`}
+                  className="inline-flex items-center gap-2 hover:text-amber-700"
+                >
+                  <Mail className="w-4 h-4 text-amber-600" /> {EMAIL_TO}
+                </a>
+              </li>
+            </ul>
+          </div>
 
-        {/* Nav links */}
-        <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm font-medium text-zinc-700">
-          {NAV_ITEMS.map((n) => (
-            <li key={n.href}>
-              <a href={n.href} className="hover:text-amber-700">
-                {n.label}
-              </a>
-            </li>
+          {/* Link columns */}
+          {linkColumns.map((col) => (
+            <div key={col.title} className="md:col-span-2">
+              <h4 className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
+                {col.title}
+              </h4>
+              <ul className="mt-4 space-y-2 text-sm">
+                {col.links.map((l) => (
+                  <li key={l.label}>
+                    <a
+                      href={l.href}
+                      className="text-zinc-700 hover:text-amber-700"
+                    >
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
 
-        {/* Socials */}
-        <ul className="mt-6 flex items-center justify-center gap-3">
-          <SocialBtn href={FACEBOOK_URL} label="Facebook">
-            <FacebookIcon className="w-4 h-4" />
-          </SocialBtn>
-          <SocialBtn href={MESSENGER_URL} label="Messenger" highlight>
-            <MessageCircle className="w-4 h-4" />
-          </SocialBtn>
-          <SocialBtn href={INSTAGRAM_URL} label="Instagram">
-            <InstagramIcon className="w-4 h-4" />
-          </SocialBtn>
-          <SocialBtn href={TIKTOK_URL} label="TikTok">
-            <TikTokIcon className="w-4 h-4" />
-          </SocialBtn>
-        </ul>
+          {/* Social + hours col */}
+          <div className="md:col-span-2">
+            <h4 className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
+              Connect
+            </h4>
+            <ul className="mt-4 flex gap-2">
+              <li>
+                <a
+                  href={FACEBOOK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white border border-zinc-200 hover:bg-amber-500 hover:border-amber-500 hover:text-zinc-950 transition-colors"
+                >
+                  <FacebookIcon className="w-4 h-4" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={MESSENGER_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Messenger"
+                  className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white border border-zinc-200 hover:bg-amber-500 hover:border-amber-500 hover:text-zinc-950 transition-colors"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white border border-zinc-200 hover:bg-amber-500 hover:border-amber-500 hover:text-zinc-950 transition-colors"
+                >
+                  <InstagramIcon className="w-4 h-4" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={TIKTOK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="TikTok"
+                  className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white border border-zinc-200 hover:bg-amber-500 hover:border-amber-500 hover:text-zinc-950 transition-colors"
+                >
+                  <TikTokIcon className="w-4 h-4" />
+                </a>
+              </li>
+            </ul>
 
-        <p className="mt-10 text-xs text-zinc-500">
-          © {new Date().getFullYear()} {BRAND_NAME}. All rights reserved.
-        </p>
-        <p className="mt-1 text-xs text-zinc-400">
-          1544 Manila E Rd, Binangonan, Rizal, Philippines
-        </p>
+            <h4 className="mt-6 text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
+              Hours
+            </h4>
+            <ul className="mt-3 text-sm space-y-1 text-zinc-700">
+              <li>Mon – Sat · 9 AM – 7 PM</li>
+              <li className="text-zinc-500">Sun · by appointment</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom strip */}
+      <div className="relative border-t border-amber-100/80 bg-white/40">
+        <div className="mx-auto max-w-6xl px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-zinc-500">
+          <p>
+            © {new Date().getFullYear()} {BRAND_NAME}. All rights reserved.
+          </p>
+          <p>{ADDRESS}</p>
+        </div>
       </div>
     </footer>
-  );
-}
-
-function SocialBtn({
-  href,
-  label,
-  children,
-  highlight,
-}: {
-  href: string;
-  label: string;
-  children: React.ReactNode;
-  highlight?: boolean;
-}) {
-  return (
-    <li>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={label}
-        className={
-          "inline-flex items-center justify-center w-9 h-9 rounded-full border transition-colors " +
-          (highlight
-            ? "bg-amber-500 text-zinc-950 border-amber-500 hover:bg-amber-400"
-            : "bg-white text-zinc-600 border-zinc-200 hover:border-amber-300 hover:text-amber-700")
-        }
-      >
-        {children}
-      </a>
-    </li>
   );
 }
 

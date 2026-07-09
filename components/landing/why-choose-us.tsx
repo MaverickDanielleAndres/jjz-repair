@@ -29,13 +29,13 @@ const reasons = [
 
 export function WhyChooseUs() {
   return (
-    <section className="bg-amber-50/30 border-t border-zinc-200 py-20 md:py-28">
+    <section className="bg-amber-50/20 border-t border-amber-100/40 py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="max-w-2xl">
+        <div className="text-center max-w-2xl mx-auto">
           <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
             Why choose JJZ TECH
           </p>
-          <h2 className="mt-3 font-display text-3xl md:text-4xl font-bold tracking-tight text-zinc-900">
+          <h2 className="mt-3 font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900">
             Affordable doesn’t mean cheap.
           </h2>
           <p className="mt-4 text-zinc-600 leading-relaxed">
@@ -49,13 +49,13 @@ export function WhyChooseUs() {
           {reasons.map((r) => (
             <div
               key={r.title}
-              className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 hover:border-amber-300 hover:shadow-lg hover:shadow-amber-500/5 transition-all"
+              className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 text-center hover:border-amber-300 hover:shadow-lg hover:shadow-amber-500/5 transition-all"
             >
               <div
                 aria-hidden
                 className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-amber-50 opacity-0 group-hover:opacity-100 transition-opacity"
               />
-              <div className="relative inline-flex w-10 h-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+              <div className="relative inline-flex w-10 h-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600 mx-auto">
                 <r.icon className="w-5 h-5" strokeWidth={1.8} />
               </div>
               <h3 className="relative mt-5 text-base font-semibold text-zinc-900">

@@ -1,25 +1,9 @@
-import {
-  Banknote,
-  CreditCard,
-  Gift,
-  Smartphone,
-  Wallet,
-} from "lucide-react";
+import { Gift } from "lucide-react";
 import { PAYMENT_METHODS } from "./site-data";
-
-const ICONS: Record<
-  string,
-  React.ComponentType<React.SVGProps<SVGSVGElement>>
-> = {
-  Cash: Banknote,
-  GCash: Smartphone,
-  Maya: Wallet,
-  "Bank Transfer": CreditCard,
-};
 
 export function PaymentInfo() {
   return (
-    <section className="bg-white border-t border-zinc-200 py-16 md:py-20">
+    <section className="bg-amber-50/30 border-t border-amber-100/40 py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
@@ -36,24 +20,44 @@ export function PaymentInfo() {
           </div>
 
           <ul className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {PAYMENT_METHODS.map((m) => {
-              const Icon = ICONS[m.name] ?? Banknote;
-              return (
-                <li
-                  key={m.name}
-                  className="flex flex-col items-center gap-2 rounded-2xl border border-zinc-200 bg-white p-4 hover:border-amber-300 transition-colors"
+            {PAYMENT_METHODS.map((m) => (
+              <li
+                key={m.name}
+                className="flex flex-col items-stretch overflow-hidden rounded-2xl border border-zinc-200 bg-white hover:border-amber-300 hover:shadow-lg hover:shadow-amber-500/10 transition-all"
+              >
+                <div
+                  data-placeholder={`Paste ${m.name} logo here`}
+                  className="relative w-full aspect-square"
+                  style={{
+                    background:
+                      "repeating-linear-gradient(45deg, transparent 0 8px, rgba(245,158,11,0.05) 8px 16px)",
+                  }}
                 >
-                  <Icon
-                    className="w-6 h-6 text-amber-600"
-                    strokeWidth={1.8}
-                    aria-hidden
-                  />
-                  <span className="text-sm font-medium text-zinc-800 text-center">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 text-amber-900/60">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      className="w-7 h-7"
+                      aria-hidden
+                    >
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M3 16l4-4 3 3 5-5 4 4 5-5" />
+                    </svg>
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-amber-900/70">
+                      Paste logo
+                    </span>
+                  </div>
+                </div>
+                <div className="px-3 py-2 text-center border-t border-zinc-200">
+                  <span className="text-sm font-semibold text-zinc-800">
                     {m.name}
                   </span>
-                </li>
-              );
-            })}
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -70,7 +74,7 @@ export function PaymentInfo() {
               FREE check-up on all devices.
             </p>
             <p className="mt-1 text-sm opacity-80">
-              Bring your gadget in — we’ll diagnose it for free, no
+              Bring your gadget in — we&apos;ll diagnose it for free, no
               obligation.
             </p>
           </div>

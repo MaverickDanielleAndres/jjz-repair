@@ -3,7 +3,7 @@ import { SUPPORTED_BRANDS } from "./site-data";
 
 export function Brands() {
   return (
-    <section className="bg-amber-50/40 border-y border-amber-100 py-10 md:py-12">
+    <section className="bg-stone-100/70 border-y border-stone-200 py-10 md:py-12">
       <div className="mx-auto max-w-6xl px-6">
         <p className="text-center text-xs md:text-sm uppercase tracking-[0.25em] text-amber-700 font-semibold">
           We service all major brands

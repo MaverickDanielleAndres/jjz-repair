@@ -1,6 +1,13 @@
 'use client';
 
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { gsap } from 'gsap';
 import './staggered-menu.css';
 
@@ -463,6 +470,7 @@ export const StaggeredMenu = ({
         </div>
         <button
           ref={toggleBtnRef}
+          data-menu-toggle
           className="sm-toggle"
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}

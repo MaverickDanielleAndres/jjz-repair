@@ -136,3 +136,36 @@ body {
 .chat-scroll::-webkit-scrollbar-thumb:hover {
   background: #d4d4d8;
 }
+
+/* Feature carousel chip list — top/bottom fade mask + slim scrollbar */
+.jjz-chip-fade {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 28px,
+    #000 calc(100% - 28px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 28px,
+    #000 calc(100% - 28px),
+    transparent 100%
+  );
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+.jjz-chip-fade::-webkit-scrollbar {
+  width: 4px;
+}
+.jjz-chip-fade::-webkit-scrollbar-track {
+  background: transparent;
+}
+.jjz-chip-fade::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+.jjz-chip-fade::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}

@@ -5,7 +5,7 @@ export function RepairGallery() {
   return (
     <section
       id="gallery"
-      className="bg-white text-zinc-900 border-t border-zinc-200"
+      className="bg-stone-50 text-zinc-900 border-t border-stone-200"
     >
       <div className="relative pt-20 md:pt-28 pb-6 text-center px-6">
         <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
