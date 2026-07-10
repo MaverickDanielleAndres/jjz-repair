@@ -9,6 +9,8 @@ import {
   type ServiceCategory,
 } from "./site-data";
 import { FeatureCard } from "@/components/ui/grid-feature-cards";
+import { PixelCard } from "@/components/ui/pixel-card";
+import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
 
 const FILTERS: ({ value: "all" | ServiceCategory; label: string })[] = [
   { value: "all", label: "All" },
@@ -47,10 +49,14 @@ export function ServicesGrid() {
   return (
     <section
       id="services"
-      className="bg-stone-50 border-t border-stone-200 py-20 md:py-28"
+      className="bg-stone-50 border-t border-stone-200 py-16 md:py-20"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <div className="text-center max-w-2xl mx-auto">
+        <ScrollReveal
+          variant="blurIn"
+          amount={0.4}
+          className="text-center max-w-2xl mx-auto"
+        >
           <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
             Services offered
           </p>
@@ -61,7 +67,7 @@ export function ServicesGrid() {
             From a cracked screen to a dead motherboard — if it has a chip in
             it, we probably service it. Search or filter to find what you need.
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Search + filter row */}
         <div className="mt-8 flex flex-col items-center gap-4 md:flex-row md:items-center md:justify-center md:gap-6">
@@ -124,19 +130,28 @@ export function ServicesGrid() {
 
         {/* Grid — flex-wrap with center justify so the last row is centered */}
         {filtered.length > 0 ? (
-          <div className="mt-10 flex flex-wrap justify-center gap-4 md:gap-5">
+          <StaggerReveal
+            amount={0.1}
+            staggerDelay={0.05}
+            className="mt-10 flex flex-wrap justify-center gap-4 md:gap-5"
+          >
             {filtered.map((service, i) => (
               <div
                 key={`${service.title}-${i}`}
-                className="w-full sm:w-[calc(50%-0.625rem)] md:w-[calc(33.333%-0.83rem)] lg:w-[calc(25%-0.9375rem)]"
+                className="w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.83rem)] lg:w-[calc(25%-0.9375rem)]"
               >
-                <FeatureCard
-                  feature={service}
-                  className="rounded-2xl h-full"
-                />
+                <PixelCard
+                  variant="amber"
+                  className="h-full rounded-2xl"
+                >
+                  <FeatureCard
+                    feature={service}
+                    className="rounded-2xl h-full !border-transparent hover:!border-transparent bg-transparent"
+                  />
+                </PixelCard>
               </div>
             ))}
-          </div>
+          </StaggerReveal>
         ) : (
           <div className="mt-12 rounded-2xl border border-dashed border-zinc-300 bg-zinc-50 p-10 text-center">
             <p className="text-zinc-600">

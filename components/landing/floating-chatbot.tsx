@@ -28,17 +28,18 @@ type ChatMessage = {
 };
 
 const SUGGESTIONS = [
-  "How much for screen replacement?",
-  "Do you unlock iCloud?",
+  "How much for an iPhone screen replacement?",
+  "Do you unlock iCloud / FRP?",
   "Where are you located?",
-  "What are your hours?",
+  "What makes JJZ TECH the best?",
+  "Do you repair laptops too?",
 ];
 
 const WELCOME: ChatMessage = {
   id: "welcome",
   role: "assistant",
   content:
-    "Hi! I'm the JJZ Assistant. Ask me about screen replacement, iCloud unlock, prices, hours, or where to find us. I'll do my best — for the final word on your specific device, message us on Messenger.",
+    "Hi! I'm the JJZ Assistant — ask me anything about JJZ TECH: services, repairs, hours, location, board-level work, pricing (always with a free check-up), or what makes us different. I'll answer in seconds.",
 };
 
 export function FloatingChatbot() {
@@ -160,12 +161,26 @@ export function FloatingChatbot() {
         </span>
       </button>
 
-      {/* Chat panel */}
+      {/* Backdrop — invisible but catches outside clicks.
+           Renders a transparent overlay above page content (z-40) and below
+           the panel (z-50). Clicking it closes the chat. */}
+      {open && (
+        <div
+          aria-hidden
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 z-40 bg-black/10 backdrop-blur-[2px] md:bg-transparent md:backdrop-blur-0"
+        />
+      )}
+
+      {/* Chat panel — floating card on every breakpoint (mobile, tablet, desktop).
+           On mobile/tablet: 16px margin from edges, capped at 70vh so it never
+           covers the whole screen. On desktop: 380×560 floating panel. */}
       {open && (
         <div
           role="dialog"
           aria-label="JJZ Assistant chat"
-          className="fixed inset-0 md:inset-auto md:bottom-24 md:right-6 z-50 md:w-[380px] md:h-[560px] md:max-h-[calc(100vh-7rem)] md:rounded-2xl bg-white border border-zinc-200 shadow-2xl flex flex-col overflow-hidden"
+          onClick={(e) => e.stopPropagation()}
+          className="fixed bottom-20 right-4 left-4 z-50 h-[min(70vh,600px)] rounded-2xl bg-white border border-zinc-200 shadow-2xl flex flex-col overflow-hidden md:left-auto md:w-[380px] md:bottom-24 md:right-6 md:h-[560px] md:max-h-[calc(100vh-7rem)] animate-in fade-in slide-in-from-bottom-2 duration-200"
         >
           {/* Header */}
           <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-zinc-900 to-zinc-800 text-white">

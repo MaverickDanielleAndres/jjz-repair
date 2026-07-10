@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion } from "motion/react";
+import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
 
 const faqs = [
   {
@@ -49,11 +50,10 @@ export function FAQ() {
     >
       <div className="mx-auto max-w-3xl px-6">
         {/* Centered header like the reference */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          viewport={{ once: true }}
+        <ScrollReveal
+          variant="fadeUp"
+          amount={0.4}
+          delay={0.05}
           className="text-center"
         >
           <p className="text-[11px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
@@ -66,51 +66,56 @@ export function FAQ() {
             Quick answers to the things customers ask most — from pricing
             and turnaround to warranty and what to do if your phone gets wet.
           </p>
-        </motion.div>
+        </ScrollReveal>
 
         {/* Accordion */}
-        <ul className="mt-10 space-y-2.5">
+        <StaggerReveal
+          amount={0.15}
+          staggerDelay={0.06}
+          className="mt-10 space-y-2.5"
+        >
           {faqs.map((f, i) => {
             const isOpen = open === i;
             return (
-              <li
-                key={f.q}
-                className="rounded-xl border border-zinc-200 bg-white overflow-hidden hover:border-amber-300 transition-colors"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  aria-expanded={isOpen}
-                  className="w-full flex items-center gap-3 text-left px-4 py-3.5"
+              <StaggerItem key={f.q} variant="fadeLeft">
+                <li
+                  className="rounded-xl border border-zinc-200 bg-white overflow-hidden hover:border-amber-300 transition-colors"
                 >
-                  <span className="font-medium text-zinc-900 text-sm md:text-base flex-1">
-                    {f.q}
-                  </span>
-                  <ChevronDown
+                  <button
+                    type="button"
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    aria-expanded={isOpen}
+                    className="w-full flex items-center gap-3 text-left px-4 py-3.5"
+                  >
+                    <span className="font-medium text-zinc-900 text-sm md:text-base flex-1">
+                      {f.q}
+                    </span>
+                    <ChevronDown
+                      className={
+                        "w-4 h-4 text-zinc-500 shrink-0 transition-transform duration-300 " +
+                        (isOpen ? "rotate-180 text-amber-600" : "")
+                      }
+                    />
+                  </button>
+                  <div
                     className={
-                      "w-4 h-4 text-zinc-500 shrink-0 transition-transform duration-300 " +
-                      (isOpen ? "rotate-180 text-amber-600" : "")
+                      "grid transition-all duration-300 ease-out " +
+                      (isOpen
+                        ? "grid-rows-[1fr] opacity-100"
+                        : "grid-rows-[0fr] opacity-0")
                     }
-                  />
-                </button>
-                <div
-                  className={
-                    "grid transition-all duration-300 ease-out " +
-                    (isOpen
-                      ? "grid-rows-[1fr] opacity-100"
-                      : "grid-rows-[0fr] opacity-0")
-                  }
-                >
-                  <div className="overflow-hidden">
-                    <p className="px-4 pb-4 text-sm text-zinc-600 leading-relaxed">
-                      {f.a}
-                    </p>
+                  >
+                    <div className="overflow-hidden">
+                      <p className="px-4 pb-4 text-sm text-zinc-600 leading-relaxed">
+                        {f.a}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </li>
+                </li>
+              </StaggerItem>
             );
           })}
-        </ul>
+        </StaggerReveal>
       </div>
     </section>
   );

@@ -17,6 +17,7 @@ import {
   PHONE_DISPLAY,
   PHONE_TEL,
 } from "./site-data";
+import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -68,7 +69,11 @@ export function ContactForm() {
       className="bg-stone-50 border-t border-stone-200 py-20 md:py-28"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <div className="max-w-2xl">
+        <ScrollReveal
+          variant="fadeUp"
+          amount={0.4}
+          className="text-center max-w-2xl mx-auto"
+        >
           <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
             Contact us
           </p>
@@ -79,7 +84,7 @@ export function ContactForm() {
             Send us a message and we’ll get back to you within the day. For
             urgent repairs, message us on Messenger or call directly.
           </p>
-        </div>
+        </ScrollReveal>
 
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Form */}

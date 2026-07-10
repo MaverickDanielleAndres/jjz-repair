@@ -1,20 +1,15 @@
-'use client';
+"use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  type CSSProperties,
-} from 'react';
-import { ChevronDown, ChevronUp, type LucideIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useCallback, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { ChevronDown, ChevronUp, type LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export type CarouselFeature = {
   id: string;
   label: string;
   icon: LucideIcon;
-  image: string;
+  image?: string;
   description: string;
   tint?: string;
 };
@@ -26,287 +21,353 @@ type FeatureCarouselProps = {
   accentBg?: string;
 };
 
-const AUTO_PLAY_DEFAULT = 4500;
-const CHIP_HEIGHT = 64;
-const VISIBLE_BUFFER = 4;
+const AUTO_PLAY_DEFAULT = 4000;
+const CHIP_HEIGHT = 56;
+const CHIP_GAP = 14; // vertical breathing room between chips
+const VISIBLE_BUFFER = 2; // chips visible above and below the active one
+
+/**
+ * Wraps `v` into the [min, max) range so any integer offset of the
+ * track index can be displayed as a relative position from the active chip.
+ */
+const wrap = (min: number, max: number, v: number) => {
+  const rangeSize = max - min;
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
+};
 
 export function FeatureCarousel({
   features,
   autoPlayInterval = AUTO_PLAY_DEFAULT,
-  accent = '#f59e0b',
-  accentBg,
+  accent = "#f59e0b",
+  accentBg = "#1a1d24",
 }: FeatureCarouselProps) {
-  const [index, setIndex] = useState(0);
+  const [step, setStep] = useState(0);
   const [paused, setPaused] = useState(false);
-  const touchStartRef = useRef<{ y: number; time: number } | null>(null);
 
   const total = features.length;
-  const current = features[index];
-  // Right panel uses a grayish-black gradient + an image placeholder
-  // overlay (the "tint" prop is still respected for future customization).
-  const cardTint = current.tint ?? '#1f232b';
+  const currentIndex = ((step % total) + total) % total;
 
-  const next = useCallback(() => {
-    setIndex((i) => (i + 1) % total);
-  }, [total]);
-  const prev = useCallback(() => {
-    setIndex((i) => (i - 1 + total) % total);
-  }, [total]);
+  const nextStep = useCallback(() => {
+    setStep((s) => s + 1);
+  }, []);
+
+  const prevStep = useCallback(() => {
+    setStep((s) => s - 1);
+  }, []);
+
+  const handleChipClick = (index: number) => {
+    const forward = (index - currentIndex + total) % total;
+    const backward = (currentIndex - index + total) % total;
+    // Move the shortest distance (handles wrap-around in both directions).
+    if (forward <= backward) setStep((s) => s + forward);
+    else setStep((s) => s - backward);
+  };
 
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(next, autoPlayInterval);
+    const t = setInterval(nextStep, autoPlayInterval);
     return () => clearInterval(t);
-  }, [paused, next, autoPlayInterval]);
+  }, [nextStep, paused, autoPlayInterval]);
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStartRef.current = { y: e.touches[0].clientY, time: Date.now() };
-    setPaused(true);
-  };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const start = touchStartRef.current;
-    if (!start) return;
-    const dy = e.changedTouches[0].clientY - start.y;
-    const dt = Date.now() - start.time;
-    touchStartRef.current = null;
-    setPaused(false);
-    if (Math.abs(dy) < 30 || dt > 600) return;
-    if (dy < 0) next();
-    else prev();
-  };
-  const onTouchCancel = () => {
-    touchStartRef.current = null;
-    setPaused(false);
-  };
+  /**
+   * Visual state for the image card on the right. Only the active card is
+   * fully visible; the previous and next cards peek in faintly with a small
+   * offset to suggest motion direction.
+   */
+  const getCardStatus = (index: number) => {
+    const diff = index - currentIndex;
+    const len = total;
 
-  const onWheel = (e: React.WheelEvent) => {
-    if (Math.abs(e.deltaY) < 10) return;
-    if (e.deltaY > 0) next();
-    else prev();
+    let normalizedDiff = diff;
+    if (diff > len / 2) normalizedDiff -= len;
+    if (diff < -len / 2) normalizedDiff += len;
+
+    if (normalizedDiff === 0) return "active";
+    if (normalizedDiff === -1) return "prev";
+    if (normalizedDiff === 1) return "next";
+    return "hidden";
   };
 
-  const containerHeight = (VISIBLE_BUFFER * 2 + 1) * CHIP_HEIGHT;
-  const centerOffset = VISIBLE_BUFFER * CHIP_HEIGHT;
-  const trackY = -(index * CHIP_HEIGHT) + centerOffset;
-  const bg = accentBg ?? accent;
+  // Total height of the chip column: chips + gaps.
+  const trackHeight =
+    (VISIBLE_BUFFER * 2 + 1) * CHIP_HEIGHT + VISIBLE_BUFFER * 2 * CHIP_GAP;
 
   return (
     <div className="w-full max-w-7xl mx-auto">
       <div className="relative overflow-hidden rounded-2xl md:rounded-[2rem] flex flex-col lg:flex-row min-h-[420px] lg:min-h-[460px] border border-zinc-200 bg-white">
-        {/* Left: rotary chip column */}
+        {/* Left: vertical chip column with a darkened storefront photo
+              sitting behind the chips so the panel feels grounded in the
+              shop without competing for attention. */}
         <div
-          className="w-full lg:w-[40%] relative flex flex-col items-center justify-center p-6 md:p-7 lg:py-8 overflow-hidden"
-          style={{ background: bg }}
+          className="w-full lg:w-[36%] relative flex items-center justify-center py-8 md:py-10 overflow-hidden bg-zinc-950"
+          style={{
+            backgroundImage: "url(/location.png)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-          onTouchCancel={onTouchCancel}
-          onWheel={onWheel}
         >
-          {/* Top blur — mixes with the column background */}
+          {/* Darkening overlay — sits behind the chips but on top of the
+              photo. Mixes the storefront image into the dark palette so the
+              amber accent on the active chip still pops. */}
           <div
             aria-hidden
-            className="absolute top-0 left-0 right-0 h-20 z-30 pointer-events-none backdrop-blur-md"
+            className="absolute inset-0"
             style={{
-              background: `linear-gradient(to bottom, ${bg} 0%, ${bg}cc 40%, ${bg}00 100%)`,
+              background: `linear-gradient(180deg, ${accentBg}cc 0%, ${accentBg}f2 50%, ${accentBg}cc 100%)`,
             }}
           />
-          {/* Bottom blur — mixes with the column background */}
+          {/* Top + bottom fade — chips fade as they enter/leave the center */}
           <div
             aria-hidden
-            className="absolute bottom-0 left-0 right-0 h-20 z-30 pointer-events-none backdrop-blur-md"
+            className="absolute inset-x-0 top-0 h-14 z-30 pointer-events-none"
             style={{
-              background: `linear-gradient(to top, ${bg} 0%, ${bg}cc 40%, ${bg}00 100%)`,
+              background: `linear-gradient(to bottom, ${accentBg} 0%, ${accentBg}cc 70%, ${accentBg}00 100%)`,
             }}
           />
-
-          {/* Center highlight bar — always in the middle */}
           <div
             aria-hidden
-            className="absolute left-2 right-2 top-1/2 -translate-y-1/2 h-16 rounded-full pointer-events-none z-20"
+            className="absolute inset-x-0 bottom-0 h-14 z-30 pointer-events-none"
             style={{
-              background:
-                'linear-gradient(90deg, rgba(245,158,11,0) 0%, rgba(245,158,11,.95) 18%, rgba(251,191,36,1) 50%, rgba(245,158,11,.95) 82%, rgba(245,158,11,0) 100%)',
-              boxShadow:
-                '0 0 24px rgba(245,158,11,.45), inset 0 0 12px rgba(255,255,255,.18)',
+              background: `linear-gradient(to top, ${accentBg} 0%, ${accentBg}cc 70%, ${accentBg}00 100%)`,
             }}
           />
 
-          {/* Rotary chip container */}
+          {/* Center highlight bar — soft amber glow sized to the chip itself,
+              not the full column width. Previously this used `left-3 right-3`
+              with a 32px box-shadow blur, which produced a huge amber blob
+              behind the active pill. Now it's inset to the chip's footprint
+              and uses a subtle inset highlight instead of an outward glow. */}
           <div
-            className="relative w-full max-w-[280px] mx-auto z-10 overflow-hidden"
-            style={{ height: containerHeight } as CSSProperties}
+            aria-hidden
+            className="absolute top-1/2 -translate-y-1/2 rounded-full pointer-events-none z-10"
+            style={{
+              left: "calc(50% - 120px)",
+              width: 240,
+              height: CHIP_HEIGHT,
+              background: `linear-gradient(90deg, ${accent}00 0%, ${accent}40 35%, ${accent}40 65%, ${accent}00 100%)`,
+              opacity: 0.35,
+            }}
+          />
+
+          {/* Uniform chip track — all chips are the same width/height */}
+          <div
+            className="relative w-full max-w-[240px] mx-auto z-10"
+            style={{ height: trackHeight }}
           >
-            <div
-              className="jjz-rotary-track absolute inset-x-0 transition-transform duration-500 ease-out"
-              style={{ transform: `translateY(${trackY}px)` } as CSSProperties}
-            >
-              <div className="flex flex-col items-center gap-2">
-                {features.map((f, i) => {
-                  const isActive = i === index;
-                  return (
-                    <button
-                      key={f.id}
-                      type="button"
-                      onClick={() => setIndex(i)}
-                      className={cn(
-                        'flex items-center justify-center gap-2.5 w-full h-16 px-4 rounded-full text-center transition-all duration-300 border',
-                        isActive
-                          ? 'bg-amber-500 text-zinc-950 border-amber-400 shadow-lg shadow-amber-500/30'
-                          : 'bg-transparent text-white/80 border-transparent hover:text-white',
-                      )}
-                      aria-pressed={isActive}
-                    >
-                      <span
-                        className={cn(
-                          'inline-flex items-center justify-center shrink-0 transition-colors',
-                          isActive ? 'text-zinc-950' : 'text-white/70',
-                        )}
-                      >
-                        <f.icon size={14} strokeWidth={1.8} />
-                      </span>
-                      <span
-                        className={cn(
-                          'font-semibold text-[11px] md:text-xs tracking-tight uppercase truncate',
-                          isActive ? 'text-zinc-950' : 'text-white/80',
-                        )}
-                      >
-                        {f.label}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+            {features.map((feature, index) => {
+              const distance = index - currentIndex;
+              const wrappedDistance = wrap(
+                -VISIBLE_BUFFER,
+                total - VISIBLE_BUFFER,
+                distance,
+              );
+              const isActive = wrappedDistance === 0;
+              const visibility =
+                Math.abs(wrappedDistance) <= VISIBLE_BUFFER ? 1 : 0;
 
-          {/* Up / Down arrow pair, side-by-side at the bottom */}
-          <div className="mt-4 flex items-center justify-center gap-2 z-10">
-            <button
-              type="button"
-              aria-label="Previous feature"
-              onClick={prev}
-              className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white text-zinc-900 hover:bg-amber-100 border border-white/30 shadow-sm transition-colors"
-            >
-              <ChevronUp className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              aria-label="Next feature"
-              onClick={next}
-              className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white text-zinc-900 hover:bg-amber-100 border border-white/30 shadow-sm transition-colors"
-            >
-              <ChevronDown className="w-4 h-4" />
-            </button>
+              return (
+                <motion.button
+                  key={feature.id}
+                  type="button"
+                  onClick={() => handleChipClick(index)}
+                  onMouseEnter={() => setPaused(true)}
+                  onMouseLeave={() => setPaused(false)}
+                  aria-pressed={isActive}
+                  aria-hidden={visibility === 0}
+                  tabIndex={isActive ? 0 : -1}
+                  style={{
+                    height: CHIP_HEIGHT,
+                    top: trackHeight / 2 - CHIP_HEIGHT / 2,
+                    willChange: "transform, opacity",
+                  }}
+                  animate={{
+                    y:
+                      wrappedDistance * (CHIP_HEIGHT + CHIP_GAP) +
+                      (wrappedDistance === 0
+                        ? 0
+                        : Math.sign(wrappedDistance) *
+                          Math.min(Math.abs(wrappedDistance), 1) *
+                          CHIP_GAP),
+                    opacity: isActive
+                      ? 1
+                      : Math.max(0, 1 - Math.abs(wrappedDistance) * 0.35),
+                  }}
+                  transition={{
+                    // Smoother glide — tuned stiffness/damping ratio avoids
+                    // the spring overshoot that caused the "edgy" feel.
+                    type: "spring",
+                    stiffness: 180,
+                    damping: 34,
+                    mass: 0.9,
+                  }}
+                  className={cn(
+                    "absolute inset-x-0 flex items-center justify-center gap-2 px-4 rounded-full text-center border transition-colors duration-300",
+                    isActive
+                      ? "bg-white text-zinc-900 border-amber-400 z-20"
+                      : "bg-white/5 text-white/80 border-white/15 hover:bg-white/10 hover:text-white hover:border-white/30",
+                  )}
+                >
+                  <feature.icon
+                    size={14}
+                    strokeWidth={1.8}
+                    className={cn(
+                      "shrink-0",
+                      isActive ? "text-amber-600" : "text-white/70",
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "font-semibold text-[11px] md:text-xs tracking-tight uppercase truncate",
+                      isActive ? "text-zinc-900" : "text-white/80",
+                    )}
+                  >
+                    {feature.label}
+                  </span>
+                </motion.button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Right: content panel — image placeholder background + grayish-black gradient */}
-        <div
-          className="flex-1 min-h-[300px] lg:min-h-[460px] relative flex items-center justify-center p-6 md:p-10 overflow-hidden"
-          style={{
-            background: `linear-gradient(135deg, ${cardTint} 0%, ${shade(
-              cardTint,
-              -25,
-            )} 100%)`,
-          }}
-        >
-          {/* Image placeholder overlay — replaces the solid colored background
-              with a labeled placeholder that fills the right panel. */}
-          <div
-            data-placeholder={`Paste image — ${current.label}`}
-            className="absolute inset-0 grid place-items-center pointer-events-none"
-          >
-            <div className="flex flex-col items-center gap-2 text-white/25">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                className="w-12 h-12"
-                aria-hidden
-              >
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <path d="M3 16l4-4 3 3 5-5 4 4 5-5" />
-              </svg>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/30">
-                Paste image
-              </span>
-            </div>
-          </div>
-          {/* Subtle texture overlay */}
-          <div
-            aria-hidden
-            className="absolute inset-0 opacity-15 mix-blend-overlay pointer-events-none"
-            style={{
-              backgroundImage:
-                'repeating-linear-gradient(45deg, transparent 0 12px, rgba(255,255,255,.05) 12px 24px)',
-            }}
-          />
+        {/* Right: stacked image cards */}
+        <div className="flex-1 min-h-[360px] lg:min-h-[460px] relative bg-zinc-50 flex items-center justify-center px-6 md:px-8 lg:px-10 py-10 md:py-12 overflow-hidden border-t lg:border-t-0 lg:border-l border-zinc-200">
+          <div className="relative w-full max-w-[360px] aspect-[4/5] flex items-center justify-center">
+            {features.map((feature, index) => {
+              const status = getCardStatus(index);
+              const isActive = status === "active";
+              const isPrev = status === "prev";
+              const isNext = status === "next";
 
-          <div className="relative max-w-md w-full text-center text-white">
-            <div
-              key={current.id}
-              className="inline-flex w-16 h-16 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 mb-5"
-            >
-              <current.icon className="w-8 h-8" strokeWidth={1.5} />
-            </div>
-            <p className="text-[11px] uppercase tracking-[0.25em] text-white/70 font-semibold">
-              {String(index + 1).padStart(2, '0')} /{' '}
-              {String(total).padStart(2, '0')}
-            </p>
-            <h3 className="mt-2 font-display text-2xl md:text-4xl font-bold text-white tracking-tight">
-              {current.label}
-            </h3>
-            <p className="mt-4 text-white/85 text-sm md:text-base leading-relaxed">
-              {current.description}
-            </p>
-            {current.image && (
-              <img
-                src={current.image}
-                alt={current.label}
-                className="mt-6 mx-auto rounded-xl w-full max-h-56 object-cover border border-white/20"
-              />
-            )}
+              return (
+                <motion.div
+                  key={feature.id}
+                  initial={false}
+                  animate={{
+                    x: isActive ? 0 : isPrev ? -70 : isNext ? 70 : 0,
+                    scale: isActive ? 1 : isPrev || isNext ? 0.88 : 0.7,
+                    opacity: isActive ? 1 : isPrev || isNext ? 0.4 : 0,
+                    rotate: isPrev ? -2 : isNext ? 2 : 0,
+                    zIndex: isActive ? 20 : isPrev || isNext ? 10 : 0,
+                  }}
+                  transition={{
+                    // Smooth, glide-style motion — no oscillation. Higher
+                    // damping + stiffness ratio dampens the spring so chips
+                    // glide instead of bouncing.
+                    type: "spring",
+                    stiffness: 220,
+                    damping: 32,
+                    mass: 0.85,
+                  }}
+                  style={{ willChange: "transform, opacity" }}
+                  className="absolute inset-0 rounded-2xl md:rounded-3xl overflow-hidden border-4 md:border-[6px] border-white shadow-xl origin-center"
+                >
+                  {/* Image / placeholder — fills the entire card */}
+                  {feature.image ? (
+                    <img
+                      src={feature.image}
+                      alt={feature.label}
+                      className={cn(
+                        "absolute inset-0 w-full h-full object-cover transition-all duration-700",
+                        isActive
+                          ? "grayscale-0 blur-0"
+                          : "grayscale blur-[2px] brightness-75",
+                      )}
+                    />
+                  ) : (
+                    <div
+                      data-placeholder={`Paste image — ${feature.label}`}
+                      className={cn(
+                        "absolute inset-0 w-full h-full grid place-items-center transition-all duration-700",
+                        "bg-[linear-gradient(135deg,#fde68a_0%,#f59e0b_60%,#b45309_100%)]",
+                        isActive ? "" : "grayscale blur-[2px] brightness-75",
+                      )}
+                    >
+                      <feature.icon
+                        className="w-12 h-12 md:w-16 md:h-16 text-amber-900/60"
+                        strokeWidth={1.2}
+                        aria-hidden
+                      />
+                    </div>
+                  )}
+
+                  {/* Description overlay — only the bottom strip */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 6 }}
+                        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                        className="absolute inset-x-0 bottom-0 px-5 md:px-6 pb-5 md:pb-6 pt-12 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col gap-1.5 pointer-events-none"
+                      >
+                        <div className="bg-white text-zinc-900 px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-[0.2em] w-fit shadow-lg">
+                          {String(index + 1).padStart(2, "0")} ·{" "}
+                          {feature.label}
+                        </div>
+                        <p className="text-white font-semibold text-sm md:text-base leading-snug drop-shadow-md">
+                          {feature.description}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Pagination dots */}
-          <div className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5">
+          <div className="absolute bottom-4 right-4 z-30 flex items-center gap-1.5">
             {features.map((f, i) => (
               <button
                 key={f.id}
                 type="button"
                 aria-label={`Go to ${f.label}`}
-                onClick={() => setIndex(i)}
+                onClick={() => handleChipClick(i)}
                 className={cn(
-                  'h-1.5 rounded-full transition-all',
-                  i === index ? 'w-6 bg-white' : 'w-1.5 bg-white/30',
+                  "h-1.5 rounded-full transition-all duration-300",
+                  i === currentIndex
+                    ? "w-6 bg-amber-500"
+                    : "w-1.5 bg-zinc-300 hover:bg-zinc-400",
                 )}
               />
             ))}
           </div>
         </div>
       </div>
+
+      {/* Up / Down arrow buttons — manual carousel movement */}
+      <div className="mt-4 flex items-center justify-center gap-2">
+        <button
+          type="button"
+          aria-label="Previous feature"
+          onClick={() => {
+            prevStep();
+            setPaused(true);
+          }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white border border-zinc-200 text-zinc-700 hover:border-amber-300 hover:text-amber-700 hover:shadow-md transition-all shadow-sm"
+        >
+          <ChevronUp className="w-5 h-5" />
+        </button>
+        <button
+          type="button"
+          aria-label="Next feature"
+          onClick={() => {
+            nextStep();
+            setPaused(true);
+          }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white border border-zinc-200 text-zinc-700 hover:border-amber-300 hover:text-amber-700 hover:shadow-md transition-all shadow-sm"
+        >
+          <ChevronDown className="w-5 h-5" />
+        </button>
+      </div>
     </div>
   );
-}
-
-function shade(hex: string, amount: number): string {
-  const h = hex.replace('#', '');
-  if (h.length !== 6) return hex;
-  const r = parseInt(h.slice(0, 2), 16);
-  const g = parseInt(h.slice(2, 4), 16);
-  const b = parseInt(h.slice(4, 6), 16);
-  const t = amount < 0 ? 0 : 255;
-  const p = Math.abs(amount) / 100;
-  const nr = Math.round((t - r) * p) + r;
-  const ng = Math.round((t - g) * p) + g;
-  const nb = Math.round((t - b) * p) + b;
-  const toHex = (n: number) =>
-    Math.max(0, Math.min(255, n)).toString(16).padStart(2, '0');
-  return `#${toHex(nr)}${toHex(ng)}${toHex(nb)}`;
 }
 
 export default FeatureCarousel;

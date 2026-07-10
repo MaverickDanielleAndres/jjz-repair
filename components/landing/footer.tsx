@@ -5,7 +5,6 @@ import {
   InstagramIcon,
   TikTokIcon,
 } from "./brand-icons";
-import { NewsletterForm } from "./newsletter-form";
 import {
   ADDRESS,
   BRAND_NAME,
@@ -18,6 +17,7 @@ import {
   PHONE_TEL,
   TIKTOK_URL,
 } from "./site-data";
+import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
 
 const linkColumns = [
   {
@@ -61,29 +61,19 @@ export function Footer() {
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent"
       />
 
-      {/* Newsletter strip */}
-      <div className="relative border-b border-amber-100/80 bg-white/60">
-        <div className="mx-auto max-w-6xl px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
-              Stay in the loop
-            </p>
-            <h3 className="mt-2 font-display text-2xl md:text-3xl font-bold text-zinc-900">
-              Tips, promos, and repair news.
-            </h3>
-            <p className="mt-1 text-sm text-zinc-600">
-              Drop your email — we&apos;ll send the occasional useful thing, no spam.
-            </p>
-          </div>
-          <NewsletterForm />
-        </div>
-      </div>
-
       {/* Main footer grid */}
-      <div className="relative mx-auto max-w-6xl px-6 py-14 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+      <ScrollReveal
+        variant="fadeUp"
+        amount={0.1}
+        className="relative mx-auto max-w-6xl px-6 py-14 md:py-20"
+      >
+        <StaggerReveal
+          amount={0.1}
+          staggerDelay={0.06}
+          className="grid grid-cols-1 md:grid-cols-12 gap-10 text-center md:text-left"
+        >
           {/* Brand col */}
-          <div className="md:col-span-4">
+          <StaggerItem variant="fadeUp" className="md:col-span-4 flex flex-col items-center md:items-start">
             <div className="flex items-center gap-3">
               <Image
                 src="/logo-nobg.png"
@@ -92,7 +82,7 @@ export function Footer() {
                 height={64}
                 className="h-16 w-16 object-contain"
               />
-              <div>
+              <div className="text-left">
                 <p className="font-display text-2xl font-bold text-zinc-900 tracking-tight">
                   {BRAND_NAME}
                 </p>
@@ -105,7 +95,7 @@ export function Footer() {
               Your trusted partner in gadget repair &amp; solutions. Cellphone,
               laptop, computer — same-day service, fair prices, quality parts.
             </p>
-            <ul className="mt-6 space-y-2 text-sm">
+            <ul className="mt-6 space-y-2 text-sm flex flex-col items-center md:items-start">
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
                 {ADDRESS}
@@ -127,11 +117,11 @@ export function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
+          </StaggerItem>
 
           {/* Link columns */}
           {linkColumns.map((col) => (
-            <div key={col.title} className="md:col-span-2">
+            <StaggerItem key={col.title} variant="fadeUp" className="md:col-span-2">
               <h4 className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
                 {col.title}
               </h4>
@@ -147,11 +137,11 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </StaggerItem>
           ))}
 
           {/* Social + hours col */}
-          <div className="md:col-span-2">
+          <StaggerItem variant="fadeUp" className="md:col-span-2 flex flex-col items-center md:items-start">
             <h4 className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
               Connect
             </h4>
@@ -209,9 +199,9 @@ export function Footer() {
               <li>Mon – Sat · 9 AM – 7 PM</li>
               <li className="text-zinc-500">Sun · by appointment</li>
             </ul>
-          </div>
-        </div>
-      </div>
+          </StaggerItem>
+        </StaggerReveal>
+      </ScrollReveal>
 
       {/* Bottom strip */}
       <div className="relative border-t border-amber-100/80 bg-white/40">

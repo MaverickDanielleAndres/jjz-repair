@@ -6,6 +6,8 @@ import {
   PHONE_TEL,
 } from "./site-data";
 import ShopMap from "./location-loader";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
 
 const directionsURL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
   ADDRESS,
@@ -15,10 +17,14 @@ export function Location() {
   return (
     <section
       id="location"
-      className="bg-white border-t border-zinc-200 py-20 md:py-28"
+      className="bg-white border-t border-zinc-200 py-16 md:py-20"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <div className="max-w-2xl">
+        <ScrollReveal
+          variant="fadeUp"
+          amount={0.4}
+          className="text-center max-w-2xl mx-auto"
+        >
           <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
             Where to find us
           </p>
@@ -29,29 +35,48 @@ export function Location() {
             Free check-up, walk-ins welcome, or schedule a pickup via
             Messenger.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
           {/* Real map */}
-          <div className="lg:col-span-3 min-h-[320px] lg:min-h-[420px]">
+          <ScrollReveal
+            variant="scaleUp"
+            amount={0.2}
+            delay={0.1}
+            className="lg:col-span-3 min-h-[320px] lg:min-h-[420px]"
+          >
             <ShopMap />
-          </div>
+          </ScrollReveal>
 
           {/* Address card */}
-          <div className="lg:col-span-2 rounded-2xl border border-zinc-200 bg-amber-50/40 p-6 md:p-8 flex flex-col">
-            <div className="inline-flex w-10 h-10 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
-              <MapPin className="w-5 h-5" strokeWidth={1.8} />
+          <ScrollReveal
+            variant="fadeRight"
+            amount={0.2}
+            delay={0.2}
+            className="lg:col-span-2"
+          >
+            <SpotlightCard
+              className="!p-6 md:!p-7 flex flex-col hover:shadow-xl hover:shadow-amber-500/10 transition-all h-full"
+              spotlightColor="rgba(245, 158, 11, 0.18)"
+            >
+            {/* Header with pin + "Our Location" label */}
+            <div className="flex items-center gap-3">
+              <span className="inline-flex w-10 h-10 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
+                <MapPin className="w-5 h-5" strokeWidth={1.8} />
+              </span>
+              <p className="text-[11px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
+                Our Location
+              </p>
             </div>
-            <h3 className="mt-5 text-xl font-semibold text-zinc-900">
-              JJZ TECH
-            </h3>
-            <p className="mt-2 text-zinc-700">{ADDRESS}</p>
+
+            <h3 className="mt-4 text-xl font-bold text-zinc-900">JJZ TECH</h3>
+            <p className="mt-1 text-sm text-zinc-700">{ADDRESS}</p>
 
             <dl className="mt-6 space-y-4 text-sm">
               <div className="flex gap-3">
                 <Clock className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
                 <div>
-                  <dt className="text-zinc-500 text-xs uppercase tracking-wider">
+                  <dt className="text-zinc-500 text-[11px] uppercase tracking-[0.2em] font-semibold">
                     Hours
                   </dt>
                   <dd className="text-zinc-800 mt-0.5">
@@ -64,7 +89,7 @@ export function Location() {
               <div className="flex gap-3">
                 <Phone className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
                 <div>
-                  <dt className="text-zinc-500 text-xs uppercase tracking-wider">
+                  <dt className="text-zinc-500 text-[11px] uppercase tracking-[0.2em] font-semibold">
                     Phone
                   </dt>
                   <dd className="text-zinc-800 mt-0.5">
@@ -80,7 +105,7 @@ export function Location() {
               <div className="flex gap-3">
                 <Navigation className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
                 <div>
-                  <dt className="text-zinc-500 text-xs uppercase tracking-wider">
+                  <dt className="text-zinc-500 text-[11px] uppercase tracking-[0.2em] font-semibold">
                     Getting here
                   </dt>
                   <dd className="text-zinc-800 mt-0.5">
@@ -109,7 +134,8 @@ export function Location() {
                 Message us on Messenger
               </a>
             </div>
-          </div>
+          </SpotlightCard>
+          </ScrollReveal>
         </div>
       </div>
     </section>

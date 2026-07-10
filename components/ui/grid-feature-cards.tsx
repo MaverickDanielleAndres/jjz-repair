@@ -21,7 +21,7 @@ export function FeatureCard({ feature, className, ...props }: FeatureCardProps) 
   return (
     <div
       className={cn(
-        'relative overflow-hidden p-5 md:p-6 border border-zinc-200 bg-white hover:border-amber-300 hover:shadow-lg hover:shadow-amber-500/5 transition-all h-full',
+        'relative overflow-hidden p-5 md:p-6 border border-zinc-200 bg-white hover:border-amber-300 hover:shadow-lg hover:shadow-amber-500/5 transition-all h-full text-center md:text-left',
         className,
       )}
       {...props}
@@ -39,7 +39,7 @@ export function FeatureCard({ feature, className, ...props }: FeatureCardProps) 
         </div>
       </div>
       <feature.icon
-        className="text-zinc-900 size-6"
+        className="text-zinc-900 size-6 mx-auto md:mx-0"
         strokeWidth={1.5}
         aria-hidden
       />

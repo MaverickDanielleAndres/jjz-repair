@@ -1,12 +1,25 @@
+import Image from "next/image";
 import { Gift } from "lucide-react";
-import { PAYMENT_METHODS } from "./site-data";
+import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
+
+type PaymentMethod = { name: string; image: string };
+
+const PAYMENT_METHODS: PaymentMethod[] = [
+  { name: "GCash", image: "/gcash.jpg" },
+  { name: "Maya", image: "/maya.png" },
+  { name: "Bank Transfer", image: "/transfer.png" },
+  { name: "Cash", image: "/cash-payment.png" },
+];
 
 export function PaymentInfo() {
   return (
     <section className="bg-amber-50/30 border-t border-amber-100/40 py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div>
+          <ScrollReveal
+            variant="fadeLeft"
+            amount={0.4}
+          >
             <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
               Payment accepted
             </p>
@@ -17,48 +30,37 @@ export function PaymentInfo() {
               Cash, e-wallets, or bank transfer. We also offer GCash Cash-In /
               Cash-Out in-store.
             </p>
-          </div>
+          </ScrollReveal>
 
-          <ul className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <StaggerReveal
+            amount={0.2}
+            staggerDelay={0.1}
+            className="grid grid-cols-2 sm:grid-cols-4 gap-3"
+          >
             {PAYMENT_METHODS.map((m) => (
-              <li
+              <StaggerItem
                 key={m.name}
+                variant="scaleIn"
                 className="flex flex-col items-stretch overflow-hidden rounded-2xl border border-zinc-200 bg-white hover:border-amber-300 hover:shadow-lg hover:shadow-amber-500/10 transition-all"
               >
-                <div
-                  data-placeholder={`Paste ${m.name} logo here`}
-                  className="relative w-full aspect-square"
-                  style={{
-                    background:
-                      "repeating-linear-gradient(45deg, transparent 0 8px, rgba(245,158,11,0.05) 8px 16px)",
-                  }}
-                >
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 text-amber-900/60">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      className="w-7 h-7"
-                      aria-hidden
-                    >
-                      <rect x="3" y="3" width="18" height="18" rx="2" />
-                      <circle cx="8.5" cy="8.5" r="1.5" />
-                      <path d="M3 16l4-4 3 3 5-5 4 4 5-5" />
-                    </svg>
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-amber-900/70">
-                      Paste logo
-                    </span>
-                  </div>
+                <div className="relative w-full aspect-square bg-white">
+                  <Image
+                    src={m.image}
+                    alt={`${m.name} payment logo`}
+                    fill
+                    sizes="(max-width: 640px) 50vw, 25vw"
+                    unoptimized
+                    className="object-contain p-3"
+                  />
                 </div>
                 <div className="px-3 py-2 text-center border-t border-zinc-200">
                   <span className="text-sm font-semibold text-zinc-800">
                     {m.name}
                   </span>
                 </div>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </StaggerReveal>
         </div>
 
         {/* Special offer banner */}

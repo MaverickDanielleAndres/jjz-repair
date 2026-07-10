@@ -1,4 +1,8 @@
+"use client";
+
 import { Award, BadgeDollarSign, Clock, Wrench } from "lucide-react";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
 
 const reasons = [
   {
@@ -29,9 +33,13 @@ const reasons = [
 
 export function WhyChooseUs() {
   return (
-    <section className="bg-amber-50/20 border-t border-amber-100/40 py-20 md:py-28">
+    <section className="bg-amber-50/20 border-t border-amber-100/40 py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="text-center max-w-2xl mx-auto">
+        <ScrollReveal
+          variant="fadeDown"
+          amount={0.4}
+          className="text-center max-w-2xl mx-auto"
+        >
           <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
             Why choose JJZ TECH
           </p>
@@ -43,30 +51,39 @@ export function WhyChooseUs() {
             selected repairs with a warranty. The goal: fix it right, the
             first time, at a price that makes sense.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {reasons.map((r) => (
-            <div
+        <StaggerReveal
+          amount={0.2}
+          staggerDelay={0.1}
+          className="mt-12 md:mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5"
+        >
+          {reasons.map((r, i) => (
+            <StaggerItem
               key={r.title}
-              className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 text-center hover:border-amber-300 hover:shadow-lg hover:shadow-amber-500/5 transition-all"
+              variant={i % 2 === 0 ? "scaleIn" : "fadeUp"}
             >
-              <div
-                aria-hidden
-                className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-amber-50 opacity-0 group-hover:opacity-100 transition-opacity"
-              />
-              <div className="relative inline-flex w-10 h-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600 mx-auto">
-                <r.icon className="w-5 h-5" strokeWidth={1.8} />
-              </div>
-              <h3 className="relative mt-5 text-base font-semibold text-zinc-900">
-                {r.title}
-              </h3>
-              <p className="relative mt-2 text-sm text-zinc-500 leading-relaxed">
-                {r.description}
-              </p>
-            </div>
+              <SpotlightCard
+                className="!p-5 text-center hover:shadow-lg hover:shadow-amber-500/5 transition-all h-full"
+                spotlightColor="rgba(245, 158, 11, 0.18)"
+              >
+                <div
+                  aria-hidden
+                  className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-amber-50 opacity-0 group-hover:opacity-100 transition-opacity"
+                />
+                <div className="relative inline-flex w-9 h-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600 mx-auto">
+                  <r.icon className="w-4 h-4" strokeWidth={1.8} />
+                </div>
+                <h3 className="relative mt-4 text-sm md:text-base font-semibold text-zinc-900">
+                  {r.title}
+                </h3>
+                <p className="relative mt-1.5 text-xs text-zinc-500 leading-relaxed">
+                  {r.description}
+                </p>
+              </SpotlightCard>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerReveal>
       </div>
     </section>
   );

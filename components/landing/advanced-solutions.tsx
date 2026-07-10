@@ -17,6 +17,7 @@ import {
   FeatureCarousel,
   type CarouselFeature,
 } from "@/components/ui/feature-carousel";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 const features: CarouselFeature[] = [
   {
@@ -120,10 +121,14 @@ export function AdvancedSolutions() {
   return (
     <section
       id="solutions"
-      className="bg-stone-50 border-t border-stone-200 pt-8 pb-12 md:pt-10 md:pb-14"
+      className="bg-stone-50 border-t border-stone-200 py-16 md:py-20"
     >
-      <div className="mx-auto max-w-5xl px-6">
-        <div className="text-center max-w-2xl mx-auto">
+      <div className="mx-auto max-w-6xl px-6">
+        <ScrollReveal
+          variant="fadeUp"
+          amount={0.4}
+          className="text-center max-w-2xl mx-auto"
+        >
           <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
             Advanced solutions
           </p>
@@ -134,11 +139,16 @@ export function AdvancedSolutions() {
             Box &amp; dongle activations, schematics, credit services, and
             chip-level work for the hard cases. No job is too deep.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="mt-6">
+        <ScrollReveal
+          variant="scaleUp"
+          amount={0.15}
+          delay={0.2}
+          className="mt-8"
+        >
           <FeatureCarousel features={features} accentBg="#1a1d24" />
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

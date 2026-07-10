@@ -65,18 +65,37 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const raw = (body.messages ?? [])
-    .filter(
-      (m) =>
-        (m.role === "user" || m.role === "assistant" || m.role === "model") &&
-        typeof m.content === "string",
-    )
-    .map<ChatMessage>((m) => ({
-      role: m.role === "assistant" ? "model" : (m.role as "user" | "model"),
-      parts: [{ text: m.content }],
-    }));
+  const filtered = (body.messages ?? []).filter(
+    (m) =>
+      (m.role === "user" || m.role === "assistant" || m.role === "model") &&
+      typeof m.content === "string" &&
+      m.content.trim().length > 0,
+  );
 
-  if (raw.length === 0) {
+  // The Gemini API requires the conversation history to begin with a
+  // `role: "user"` message. Our UI prepends a welcome greeting
+  // (`role: "assistant"`) so the customer sees a hello on first open — that
+  // greeting must be kept out of the history we send to Gemini, otherwise
+  // every first message errors with
+  // "First content should be with role 'user', got model".
+  // Strip any leading non-user messages, then keep alternating
+  // user/model as far as possible.
+  const sanitized: ChatMessage[] = [];
+  for (const m of filtered) {
+    const role: "user" | "model" =
+      m.role === "assistant" ? "model" : (m.role as "user" | "model");
+    if (sanitized.length === 0 && role !== "user") continue;
+    const last = sanitized[sanitized.length - 1];
+    if (last && last.role === role) {
+      // Collapse duplicate same-role turns (e.g. two user messages in a row
+      // because the model reply didn't make it into the next payload).
+      last.parts[0].text += "\n\n" + m.content;
+      continue;
+    }
+    sanitized.push({ role, parts: [{ text: m.content }] });
+  }
+
+  if (sanitized.length === 0) {
     return NextResponse.json({
       reply:
         "Hi! I'm the JJZ Assistant. Ask me about screen replacement, iCloud unlock, prices, hours, or where to find us.",
@@ -91,8 +110,9 @@ export async function POST(req: NextRequest) {
   // Try newer model names first, fall back to older ones. The "latest" aliases
   // are the most resilient across API versions and account types.
   const CANDIDATE_MODELS = [
-    "gemini-flash-latest",
     "gemini-2.5-flash",
+    "gemini-2.5-flash-latest",
+    "gemini-flash-latest",
     "gemini-2.0-flash",
     "gemini-1.5-flash-latest",
     "gemini-1.5-flash",
@@ -110,15 +130,20 @@ export async function POST(req: NextRequest) {
           systemInstruction: CHATBOT_SYSTEM_PROMPT,
         });
 
+        // History is everything except the last (current) turn, which we
+        // send via sendMessage. If we only have one turn, history is empty —
+        // that's a valid single-shot call.
+        const history = sanitized.slice(0, -1);
+
         const chat = model.startChat({
-          history: raw.slice(0, -1),
+          history,
           generationConfig: {
             maxOutputTokens: 600,
             temperature: 0.6,
           },
         });
 
-        const last = raw[raw.length - 1];
+        const last = sanitized[sanitized.length - 1];
         const result = await chat.sendMessage(last.parts[0].text);
         const reply =
           result.response.text()?.trim() ||
@@ -127,6 +152,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ reply, mode: "gemini", model: modelName });
       } catch (err) {
         lastError = err;
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`[chatbot] model "${modelName}" failed: ${msg.slice(0, 200)}`);
         // Try the next model.
         continue;
       }
@@ -134,7 +161,14 @@ export async function POST(req: NextRequest) {
 
     throw lastError ?? new Error("No Gemini model worked");
   } catch (err) {
-    console.error("[chatbot] Gemini error", err);
-    return NextResponse.json({ reply: FALLBACK_REPLY, mode: "error" });
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[chatbot] Gemini error (key length ${apiKey.length}): ${msg.slice(0, 300)}`);
+    return NextResponse.json({
+      reply: FALLBACK_REPLY,
+      mode: "error",
+      // Only include the first 120 chars of the error so we don't leak keys,
+      // but enough to debug what's failing.
+      detail: msg.slice(0, 120),
+    });
   }
 }
