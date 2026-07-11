@@ -66,7 +66,7 @@ export function ContactForm() {
   return (
     <section
       id="contact"
-      className="bg-stone-50 border-t border-stone-200 py-20 md:py-28"
+      className="bg-stone-50 border-t border-stone-200 py-20 md:py-28 jjz-defer"
     >
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal
@@ -132,6 +132,7 @@ export function ContactForm() {
                 onChange={update("message")}
                 placeholder="Tell us about your device and the issue…"
                 className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-400 resize-none"
+                suppressHydrationWarning
               />
             </div>
 
@@ -149,6 +150,7 @@ export function ContactForm() {
                 type="submit"
                 disabled={status === "sending"}
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-zinc-950 font-semibold shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-shadow disabled:opacity-60 disabled:cursor-not-allowed"
+                suppressHydrationWarning
               >
                 {status === "sending" ? (
                   <>
@@ -260,6 +262,9 @@ function Field({
         onChange={onChange}
         placeholder={placeholder}
         className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-400"
+        // See HydrationSafeButtons — password managers / autofill
+        // heuristics inject `fdprocessedid` on form fields at runtime.
+        suppressHydrationWarning
       />
     </div>
   );

@@ -26,6 +26,13 @@ export function SuppressExtensionErrors() {
         })
         .join(" ");
 
+      // Always silent on browser-extension / wallet probe noise. Also
+      // silent on React 19 hydration mismatches caused by extensions
+      // injecting attributes (fdprocessedid, data-extension-*, …) —
+      // the hydration message itself doesn't mention those attr names,
+      // but the diff component tree in args does, and we don't want a
+      // wall of red errors every page load just because the user has
+      // a password manager installed.
       return (
         // MetaMask inpage.js self-connect failure
         /MetaMask extension not found/i.test(message) ||
@@ -46,7 +53,20 @@ export function SuppressExtensionErrors() {
         // Content-script stream warnings — these come from injected scripts
         // that pile up EventEmitter listeners in the page context.
         /MaxListenersExceededWarning/i.test(message) ||
-        /Resetting the streams/i.test(message)
+        /Resetting the streams/i.test(message) ||
+        // React 19 hydration mismatches that React logs to console.error
+        // when server-rendered HTML differs from the client DOM. The most
+        // common cause on this site is browser extensions (LastPass,
+        // 1Password, autofill heuristics) injecting `fdprocessedid` onto
+        // form fields after SSR but before hydration. The main message
+        // is generic; the diff that follows names the offending attr,
+        // so fdprocessedid catches most cases above, but we also catch
+        // the well-known message prefixes for any other attribute
+        // extension- or browser-tool might inject.
+        /A tree hydrated but some attributes/i.test(message) ||
+        /Hydration failed because the initial UI does not match/i.test(message) ||
+        /Text content does not match server-rendered HTML/i.test(message) ||
+        /attribute did not match/i.test(message)
       );
     };
 

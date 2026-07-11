@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import {
   ArrowRight,
@@ -75,7 +75,33 @@ export function Hero() {
   const statsRef = useRef<HTMLDivElement>(null);
   const bottomCardsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // Promote the animated layers to their own composited layers so the
+    // intro tweens never trigger layout or paint of the rest of the
+    // page. `will-change` is set before the timeline starts and cleared
+    // once it finishes so the browser can collapse the layers back.
+    const animated = [
+      leftColRef.current,
+      badgeRef.current,
+      descriptionRef.current,
+      comparisonRef.current,
+      statsRef.current,
+      bottomCardsRef.current,
+    ].filter((el): el is NonNullable<typeof el> => !!el);
+    animated.forEach((el) => (el.style.willChange = "transform, opacity"));
+    headlineRef.current?.querySelectorAll("span").forEach((s) => {
+      (s as HTMLElement).style.willChange = "transform, opacity";
+    });
+    ctasRef.current?.querySelectorAll("a").forEach((a) => {
+      (a as HTMLElement).style.willChange = "transform, opacity";
+    });
+    trustChipsRef.current?.querySelectorAll("li").forEach((l) => {
+      (l as HTMLElement).style.willChange = "transform, opacity";
+    });
+    bottomCardsRef.current
+      ?.querySelectorAll(":scope > *")
+      .forEach((c) => ((c as HTMLElement).style.willChange = "transform, opacity"));
+
     const ctx = gsap.context(() => {
       // Single master timeline that choreographs the whole hero intro.
       // Four direction-themed layers, each with its own scrub-free play:
@@ -88,7 +114,27 @@ export function Hero() {
       // tweens so the whole sequence feels like one continuous flow rather
       // than discrete steps.
       const ease = "expo.out";
-      const tl = gsap.timeline({ defaults: { ease } });
+      const tl = gsap.timeline({
+        defaults: { ease },
+        onComplete: () => {
+          // Drop the compositor hint once the intro lands — keeping
+          // `will-change` on forever would inflate VRAM and slow down
+          // unrelated paints later in the session.
+          animated.forEach((el) => (el.style.willChange = ""));
+          headlineRef.current?.querySelectorAll("span").forEach((s) => {
+            (s as HTMLElement).style.willChange = "";
+          });
+          ctasRef.current?.querySelectorAll("a").forEach((a) => {
+            (a as HTMLElement).style.willChange = "";
+          });
+          trustChipsRef.current?.querySelectorAll("li").forEach((l) => {
+            (l as HTMLElement).style.willChange = "";
+          });
+          bottomCardsRef.current
+            ?.querySelectorAll(":scope > *")
+            .forEach((c) => ((c as HTMLElement).style.willChange = ""));
+        },
+      });
 
       // ─── NAV (slides down from above) ───
       // Pinned here as a reminder — the actual animation runs from
@@ -167,7 +213,10 @@ export function Hero() {
       );
     }, heroRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      animated.forEach((el) => (el.style.willChange = ""));
+    };
   }, []);
 
   return (
@@ -184,12 +233,20 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-6 pt-16 md:pt-20 pb-10 md:pb-14">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Left column — copy + CTAs + trust chips */}
-          <div ref={leftColRef} className="text-center lg:text-left">
+          {/* Left column — copy + CTAs + trust chips.
+              The inline `transform: translateX(-80px)` mirrors the GSAP
+              `from` state so the column is already off-screen on first
+              paint; useLayoutEffect then animates it in. */}
+          <div
+            ref={leftColRef}
+            className="text-center lg:text-left"
+            style={{ transform: "translateX(-80px)" }}
+          >
             {/* JJZ brand badge */}
             <div
               ref={badgeRef}
               className="flex justify-center lg:justify-start"
+              style={{ transform: "translateY(14px)" }}
             >
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-amber-200 bg-white/80 text-amber-700 text-[10px] uppercase tracking-[0.2em] font-semibold backdrop-blur-sm">
                 <Award className="w-3 h-3" /> {BRAND_NAME} — Gadget Repair
@@ -217,6 +274,7 @@ export function Hero() {
             <p
               ref={descriptionRef}
               className="mt-4 max-w-xl mx-auto lg:mx-0 text-center lg:text-left text-zinc-600 text-sm md:text-base leading-relaxed"
+              style={{ transform: "translateY(12px)" }}
             >
               JJZ-repair: same-day diagnostics on phone, laptop and computer
               repairs — walk-ins welcome, free check-up on every device, OEM
@@ -264,8 +322,15 @@ export function Hero() {
             </ul>
           </div>
 
-          {/* Right column — before/after image comparison slider */}
-          <div ref={comparisonRef} className="relative">
+          {/* Right column — before/after image comparison slider.
+              `transform: translateX(100px) scale(0.96)` mirrors the GSAP
+              `from` state so the comparison card is already off to the
+              right on first paint; useLayoutEffect animates it left. */}
+          <div
+            ref={comparisonRef}
+            className="relative"
+            style={{ transform: "translateX(100px) scale(0.96)" }}
+          >
             <ImageComparison
               aspect="video"
               beforeSlot={
@@ -280,7 +345,11 @@ export function Hero() {
       </div>
 
       {/* Stats bar */}
-      <div ref={statsRef} className="relative mx-auto max-w-5xl px-6 pb-10 md:pb-14">
+      <div
+        ref={statsRef}
+        className="relative mx-auto max-w-5xl px-6 pb-10 md:pb-14"
+        style={{ transform: "translateY(18px)" }}
+      >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-3">
           {stats.map((s) => (
             <div

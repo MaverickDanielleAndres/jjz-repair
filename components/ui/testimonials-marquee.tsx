@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useEffect, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
 import { Quote } from "lucide-react";
 
 type Testimonial = {
@@ -19,16 +20,46 @@ export const TestimonialsColumn = ({
   testimonials: Testimonial[];
   duration?: number;
 }) => {
+  // Pause the infinite marquee when the column isn't visible. The original
+  // implementation ran `repeat: Infinity` 24/7 for the lifetime of the
+  // page — even when the user had scrolled past the section. Each
+  // marquee is a perpetual rAF callback, so three columns = 3 rAFs
+  // forever. Pausing with `useAnimation().stop()` cuts that to zero
+  // background work.
+  const containerRef = useRef<HTMLDivElement>(null);
+  const controls = useAnimation();
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting;
+        if (visible) controls.start("scroll");
+        else controls.stop();
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [controls]);
+
   return (
-    <div className={className}>
+    <div ref={containerRef} className={className}>
       <motion.div
-        animate={{ translateY: "-50%" }}
+        animate={controls}
+        variants={{
+          scroll: { translateY: "-50%" },
+        }}
         transition={{
           duration,
           repeat: Infinity,
           ease: "linear",
           repeatType: "loop",
         }}
+        // will-change keeps this on the compositor — translating a layer
+        // costs almost nothing on the GPU.
+        style={{ willChange: "transform" }}
         className="flex flex-col gap-4 pb-4"
       >
         {[...new Array(2).fill(0)].map((_, index) => (
@@ -63,3 +94,9 @@ export const TestimonialsColumn = ({
     </div>
   );
 };
+
+// Render nothing when out of view (so no GPU layer is allocated).
+// Actually we still want to render but stop the animation — handled above
+// via useAnimation().stop().
+
+export default TestimonialsColumn;

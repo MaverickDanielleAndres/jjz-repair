@@ -143,6 +143,13 @@
   -ms-overflow-style: none;
   z-index: 10;
   pointer-events: auto;
+  /* Hidden by default — the menu slides in from the right. This matches
+     the GSAP `useLayoutEffect` initial state so SSR HTML and post-
+     hydration DOM agree, eliminating the flash where the panel is
+     momentarily visible on first paint. GSAP overrides this when the
+     user opens the menu. */
+  transform: translateX(100%);
+  will-change: transform;
 }
 .staggered-menu-panel::-webkit-scrollbar {
   display: none;
@@ -153,6 +160,7 @@
 [data-position='left'] .staggered-menu-panel {
   right: auto;
   left: 0;
+  transform: translateX(-100%);
 }
 
 .sm-prelayers {

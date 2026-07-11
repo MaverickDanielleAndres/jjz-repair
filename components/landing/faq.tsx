@@ -46,7 +46,7 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      className="bg-stone-50 border-t border-stone-200 py-16 md:py-20"
+      className="bg-stone-50 border-t border-stone-200 py-16 md:py-20 jjz-defer"
     >
       <div className="mx-auto max-w-3xl px-6">
         {/* Centered header like the reference */}
@@ -86,6 +86,11 @@ export function FAQ() {
                     onClick={() => setOpen(isOpen ? null : i)}
                     aria-expanded={isOpen}
                     className="w-full flex items-center gap-3 text-left px-4 py-3.5"
+                    // Browser extensions (LastPass, 1Password, etc.)
+                    // inject `fdprocessedid` onto interactive elements
+                    // at runtime, which causes React to log a hydration
+                    // mismatch warning. See HydrationSafeButtons.
+                    suppressHydrationWarning
                   >
                     <span className="font-medium text-zinc-900 text-sm md:text-base flex-1">
                       {f.q}

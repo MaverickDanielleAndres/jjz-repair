@@ -13,7 +13,7 @@ const PAYMENT_METHODS: PaymentMethod[] = [
 
 export function PaymentInfo() {
   return (
-    <section className="bg-amber-50/30 border-t border-amber-100/40 py-16 md:py-20">
+    <section className="bg-amber-50/30 border-t border-amber-100/40 py-16 md:py-20 jjz-defer">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <ScrollReveal

@@ -1,5 +1,9 @@
 @import "tailwindcss";
-@import "leaflet/dist/leaflet.css";
+/* Leaflet CSS is intentionally NOT imported here. The map is far below
+   the fold and only the Location section needs it; importing it
+   globally would ship ~15KB of unused CSS to every other route.
+   See components/landing/map.tsx — Leaflet's CSS is imported there
+   instead, so it loads with the dynamic map bundle. */
 
 :root {
   --background: #ffffff;
@@ -39,9 +43,15 @@
 /* Class-based dark mode for opt-in sections. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-html {
-  scroll-behavior: smooth;
-}
+/*
+ * No `html { scroll-behavior: smooth; }` here. Smooth scroll is the
+ * browser's "animated jump to the anchor" effect — when combined with
+ * GSAP ScrollTriggers and framer-motion's `useScroll` on this page, the
+ * browser keeps trying to smooth the scroll position even while our JS
+ * is reading it. The result is missed frames and a "rubbery" feel.
+ * Programmatic scrolls inside JS can opt-in with `behavior: "smooth"`
+ * on a per-call basis; we don't need the global default.
+ */
 
 body {
   background: var(--background);
@@ -168,4 +178,20 @@ body {
 }
 .jjz-chip-fade::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.35);
+}
+
+/*
+ * Off-screen section deferral. `content-visibility: auto` tells the
+ * browser to skip layout + paint of an element until it approaches the
+ * viewport (`contain-intrinsic-size` reserves the right amount of space
+ * so the scrollbar doesn't jump). Slicing the page into sections like
+ * this regularly cuts main-thread work during initial paint in half.
+ *
+ * Excluded: hero, header (always visible), and any section that hosts a
+ * GSAP timeline that needs an honest measurement on mount (otherwise
+ * ScrollTrigger fires before the element is laid out).
+ */
+.jjz-defer {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 600px;
 }

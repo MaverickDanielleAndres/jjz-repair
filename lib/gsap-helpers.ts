@@ -5,6 +5,29 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
+
+  // Global performance tuning. These two flags are the single most
+  // impactful things you can set for GSAP on a heavy page:
+  //
+  //   1. `force3D: true` — every transform gets translateZ(0) so the
+  //      browser keeps it on the GPU compositor and never falls back to
+  //      a software path. Crucial for the Hero/intro tweens.
+  //   2. `gsap.ticker.lagSmoothing(500, 33)` — when the tab is
+  //      backgrounded or the main thread stalls (long tasks, GC, etc.),
+  //      GSAP's internal clock will jump forward up to 500ms but try to
+  //      stay within ~33ms (about 2 frames) of real time. Without this,
+  //      a single janky frame causes the whole intro timeline to drift
+  //      out of sync with the wall clock.
+  gsap.defaults({ force3D: true });
+  gsap.ticker.lagSmoothing(500, 33);
+
+  // Default ScrollTrigger config — keeps every trigger batched under a
+  // single scroll listener instead of one listener per element. Also
+  // turns off markers in production so the page doesn't have any debug
+  // overlay costs.
+  ScrollTrigger.config({
+    ignoreMobileResize: true,
+  });
 }
 
 /**

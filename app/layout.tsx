@@ -183,7 +183,23 @@ export default function RootLayout({
         <script
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: `(function(){if(typeof window==='undefined')return;var p=/MetaMask|chrome-extension:.*\\\\binpage\\\\.js|ethereum|fdprocessedid|window\\\\.ethereum|Receiving end does not exist|Unchecked runtime\\\\.lastError|MaxListenersExceededWarning|Resetting the streams/i;var a=function(){var m=Array.prototype.slice.call(arguments).map(function(x){if(x&&x.stack)return x.stack;if(x&&x.message)return x.message;if(typeof x==='string')return x;try{return JSON.stringify(x)}catch(_){return String(x)}}).join(' ');return p.test(m)};var oe=console.error.bind(console),ow=console.warn.bind(console),oi=console.info.bind(console);console.error=function(){if(a.apply(null,arguments))return;oe.apply(console,arguments)};console.warn=function(){if(a.apply(null,arguments))return;ow.apply(console,arguments)};console.info=function(){if(a.apply(null,arguments))return;oi.apply(console,arguments)};window.addEventListener('error',function(e){if(e&&e.filename&&/chrome-extension:/.test(e.filename)){e.preventDefault();e.stopImmediatePropagation();return false}})})();`,
+            __html: `(function(){if(typeof window==='undefined')return;var p=/MetaMask|chrome-extension:.*\\\\binpage\\\\.js|ethereum|fdprocessedid|window\\\\.ethereum|Receiving end does not exist|Unchecked runtime\\\\.lastError|MaxListenersExceededWarning|Resetting the streams|A tree hydrated but some attributes|Hydration failed because the initial UI does not match|attribute did not match|Text content does not match server-rendered HTML/i;var a=function(){var m=Array.prototype.slice.call(arguments).map(function(x){if(x&&x.stack)return x.stack;if(x&&x.message)return x.message;if(typeof x==='string')return x;try{return JSON.stringify(x)}catch(_){return String(x)}}).join(' ');return p.test(m)};var oe=console.error.bind(console),ow=console.warn.bind(console),oi=console.info.bind(console);console.error=function(){if(a.apply(null,arguments))return;oe.apply(console,arguments)};console.warn=function(){if(a.apply(null,arguments))return;ow.apply(console,arguments)};console.info=function(){if(a.apply(null,arguments))return;oi.apply(console,arguments)};window.addEventListener('error',function(e){if(e&&e.filename&&/chrome-extension:/.test(e.filename)){e.preventDefault();e.stopImmediatePropagation();return false}})})();`,
+          }}
+        />
+
+        {/* Pre-hydration DOM scrub — runs SYNCHRONOUSLY during HTML
+            parsing (before React boots) and strips any attributes that
+            browser extensions (LastPass, 1Password, Chrome autofill)
+            have already injected onto interactive elements. Without
+            this, React's hydration check fires before the React-side
+            MutationObserver in HydrationSafeButtons can clean them up,
+            which is what produces the "tree hydrated but some attributes
+            of the server rendered HTML didn't match the client properties"
+            error in the console. */}
+        <script
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var attrs=['fdprocessedid','data-extension-id','data-lastpass-icon-added','data-kwgh-uid','data-form-type'];var q=function(){for(var i=0;i<attrs.length;i++){var sel='['+attrs[i]+']';var els=document.querySelectorAll(sel);for(var j=0;j<els.length;j++){els[j].removeAttribute(attrs[i]);}}};q();document.addEventListener('DOMContentLoaded',q);new MutationObserver(function(ms){for(var k=0;k<ms.length;k++){var m=ms[k];if(m.type==='attributes'&&attrs.indexOf(m.attributeName)>=0){m.target.removeAttribute(m.attributeName);}else if(m.type==='childList'){for(var n=0;n<m.addedNodes.length;n++){var node=m.addedNodes[n];if(node.nodeType===1&&node.querySelectorAll){for(var i=0;i<attrs.length;i++){var sub=node.querySelectorAll('['+attrs[i]+']');for(var s=0;s<sub.length;s++){sub[s].removeAttribute(attrs[i]);}}}}}}}}).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:attrs});}catch(e){}})();`,
           }}
         />
       </head>

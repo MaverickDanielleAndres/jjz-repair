@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Plus, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import StaggeredMenu, {
   type StaggeredMenuItem,
@@ -30,13 +30,35 @@ export function Header() {
   // Long duration + soft "expo.out" easing so it lands softly without
   // any visible "edgy" stop. Transform-only so the nav is never hidden
   // if GSAP is interrupted.
-  useEffect(() => {
+  //
+  // useLayoutEffect (NOT useEffect) — runs synchronously during the
+  // hydration commit, BEFORE the browser paints. Combined with the inline
+  // `style={{ transform: 'translateY(-100px)' }}` on the bar below, this
+  // eliminates the SSR → "visible at y:0" → "snap to y:-100" → "animate
+  // down" flash. The bar is already at y:-100 on first paint, and GSAP
+  // animates it down from there.
+  useLayoutEffect(() => {
     if (!headerBarRef.current) return;
-    gsap.fromTo(
+    // Promote the nav bar to its own composited layer for the duration
+    // of the intro tween. Drop the hint when the tween finishes so we
+    // don't keep an idle GPU layer around for the lifetime of the page.
+    headerBarRef.current.style.willChange = "transform";
+    const tween = gsap.fromTo(
       headerBarRef.current,
       { y: -100 },
-      { y: 0, duration: 1.4, ease: "expo.out" },
+      {
+        y: 0,
+        duration: 1.4,
+        ease: "expo.out",
+        onComplete: () => {
+          if (headerBarRef.current) headerBarRef.current.style.willChange = "";
+        },
+      },
     );
+    return () => {
+      if (headerBarRef.current) headerBarRef.current.style.willChange = "";
+      tween.kill();
+    };
   }, []);
 
   const toggleMenu = () => {
@@ -48,10 +70,14 @@ export function Header() {
 
   return (
     <>
-      {/* Top bar — always visible nav links + hamburger */}
+      {/* Top bar — always visible nav links + hamburger. The inline
+          `transform: translateY(-100px)` mirrors the GSAP `from` state so
+          the bar is already off-screen on first paint; useLayoutEffect
+          then animates it down smoothly. */}
       <div
         ref={headerBarRef}
         className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
+        style={{ transform: "translateY(-100px)" }}
       >
         <div className="mx-auto max-w-5xl px-3 md:px-5 pt-2.5 md:pt-3">
           <div className="flex items-center justify-between gap-2 rounded-full border border-zinc-200 bg-white/90 backdrop-blur-md shadow-sm px-2 md:px-3 py-1.5 md:py-1.5 pointer-events-auto">
@@ -104,6 +130,7 @@ export function Header() {
               aria-expanded={menuOpen}
               onClick={toggleMenu}
               className="inline-flex items-center justify-center gap-1 h-8 md:h-9 px-2.5 md:px-3 rounded-full border border-zinc-200 bg-white text-zinc-900 text-[13px] font-semibold hover:bg-amber-50 hover:border-amber-300 transition-colors"
+              suppressHydrationWarning
             >
               {menuOpen ? (
                 <X className="w-3.5 h-3.5" />

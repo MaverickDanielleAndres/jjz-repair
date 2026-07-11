@@ -6,6 +6,11 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { Maximize2, X } from "lucide-react";
 import L from "leaflet";
+// Co-locate Leaflet's CSS with its consumer so it only loads when the
+// map mounts. The import statement is statically analysable by Next.js,
+// so the CSS is bundled into the map's chunk rather than the global
+// stylesheet.
+import "leaflet/dist/leaflet.css";
 import {
   MAP_COORDS,
   MAP_ZOOM,
@@ -57,8 +62,11 @@ function ShopImageModal({ onClose }: { onClose: () => void }) {
         zIndex: 99999,
         display: "grid",
         placeItems: "center",
+        // Translucent dark overlay instead of `backdrop-filter: blur` —
+        // a full-viewport backdrop-filter is one of the most expensive
+        // paint operations a browser can do; a solid 88% black overlay
+        // is visually identical to the user but costs almost nothing.
         background: "rgba(10,10,10,.88)",
-        backdropFilter: "blur(8px)",
         padding: 16,
       }}
     >
@@ -101,13 +109,12 @@ function ShopImageModal({ onClose }: { onClose: () => void }) {
             width: 40,
             height: 40,
             borderRadius: 9999,
-            background: "rgba(255,255,255,.2)",
+            background: "rgba(255,255,255,.25)",
             color: "#fff",
             border: 0,
             cursor: "pointer",
             display: "grid",
             placeItems: "center",
-            backdropFilter: "blur(4px)",
           }}
         >
           <X size={20} strokeWidth={2} />

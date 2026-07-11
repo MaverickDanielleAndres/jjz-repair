@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMotionValue, animate, motion } from 'framer-motion';
 import useMeasure from 'react-use-measure';
 import { cn } from '@/lib/utils';
@@ -49,7 +49,32 @@ export function InfiniteSlider({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [key, setKey] = useState(0);
 
+  // Pause the marquee when scrolled out of view — was previously a
+  // perpetual rAF for the lifetime of the page. `running` is a ref so
+  // toggling it doesn't re-run the main effect.
+  const runningRef = useRef(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [running, setRunning] = useState(true);
+
   useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting;
+        runningRef.current = visible;
+        setRunning(visible);
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    // If the slider is out of view, don't start the animation at all.
+    if (!runningRef.current) return;
+
     let controls: ReturnType<typeof animate> | undefined;
     const size = direction === 'horizontal' ? width : height;
     const contentSize = size + gap;
@@ -90,6 +115,7 @@ export function InfiniteSlider({
     isTransitioning,
     direction,
     reverse,
+    running,
   ]);
 
   // Recompute the duration whenever the slider's measured size changes —
@@ -136,6 +162,7 @@ export function InfiniteSlider({
 
   return (
     <div
+      ref={containerRef}
       className={cn('overflow-hidden', className)}
       style={fadeMask}
     >
@@ -147,6 +174,9 @@ export function InfiniteSlider({
             : { y: translation }),
           gap: `${gap}px`,
           flexDirection: direction === 'horizontal' ? 'row' : 'column',
+          // Promote to its own composited layer so the infinite translate
+          // doesn't trigger a re-rasterization of the masked wrapper.
+          willChange: 'transform',
         }}
         ref={ref}
         {...hoverProps}

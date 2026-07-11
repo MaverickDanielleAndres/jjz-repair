@@ -1,0 +1,29 @@
+/*
+ * ImageComparison slider.
+ *
+ * The slider position is written to the `--pos` CSS variable on
+ * `.jjz-img-cmp` by the React component (via direct DOM access, not
+ * state). This file translates that into:
+ *
+ *   - `clip-path: inset(0 calc(100% - var(--pos)) 0 0)` on the top
+ *     "after" layer so it reveals the underlying "before" layer.
+ *   - `left: var(--pos)` on the slider handle.
+ *
+ * Both updates happen on the compositor — no React re-render, no
+ * re-rasterization of the clipped images.
+ */
+
+.jjz-img-cmp__after {
+  /* Fallback for browsers that don't support CSS variables in clip-path
+     (very old Safari). Newer browsers update the variable via JS and
+     the clip-path recomputes on the compositor. */
+  clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0);
+  will-change: clip-path;
+}
+
+.jjz-img-cmp__handle {
+  left: var(--pos, 50%);
+  /* Center the handle on the cursor — half its width offset back. */
+  transform: translateX(-50%);
+  will-change: left;
+}

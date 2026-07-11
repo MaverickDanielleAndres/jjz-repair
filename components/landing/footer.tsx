@@ -54,7 +54,7 @@ const linkColumns = [
 
 export function Footer() {
   return (
-    <footer className="relative bg-amber-50/40 text-zinc-700 border-t border-amber-100 overflow-hidden">
+    <footer className="relative bg-amber-50/40 text-zinc-700 border-t border-amber-100 overflow-hidden jjz-defer">
       {/* Soft amber accent line */}
       <div
         aria-hidden

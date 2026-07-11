@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useLayoutEffect, useMemo, useRef, type CSSProperties, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -27,43 +27,52 @@ export type RevealVariant =
 
 const VARIANT_PROPS: Record<
   RevealVariant,
-  { from: gsap.TweenVars; to: gsap.TweenVars }
+  { from: gsap.TweenVars; to: gsap.TweenVars; initialStyle: CSSProperties }
 > = {
   fadeUp: {
     from: { y: 60 },
     to: { y: 0 },
+    initialStyle: { transform: "translateY(60px)" },
   },
   fadeDown: {
     from: { y: -60 },
     to: { y: 0 },
+    initialStyle: { transform: "translateY(-60px)" },
   },
   fadeLeft: {
     from: { x: 80 },
     to: { x: 0 },
+    initialStyle: { transform: "translateX(80px)" },
   },
   fadeRight: {
     from: { x: -80 },
     to: { x: 0 },
+    initialStyle: { transform: "translateX(-80px)" },
   },
   fade: {
     from: { opacity: 0 },
     to: { opacity: 1 },
+    initialStyle: { opacity: 0 },
   },
   scaleIn: {
     from: { scale: 0.88 },
     to: { scale: 1 },
+    initialStyle: { transform: "scale(0.88)" },
   },
   scaleUp: {
     from: { scale: 1.06 },
     to: { scale: 1 },
+    initialStyle: { transform: "scale(1.06)" },
   },
   rotateIn: {
     from: { rotate: -3, y: 30 },
     to: { rotate: 0, y: 0 },
+    initialStyle: { transform: "translateY(30px) rotate(-3deg)" },
   },
   blurIn: {
     from: { filter: "blur(8px)", y: 12 },
     to: { filter: "blur(0px)", y: 0 },
+    initialStyle: { transform: "translateY(12px)", filter: "blur(8px)" },
   },
 };
 
@@ -112,8 +121,16 @@ export function ScrollReveal({
   className,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
+  // Inline initial style mirrors the GSAP `from` state so the SSR HTML
+  // matches the post-hydration start of the animation. Without this the
+  // element is visible at first paint, then snaps to the `from` state
+  // when GSAP runs, causing a visible jump.
+  const initialStyle = useMemo(
+    () => VARIANT_PROPS[variant].initialStyle,
+    [variant],
+  );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!ref.current) return;
     if (prefersReducedMotion()) return;
 
@@ -134,12 +151,28 @@ export function ScrollReveal({
       // `scrub` ties progress to scroll position with a smoothing window
       // (seconds). 1.2s gives a deliberate, weighted feel without lagging.
       scrub: once ? false : scrub,
+      // `lazy: true` defers ScrollTrigger setup until the trigger
+      // element is within ~100vh of the viewport — for a page with 20+
+      // ScrollTriggers this turns off 19 of them on initial paint and
+      // avoids creating rAF callbacks for off-screen elements entirely.
+      // Big win for first-paint time and idle scroll work.
+      // Cast to `any` because the `lazy` field isn't in the bundled
+      // ScrollTrigger type definitions but is documented and supported
+      // at runtime.
+      ...({ lazy: true } as Record<string, unknown>),
     };
 
     if (once) {
       // One-shot: play the tween once when entering, then stay put.
       scrollTrigger.toggleActions = "play none none none";
     }
+
+    // Promote the element to its own composited layer for the duration of
+    // the tween. `will-change: transform` opts the browser into GPU
+    // compositing; we remove the hint when the animation finishes so the
+    // compositor doesn't keep an idle layer around forever (which would
+    // increase VRAM pressure on long pages).
+    el.style.willChange = "transform, opacity";
 
     const tween = gsap.fromTo(
       el,
@@ -150,17 +183,23 @@ export function ScrollReveal({
         delay,
         ease: "power3.out",
         scrollTrigger,
+        onComplete: () => {
+          // Drop the will-change hint once the intro is done so the
+          // browser can move this element back to a normal layer.
+          el.style.willChange = "";
+        },
       },
     );
 
     return () => {
       tween.scrollTrigger?.kill();
       tween.kill();
+      el.style.willChange = "";
     };
   }, [variant, delay, duration, amount, once, scrub]);
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={className} style={initialStyle}>
       {children}
     </div>
   );
@@ -218,7 +257,7 @@ export function StaggerReveal({
 }: StaggerContainerProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!ref.current) return;
     if (prefersReducedMotion()) return;
 
@@ -234,11 +273,17 @@ export function StaggerReveal({
       start: `top ${startPct}%`,
       end: `bottom ${endPct}%`,
       scrub: once ? false : scrub,
+      // See ScrollReveal — defer setup until the container actually
+      // approaches the viewport.
+      ...({ lazy: true } as Record<string, unknown>),
     };
 
     if (once) {
       scrollTrigger.toggleActions = "play none none none";
     }
+
+    // Promote children to their own compositor layers during the stagger.
+    items.forEach((it) => (it.style.willChange = "transform, opacity"));
 
     // Stagger the children in. Transform-only (y) so the stagger never
     // leaves an element invisible if the tween is interrupted.
@@ -252,17 +297,21 @@ export function StaggerReveal({
         delay,
         ease: "power3.out",
         scrollTrigger,
+        onComplete: () => {
+          items.forEach((it) => (it.style.willChange = ""));
+        },
       },
     );
 
     return () => {
       tween.scrollTrigger?.kill();
       tween.kill();
+      items.forEach((it) => (it.style.willChange = ""));
     };
   }, [amount, once, staggerDelay, delay, scrub]);
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={className} style={{ overflow: "visible" }}>
       {children}
     </div>
   );
@@ -291,9 +340,8 @@ export function StaggerItem({
 }: StaggerItemProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!ref.current) return;
-    const v = STAGGER_ITEM_VARIANTS[variant];
     // Apply a static transform hint so per-item variants still feel different
     // even when the parent StaggerReveal animates them all with one tween.
     if (variant === "fadeLeft") {

@@ -298,12 +298,20 @@ export const StaggeredMenu = ({
     const icon = iconRef.current;
     if (!icon) return;
     spinTweenRef.current?.kill();
+    // Promote to a compositor layer while it spins, drop the hint
+    // when the tween finishes so we don't keep an idle GPU layer
+    // around for the lifetime of the page.
+    icon.style.willChange = "transform";
+    const finish = () => {
+      icon.style.willChange = "";
+    };
     if (opening) {
       spinTweenRef.current = gsap.to(icon, {
         rotate: 225,
         duration: 0.8,
         ease: 'power4.out',
         overwrite: 'auto',
+        onComplete: finish,
       });
     } else {
       spinTweenRef.current = gsap.to(icon, {
@@ -311,6 +319,7 @@ export const StaggeredMenu = ({
         duration: 0.35,
         ease: 'power3.inOut',
         overwrite: 'auto',
+        onComplete: finish,
       });
     }
   }, []);

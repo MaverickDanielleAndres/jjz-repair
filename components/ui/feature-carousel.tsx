@@ -177,10 +177,18 @@ export function FeatureCarousel({
                   aria-pressed={isActive}
                   aria-hidden={visibility === 0}
                   tabIndex={isActive ? 0 : -1}
+                  // Browser extensions (LastPass, 1Password, Chrome's
+                  // built-in autofill heuristics) inject `fdprocessedid`
+                  // onto interactive elements at runtime, which causes
+                  // React to log a hydration mismatch warning. The
+                  // `HydrationSafeButtons` component also strips these
+                  // attributes on mount + via MutationObserver, but
+                  // adding `suppressHydrationWarning` here too silences
+                  // any warning that fires before that script runs.
+                  suppressHydrationWarning
                   style={{
                     height: CHIP_HEIGHT,
                     top: trackHeight / 2 - CHIP_HEIGHT / 2,
-                    willChange: "transform, opacity",
                   }}
                   animate={{
                     y:
@@ -260,7 +268,6 @@ export function FeatureCarousel({
                     damping: 32,
                     mass: 0.85,
                   }}
-                  style={{ willChange: "transform, opacity" }}
                   className="absolute inset-0 rounded-2xl md:rounded-3xl overflow-hidden border-4 md:border-[6px] border-white shadow-xl origin-center"
                 >
                   {/* Image / placeholder — fills the entire card */}
@@ -269,19 +276,17 @@ export function FeatureCarousel({
                       src={feature.image}
                       alt={feature.label}
                       className={cn(
-                        "absolute inset-0 w-full h-full object-cover transition-all duration-700",
-                        isActive
-                          ? "grayscale-0 blur-0"
-                          : "grayscale blur-[2px] brightness-75",
+                        "absolute inset-0 w-full h-full object-cover transition-opacity duration-700",
+                        isActive ? "opacity-100" : "opacity-60",
                       )}
                     />
                   ) : (
                     <div
                       data-placeholder={`Paste image — ${feature.label}`}
                       className={cn(
-                        "absolute inset-0 w-full h-full grid place-items-center transition-all duration-700",
+                        "absolute inset-0 w-full h-full grid place-items-center transition-opacity duration-700",
                         "bg-[linear-gradient(135deg,#fde68a_0%,#f59e0b_60%,#b45309_100%)]",
-                        isActive ? "" : "grayscale blur-[2px] brightness-75",
+                        isActive ? "opacity-100" : "opacity-60",
                       )}
                     >
                       <feature.icon
@@ -331,6 +336,8 @@ export function FeatureCarousel({
                     ? "w-6 bg-amber-500"
                     : "w-1.5 bg-zinc-300 hover:bg-zinc-400",
                 )}
+                // See comment on the chip button above — same reason.
+                suppressHydrationWarning
               />
             ))}
           </div>
@@ -349,6 +356,7 @@ export function FeatureCarousel({
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white border border-zinc-200 text-zinc-700 hover:border-amber-300 hover:text-amber-700 hover:shadow-md transition-all shadow-sm"
+          suppressHydrationWarning
         >
           <ChevronUp className="w-5 h-5" />
         </button>
@@ -362,6 +370,7 @@ export function FeatureCarousel({
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white border border-zinc-200 text-zinc-700 hover:border-amber-300 hover:text-amber-700 hover:shadow-md transition-all shadow-sm"
+          suppressHydrationWarning
         >
           <ChevronDown className="w-5 h-5" />
         </button>
