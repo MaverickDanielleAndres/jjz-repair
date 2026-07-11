@@ -1,8 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { HydrationSafeButtons } from "@/components/hydration-safe-buttons";
 import { SuppressExtensionErrors } from "@/components/suppress-extension-errors";
+import {
+  BRAND,
+  CONTACT,
+  SITE_URL,
+} from "@/lib/site-constants";
+import { localBusinessJsonLd } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -22,26 +28,82 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+/**
+ * Mobile / PWA viewport. Theme color matches the brand amber accent so
+ * the URL bar and mobile chrome blend with the site.
+ */
+export const viewport: Viewport = {
+  themeColor: "#f59e0b",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  colorScheme: "light",
+};
+
+const TITLE =
+  "JJZ TECH — Cellphone & Gadget Repair in Binangonan, Rizal";
+const DESCRIPTION =
+  "Cellphone, laptop & computer repair in Binangonan, Rizal. " +
+  "Same-day diagnostics, OEM-grade parts, board-level specialists. " +
+  "Free check-up. Call 0928 066 3629.";
+
 export const metadata: Metadata = {
   // Resolves relative URLs in `openGraph.images`, `twitter.images`, etc.
-  // Without this Next.js falls back to http://localhost:3000 and logs a warning.
-  metadataBase: new URL("https://jjztech.ph"),
-  title: "JJZ TECH — Gadget Repair Services | Binangonan, Rizal",
-  description:
-    "Fast, affordable gadget repair in 1544 Manila E Rd, Binangonan, Rizal. Cellphone, laptop, and computer repair — same-day diagnostics, quality parts, trusted technicians. Message us 24/7.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: TITLE,
+    template: `%s | ${BRAND.legalName}`,
+  },
+  description: DESCRIPTION,
+  applicationName: BRAND.legalName,
   keywords: [
     "JJZ TECH",
-    "gadget repair",
-    "cellphone repair",
-    "laptop repair",
-    "computer repair",
-    "Binangonan",
-    "Rizal",
-    "Tayuman",
-    "Manila East Road",
-    "phone repair near me",
+    "JJZ-repair",
+    "JJZ repair",
+    "jjztech",
+    "cellphone repair Binangonan",
+    "cellphone repair near me",
+    "cellphone repair Rizal",
+    "phone repair Binangonan",
+    "laptop repair Binangonan",
+    "computer repair Binangonan",
+    "laptop repair Rizal",
+    "computer repair Rizal",
+    "gadget repair Binangonan",
+    "gadget repair Rizal",
+    "iPhone repair Binangonan",
+    "iPhone repair Rizal",
+    "Samsung repair Binangonan",
+    "MacBook repair Binangonan",
+    "screen replacement Binangonan",
+    "battery replacement Binangonan",
+    "motherboard repair Rizal",
+    "microsoldering Philippines",
+    "iCloud unlock Binangonan",
+    "FRP removal Rizal",
+    "Manila East Road repair shop",
+    "Tayuman gadget repair",
+    "phone repair near Binangonan",
   ],
-  authors: [{ name: "JJZ TECH" }],
+  authors: [{ name: BRAND.legalName, url: SITE_URL }],
+  creator: BRAND.legalName,
+  publisher: BRAND.legalName,
+  category: "Local Business",
+  classification: "Electronics Repair Shop",
+  alternates: {
+    canonical: SITE_URL,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   icons: {
     icon: [
       { url: "/logo-nobg.png", type: "image/png" },
@@ -49,12 +111,49 @@ export const metadata: Metadata = {
     shortcut: "/logo-nobg.png",
     apple: "/logo-nobg.png",
   },
+  manifest: `${SITE_URL}/manifest.webmanifest`,
   openGraph: {
-    title: "JJZ TECH — Gadget Repair Services",
-    description:
-      "Fast, affordable gadget repair in Binangonan, Rizal. Cellphone, laptop, computer — same-day service.",
+    title: TITLE,
+    description: DESCRIPTION,
     type: "website",
+    locale: "en_PH",
+    url: SITE_URL,
+    siteName: BRAND.legalName,
+    images: [
+      {
+        url: "/logo-nobg.png",
+        width: 512,
+        height: 512,
+        alt: `${BRAND.legalName} — Gadget Repair Services`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
     images: ["/logo-nobg.png"],
+  },
+  facebook: {
+    appId: undefined,
+  },
+  other: {
+    "geo.region": "PH-RIZ",
+    "geo.placename": "Binangonan, Rizal, Philippines",
+    "geo.position": `14.5179341;121.1587085`,
+    ICBM: "14.5179341, 121.1587085",
+    "business:contact_data:street_address": "1544 Manila East Road",
+    "business:contact_data:locality": "Binangonan",
+    "business:contact_data:region": "Rizal",
+    "business:contact_data:postal_code": "1940",
+    "business:contact_data:country_name": "Philippines",
+    "business:contact_data:phone_number": CONTACT.phoneTel,
+    "business:contact_data:email": BRAND.email,
+    // Verification tags belong here once you've claimed the property in
+    // Google Search Console / Bing Webmaster Tools. Leave empty until you
+    // have a real token — bogus values just trigger warnings.
+    // "google-site-verification": "",
+    // "msvalidate.01": "",
   },
 };
 
@@ -69,6 +168,14 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        {/* LocalBusiness / RepairShop structured data. Emitted once at the
+            root so every route inherits the same NAP graph. */}
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: localBusinessJsonLd() }}
+        />
+
         {/* Pre-React console filter — runs before any client-side JS so
             browser-extension noise (MetaMask, password managers, etc.) is
             suppressed from the very first script. Without this, errors

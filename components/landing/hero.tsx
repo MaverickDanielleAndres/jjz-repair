@@ -197,15 +197,20 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Headline */}
+            {/* Headline.
+                The H1 carries the primary keyword + city + service category
+                — this is the single most important on-page ranking signal
+                for the homepage, so the words below are deliberate. */}
             <h1
               ref={headlineRef}
               className="mt-4 font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight text-zinc-900"
             >
-              <span className="block">Expert Tech</span>
-              <span className="block text-brand-gradient">Repair Services</span>
+              <span className="block">JJZ TECH — Cellphone, Laptop</span>
+              <span className="block text-brand-gradient">
+                &amp; Computer Repair
+              </span>
               <span className="block text-zinc-700 text-lg sm:text-xl md:text-2xl lg:text-3xl mt-1">
-                Certified &amp; Affordable
+                in Binangonan, Rizal
               </span>
             </h1>
 
@@ -213,8 +218,9 @@ export function Hero() {
               ref={descriptionRef}
               className="mt-4 max-w-xl mx-auto lg:mx-0 text-center lg:text-left text-zinc-600 text-sm md:text-base leading-relaxed"
             >
-              Cellphone • Laptop • Computer — same-day diagnostics, walk-ins
-              welcome, free check-up on every device.
+              JJZ-repair: same-day diagnostics on phone, laptop and computer
+              repairs — walk-ins welcome, free check-up on every device, OEM
+              parts, board-level specialists.
             </p>
 
             {/* CTAs */}
