@@ -1,6 +1,7 @@
 import { Clock, MapPin, Navigation, Phone } from "lucide-react";
 import {
   ADDRESS,
+  BRAND_NAME,
   MESSENGER_URL,
   PHONE_DISPLAY,
   PHONE_TEL,
@@ -11,7 +12,7 @@ import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { SectionContainer, SectionHeader } from "./section-header";
 
 const directionsURL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-  ADDRESS,
+  `${BRAND_NAME}, ${ADDRESS}`
 )}`;
 
 export function Location() {

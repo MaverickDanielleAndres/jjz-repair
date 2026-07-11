@@ -70,7 +70,7 @@ export function Footer() {
           className="grid grid-cols-2 md:grid-cols-12 gap-8 text-center md:text-left"
         >
           {/* Brand col */}
-          <StaggerItem variant="fadeUp" className="md:col-span-4 flex flex-col items-center md:items-start">
+          <StaggerItem variant="fadeUp" className="col-span-2 md:col-span-4 flex flex-col items-center md:items-start">
             <div className="flex items-center gap-2.5">
               <Image
                 src="/logo-nobg.png"
@@ -92,25 +92,27 @@ export function Footer() {
               Your trusted partner in gadget repair &amp; solutions. Cellphone,
               laptop, computer — same-day service, fair prices, quality parts.
             </p>
-            <ul className="mt-4 space-y-1.5 text-xs flex flex-col items-center md:items-start">
-              <li className="flex items-start gap-2">
-                <MapPin className="w-3.5 h-3.5 text-amber-600 mt-0.5 shrink-0" />
-                {ADDRESS}
+            <ul className="mt-4 space-y-2 text-xs flex flex-col items-center md:items-start text-center md:text-left w-full">
+              <li className="flex flex-row items-center justify-center md:justify-start gap-1.5 md:gap-2">
+                <MapPin className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                <span>{ADDRESS}</span>
               </li>
               <li>
                 <a
                   href={`tel:${PHONE_TEL}`}
-                  className="inline-flex items-center gap-2 hover:text-amber-700"
+                  className="flex flex-row items-center justify-center md:justify-start gap-1.5 md:gap-2 hover:text-amber-700"
                 >
-                  <Phone className="w-3.5 h-3.5 text-amber-600" /> {PHONE_DISPLAY}
+                  <Phone className="w-3.5 h-3.5 text-amber-600" /> 
+                  <span>{PHONE_DISPLAY}</span>
                 </a>
               </li>
               <li>
                 <a
                   href={`mailto:${EMAIL_TO}`}
-                  className="inline-flex items-center gap-2 hover:text-amber-700"
+                  className="flex flex-row items-center justify-center md:justify-start gap-1.5 md:gap-2 hover:text-amber-700"
                 >
-                  <Mail className="w-3.5 h-3.5 text-amber-600" /> {EMAIL_TO}
+                  <Mail className="w-3.5 h-3.5 text-amber-600" /> 
+                  <span>{EMAIL_TO}</span>
                 </a>
               </li>
             </ul>

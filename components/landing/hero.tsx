@@ -34,7 +34,7 @@ const trustChips = [
 const stats = [
   { value: "5+", label: "Years of experience" },
   { value: "3,000+", label: "Devices repaired" },
-  { value: "24/7", label: "Messenger support" },
+  { value: "16/7", label: "Messenger support" },
   { value: "98%", label: "Customer satisfaction" },
 ];
 
@@ -253,9 +253,8 @@ export function Hero() {
               className="flex justify-center lg:justify-start"
               style={{ transform: "translateY(14px)" }}
             >
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-amber-200 bg-white/80 text-amber-700 text-[10px] uppercase tracking-[0.2em] font-semibold backdrop-blur-sm">
-                <Award className="w-3 h-3" /> {BRAND_NAME} — Gadget Repair
-                Services
+              <div className="inline-flex whitespace-nowrap items-center gap-1.5 px-3 py-1 rounded-full border border-amber-200 bg-white/80 text-amber-700 text-[10px] uppercase tracking-[0.2em] font-semibold backdrop-blur-sm">
+                <Award className="w-3 h-3 shrink-0" /> Trusted Repair Experts
               </div>
             </div>
 
@@ -268,9 +267,9 @@ export function Hero() {
               ref={headlineRef}
               className="mt-3 font-display text-2xl sm:text-3xl md:text-[2rem] lg:text-[2.25rem] font-bold leading-[1.15] tracking-tight text-zinc-900"
             >
-              <span className="block">JJZ TECH — Cellphone, Laptop</span>
+              <span className="block">{BRAND_NAME} — Desktop/Laptop</span>
               <span className="block text-brand-gradient">
-                &amp; Computer Repair
+                &amp; Cellphone Repair Services
               </span>
               <span className="block text-zinc-700 text-base sm:text-lg md:text-xl mt-0.5">
                 in Binangonan, Rizal
@@ -342,10 +341,10 @@ export function Hero() {
             <ImageComparison
               aspect="video"
               beforeSlot={
-                <ComparisonPhoto src="/before.jpg" alt="Cracked phone before repair" />
+                <ComparisonPhoto src="/after.jpg" alt="Phone after JJZ TECH repair" />
               }
               afterSlot={
-                <ComparisonPhoto src="/after.jpg" alt="Phone after JJZ TECH repair" />
+                <ComparisonPhoto src="/before.jpg" alt="Cracked phone before repair" />
               }
             />
           </div>
@@ -360,9 +359,10 @@ export function Hero() {
       >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
           {stats.map((s) => (
-            <div
+            <SpotlightCard
               key={s.label}
-              className="rounded-lg border border-zinc-200 bg-white p-2.5 md:p-3 text-center"
+              spotlightColor="rgba(245, 158, 11, 0.15)"
+              className="!p-2.5 md:!p-3 text-center !rounded-xl border border-zinc-200 bg-white hover:shadow-lg hover:shadow-amber-500/10 hover:border-amber-200 transition-all hover:-translate-y-0.5"
             >
               <p className="font-display text-base md:text-lg font-bold text-brand-gradient">
                 {s.value}
@@ -370,7 +370,7 @@ export function Hero() {
               <p className="mt-0.5 text-[10px] md:text-xs text-zinc-500">
                 {s.label}
               </p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </div>

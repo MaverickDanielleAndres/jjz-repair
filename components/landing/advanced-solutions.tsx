@@ -25,7 +25,7 @@ const features: CarouselFeature[] = [
     id: "box-dongle",
     label: "Box / Dongle Activation",
     icon: Cpu,
-    image: "",
+    image: "/advance-service/dongleactivation.jpg",
     description:
       "TSM, CM2, NCK, UMT, EFT Pro, Sigma, Chimera, Octoplus — all activations handled in-store.",
   },
@@ -33,7 +33,7 @@ const features: CarouselFeature[] = [
     id: "schematics",
     label: "Schematics",
     icon: Layers,
-    image: "",
+    image: "/advance-service/schematics.jpg",
     description:
       "Borneo, ESTECH, ZXW, XinZhiZao, WUXINJI, JCID, DZJK — board-level reference for tricky repairs.",
   },
@@ -41,7 +41,7 @@ const features: CarouselFeature[] = [
     id: "credits",
     label: "Credits Service",
     icon: KeyRound,
-    image: "",
+    image: "/advance-service/CreditsService.jpg",
     description:
       "Instant top-ups for Xiaomi Tool Pro, Z3X, Samkey, Chimera, TFM, UMT and many more.",
   },
@@ -49,7 +49,7 @@ const features: CarouselFeature[] = [
     id: "chip-level",
     label: "Chip-Level Repair",
     icon: CircuitBoard,
-    image: "",
+    image: "/advance-service/chiplevelrepair.jpg",
     description:
       "Dead boot, short circuit, no display, water damage, motherboard, microsoldering.",
   },
@@ -57,7 +57,7 @@ const features: CarouselFeature[] = [
     id: "remote",
     label: "Remote Services",
     icon: Radio,
-    image: "",
+    image: "/advance-service/Remoteunlock.jpg",
     description:
       "Remote unlock, FRP, FIN / support, and tool setup — anywhere in the Philippines.",
   },
@@ -65,7 +65,7 @@ const features: CarouselFeature[] = [
     id: "software",
     label: "Software Services",
     icon: Unlock,
-    image: "",
+    image: "/advance-service/softwareservices.png",
     description:
       "iOS / Android / MI account, pattern / PIN / passcode, IMEI / baseband, network unlock, custom ROM.",
   },
@@ -73,7 +73,7 @@ const features: CarouselFeature[] = [
     id: "jtag-reball",
     label: "JTAG / Reball",
     icon: Wrench,
-    image: "",
+    image: "/advance-service/jtag.jpg",
     description:
       "CPU reball, open-line, board-level micro-soldering for devices other shops turn away.",
   },
@@ -81,7 +81,7 @@ const features: CarouselFeature[] = [
     id: "console",
     label: "Console Repair",
     icon: Gamepad2,
-    image: "",
+    image: "/advance-service/consolerepair.jpg",
     description:
       "PS5 / Xbox / Nintendo Switch — HDMI port, disc drive, power, overheating.",
   },
@@ -89,7 +89,7 @@ const features: CarouselFeature[] = [
     id: "tablet",
     label: "Tablet Repair",
     icon: Tablet,
-    image: "",
+    image: "/advance-service/tablerepair.jpg",
     description:
       "iPad, Android tablets — screen, battery, charging, software.",
   },
@@ -97,7 +97,7 @@ const features: CarouselFeature[] = [
     id: "motherboard",
     label: "Motherboard Repair",
     icon: Layers,
-    image: "",
+    image: "/advance-service/motherboardrepair.jpg",
     description:
       "Board-level diagnostics and component-level repair for phones, laptops, and consoles.",
   },
@@ -105,7 +105,7 @@ const features: CarouselFeature[] = [
     id: "openline",
     label: "OpenLine",
     icon: Lock,
-    image: "",
+    image: "/advance-service/Openline.jpg",
     description:
       "Carrier unlock, network open-line service for any model and any carrier.",
   },
@@ -113,9 +113,33 @@ const features: CarouselFeature[] = [
     id: "microsoldering",
     label: "Microsoldering",
     icon: Zap,
-    image: "",
+    image: "/advance-service/microsoldering.jpg",
     description:
       "Component-level soldering under microscope for the jobs that need real precision.",
+  },
+  {
+    id: "steam-deck",
+    label: "Steam Deck Repair",
+    icon: Gamepad2,
+    image: "/advance-service/steamdeck.jpg",
+    description:
+      "Screen, stick drift, battery, and charging port repair on Steam Deck.",
+  },
+  {
+    id: "troubleshooting",
+    label: "General Troubleshooting",
+    icon: Wrench,
+    image: "/advance-service/troubleshooting.jpg",
+    description:
+      "We diagnose what others can't figure out. Complete hardware and software analysis.",
+  },
+  {
+    id: "deadboot",
+    label: "Dead Boot Repair",
+    icon: CircuitBoard,
+    image: "/advance-service/deadboot.jpg",
+    description:
+      "Recover devices stuck in a dead-boot state with specialized board-level repair techniques.",
   },
 ];
 

@@ -25,9 +25,9 @@ export default function HomePage() {
         <Hero />
         <Brands />
         <WhatWeOffer />
-        <QualityParts />
         <ServicesGrid />
         <AdvancedSolutions />
+        <QualityParts />
         <WhyChooseUs />
         <Specialists />
         <RepairGallery />

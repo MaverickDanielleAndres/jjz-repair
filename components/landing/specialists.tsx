@@ -52,7 +52,7 @@ export function Specialists() {
             ({ name, role, bio, icon: Icon, imageLabel, imageSrc }, i) => (
               <StaggerItem
                 key={name}
-                variant={i === 0 ? "fadeLeft" : "fadeRight"}
+                variant="fadeUp"
                 className="w-full"
               >
                 {/*

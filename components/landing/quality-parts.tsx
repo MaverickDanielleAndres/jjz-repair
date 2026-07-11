@@ -75,17 +75,17 @@ export function QualityParts() {
         <StaggerReveal
           amount={0.15}
           staggerDelay={0.1}
-          className="mt-8 md:mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4"
+          className="mt-8 md:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
         >
           {parts.map(
             ({ icon: Icon, title, blurb, price, imageLabel, imageSrc }, i) => (
               <StaggerItem
                 key={title}
                 variant={i % 2 === 0 ? "scaleIn" : "fadeUp"}
-                className="h-full"
+                className="flex"
               >
                 <SpotlightCard
-                  className="!p-0 group flex flex-col overflow-hidden rounded-xl hover:shadow-lg hover:shadow-amber-500/10 transition-all h-full"
+                  className="!p-0 group grid grid-rows-[auto_1fr] overflow-hidden rounded-xl hover:shadow-lg hover:shadow-amber-500/10 transition-all w-full"
                   spotlightColor="rgba(245, 158, 11, 0.18)"
                 >
                   <div className="relative w-full aspect-square overflow-hidden bg-zinc-900">
@@ -98,7 +98,7 @@ export function QualityParts() {
                       className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
                     />
                   </div>
-                  <div className="p-3.5 flex flex-col flex-1">
+                  <div className="p-3.5 grid grid-rows-[auto_auto_1fr_auto] gap-0 h-full">
                     <div className="flex items-center gap-1.5 text-amber-600">
                       <Icon className="w-3.5 h-3.5" strokeWidth={1.8} />
                       <span className="text-[9px] uppercase tracking-[0.2em] font-semibold">
@@ -108,10 +108,10 @@ export function QualityParts() {
                     <h3 className="mt-1.5 text-sm font-semibold text-zinc-900">
                       {title}
                     </h3>
-                    <p className="mt-1 text-xs text-zinc-500 leading-relaxed flex-1">
+                    <p className="mt-1 text-xs text-zinc-500 leading-relaxed">
                       {blurb}
                     </p>
-                    <p className="mt-2 font-display text-sm font-bold text-amber-600">
+                    <p className="pt-3 font-display text-sm font-bold text-amber-600">
                       {price}
                     </p>
                   </div>
@@ -129,9 +129,9 @@ export function QualityParts() {
           className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3"
         >
           {guarantees.map(({ icon: Icon, title, blurb }) => (
-            <StaggerItem key={title} variant="fadeUp">
+            <StaggerItem key={title} variant="fadeUp" className="flex">
               <SpotlightCard
-                className="!p-4 flex items-start gap-3 hover:shadow-md hover:shadow-amber-500/5 transition-all"
+                className="!p-4 flex items-start gap-3 hover:shadow-md hover:shadow-amber-500/5 transition-all w-full flex-1"
                 spotlightColor="rgba(245, 158, 11, 0.18)"
               >
                 <div className="inline-flex w-9 h-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600 shrink-0">

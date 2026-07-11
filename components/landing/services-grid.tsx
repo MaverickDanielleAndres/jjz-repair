@@ -106,6 +106,7 @@ export function ServicesGrid() {
                 type="button"
                 onClick={() => setFilter(f.value)}
                 aria-pressed={active}
+                suppressHydrationWarning
                 className={
                   "px-3 py-1 rounded-full text-xs font-medium border transition-colors " +
                   (active
@@ -129,7 +130,7 @@ export function ServicesGrid() {
             {filtered.map((service, i) => (
               <div
                 key={`${service.title}-${i}`}
-                className="w-[calc(50%-0.4rem)] md:w-[calc(33.333%-0.7rem)] lg:w-[calc(25%-0.85rem)]"
+                className="w-[calc(50%-0.4rem)] md:w-[calc(33.333%-0.7rem)] lg:w-[calc(20%-0.8rem)]"
               >
                 <PixelCard
                   variant="amber"

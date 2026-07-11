@@ -116,7 +116,7 @@ export function ImageComparison({
       // or similar until the inline style propagates.
       style={{ "--pos": "50%" } as React.CSSProperties}
       className={cn(
-        "jjz-img-cmp relative w-full select-none rounded-2xl overflow-hidden shadow-2xl bg-zinc-900",
+        "jjz-img-cmp relative w-full select-none touch-pan-y rounded-2xl overflow-hidden shadow-2xl bg-zinc-900",
         ASPECT_CLASS[aspect],
         className,
       )}
@@ -164,7 +164,7 @@ export function ImageComparison({
 
       {/* Slider handle — also driven by --pos */}
       <div
-        className="jjz-img-cmp__handle absolute top-0 bottom-0 w-1.5 bg-white/80 cursor-ew-resize flex items-center justify-center z-20"
+        className="jjz-img-cmp__handle absolute top-0 bottom-0 w-1.5 bg-white/80 cursor-ew-resize flex items-center justify-center z-20 touch-none"
         onPointerDown={startDrag}
       >
         <div className="bg-white rounded-full h-12 w-12 flex items-center justify-center shadow-md transition-transform duration-200 ease-in-out active:scale-110 active:shadow-xl">

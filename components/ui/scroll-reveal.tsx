@@ -292,6 +292,8 @@ export function StaggerReveal({
       { y: 50 },
       {
         y: 0,
+        x: 0,
+        scale: 1,
         duration: 1,
         stagger: staggerDelay,
         delay,

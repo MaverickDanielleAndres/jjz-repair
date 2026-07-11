@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronDown, ChevronUp, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -43,6 +43,8 @@ export function FeatureCarousel({
 }: FeatureCarouselProps) {
   const [step, setStep] = useState(0);
   const [paused, setPaused] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const mobileScrollRef = useRef<HTMLDivElement>(null);
 
   const total = features.length;
   const currentIndex = ((step % total) + total) % total;
@@ -69,6 +71,28 @@ export function FeatureCarousel({
     return () => clearInterval(t);
   }, [nextStep, paused, autoPlayInterval]);
 
+  // Sync scroll position when `currentIndex` changes via auto-play or arrows
+  useEffect(() => {
+    // Desktop vertical sync
+    if (scrollRef.current) {
+      const target = scrollRef.current;
+      const targetScroll = currentIndex * 70;
+      if (Math.abs(target.scrollTop - targetScroll) > 10) {
+        target.scrollTo({ top: targetScroll, behavior: "smooth" });
+      }
+    }
+
+    // Mobile horizontal sync
+    if (mobileScrollRef.current) {
+      const target = mobileScrollRef.current;
+      const chip = target.children[currentIndex] as HTMLElement;
+      if (chip) {
+        const scrollLeft = chip.offsetLeft - target.clientWidth / 2 + chip.clientWidth / 2;
+        target.scrollTo({ left: scrollLeft, behavior: "smooth" });
+      }
+    }
+  }, [currentIndex]);
+
   /**
    * Visual state for the image card on the right. Only the active card is
    * fully visible; the previous and next cards peek in faintly with a small
@@ -94,12 +118,12 @@ export function FeatureCarousel({
 
   return (
     <div className="w-full max-w-7xl mx-auto">
-      <div className="relative overflow-hidden rounded-2xl md:rounded-[2rem] flex flex-col lg:flex-row min-h-[420px] lg:min-h-[460px] border border-zinc-200 bg-white">
+      <div className="relative overflow-hidden rounded-2xl md:rounded-[2rem] flex flex-col-reverse lg:flex-row min-h-[420px] lg:min-h-[460px] border border-zinc-200 bg-white">
         {/* Left: vertical chip column with a darkened storefront photo
               sitting behind the chips so the panel feels grounded in the
               shop without competing for attention. */}
         <div
-          className="w-full lg:w-[36%] relative flex items-center justify-center py-8 md:py-10 overflow-hidden bg-zinc-950"
+          className="w-full lg:w-[36%] relative flex items-center justify-center py-8 md:py-10 overflow-hidden bg-zinc-950 touch-pan-x"
           style={{
             backgroundImage: "url(/location.png)",
             backgroundSize: "cover",
@@ -107,6 +131,13 @@ export function FeatureCarousel({
           }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
+          onWheel={(e) => {
+            // Throttled wheel scrolling for desktop
+            if (Math.abs(e.deltaY) > 20) {
+              if (e.deltaY > 0) setStep((s) => s + 1);
+              else setStep((s) => s - 1);
+            }
+          }}
         >
           {/* Darkening overlay — sits behind the chips but on top of the
               photo. Mixes the storefront image into the dark palette so the
@@ -118,10 +149,52 @@ export function FeatureCarousel({
               background: `linear-gradient(180deg, ${accentBg}cc 0%, ${accentBg}f2 50%, ${accentBg}cc 100%)`,
             }}
           />
-          {/* Top + bottom fade — chips fade as they enter/leave the center */}
+
+          {/* Mobile/Tablet Horizontal List */}
+          <div 
+            ref={mobileScrollRef}
+            className="w-full flex lg:hidden overflow-x-auto snap-x snap-mandatory px-6 py-8 gap-3 z-10 scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {features.map((feature, index) => {
+              const isActive = index === currentIndex;
+              return (
+                <button
+                  key={feature.id}
+                  type="button"
+                  onClick={() => handleChipClick(index)}
+                  onMouseEnter={() => setPaused(true)}
+                  onMouseLeave={() => setPaused(false)}
+                  className={cn(
+                    "shrink-0 snap-center flex items-center justify-center gap-2 px-5 py-3 rounded-full text-center border transition-colors duration-300",
+                    isActive
+                      ? "bg-white text-zinc-900 border-amber-400 shadow-md"
+                      : "bg-white/5 text-white/80 border-white/15 hover:bg-white/10 hover:text-white"
+                  )}
+                  suppressHydrationWarning
+                >
+                  <feature.icon
+                    size={16}
+                    strokeWidth={1.8}
+                    className={isActive ? "text-amber-600" : "text-white/70"}
+                  />
+                  <span
+                    className={cn(
+                      "font-semibold text-xs tracking-tight uppercase whitespace-nowrap",
+                      isActive ? "text-zinc-900" : "text-white/80"
+                    )}
+                  >
+                    {feature.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Desktop Top/Bottom Fade */}
           <div
             aria-hidden
-            className="absolute inset-x-0 top-0 h-14 z-30 pointer-events-none"
+            className="hidden lg:block absolute inset-x-0 top-0 h-14 z-30 pointer-events-none"
             style={{
               background: `linear-gradient(to bottom, ${accentBg} 0%, ${accentBg}cc 70%, ${accentBg}00 100%)`,
             }}
@@ -134,14 +207,10 @@ export function FeatureCarousel({
             }}
           />
 
-          {/* Center highlight bar — soft amber glow sized to the chip itself,
-              not the full column width. Previously this used `left-3 right-3`
-              with a 32px box-shadow blur, which produced a huge amber blob
-              behind the active pill. Now it's inset to the chip's footprint
-              and uses a subtle inset highlight instead of an outward glow. */}
+          {/* Center highlight bar — Desktop only */}
           <div
             aria-hidden
-            className="absolute top-1/2 -translate-y-1/2 rounded-full pointer-events-none z-10"
+            className="hidden lg:block absolute top-1/2 -translate-y-1/2 rounded-full pointer-events-none z-10"
             style={{
               left: "calc(50% - 120px)",
               width: 240,
@@ -151,12 +220,21 @@ export function FeatureCarousel({
             }}
           />
 
-          {/* Uniform chip track — all chips are the same width/height */}
           <div
-            className="relative w-full max-w-[240px] mx-auto z-10"
+            className="hidden lg:block relative w-full max-w-[240px] mx-auto z-10"
             style={{ height: trackHeight }}
           >
-            {features.map((feature, index) => {
+            <motion.div 
+              className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={0.1}
+              onDragEnd={(e, info) => {
+                if (info.offset.y < -20) setStep((s) => s + 1);
+                else if (info.offset.y > 20) setStep((s) => s - 1);
+              }}
+            >
+              {features.map((feature, index) => {
               const distance = index - currentIndex;
               const wrappedDistance = wrap(
                 -VISIBLE_BUFFER,
@@ -236,11 +314,12 @@ export function FeatureCarousel({
                 </motion.button>
               );
             })}
+            </motion.div>
           </div>
         </div>
 
         {/* Right: stacked image cards */}
-        <div className="flex-1 min-h-[360px] lg:min-h-[460px] relative bg-zinc-50 flex items-center justify-center px-6 md:px-8 lg:px-10 py-10 md:py-12 overflow-hidden border-t lg:border-t-0 lg:border-l border-zinc-200">
+        <div className="flex-1 min-h-[320px] md:min-h-[400px] lg:min-h-[460px] relative bg-zinc-50 flex items-center justify-center px-6 md:px-8 lg:px-10 py-10 md:py-12 overflow-hidden border-b lg:border-b-0 lg:border-l border-zinc-200">
           <div className="relative w-full max-w-[360px] aspect-[4/5] flex items-center justify-center">
             {features.map((feature, index) => {
               const status = getCardStatus(index);
@@ -323,7 +402,7 @@ export function FeatureCarousel({
           </div>
 
           {/* Pagination dots */}
-          <div className="absolute bottom-4 right-4 z-30 flex items-center gap-1.5">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-4 z-30 flex items-center gap-1.5">
             {features.map((f, i) => (
               <button
                 key={f.id}

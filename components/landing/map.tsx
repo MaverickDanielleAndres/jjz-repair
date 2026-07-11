@@ -26,7 +26,7 @@ const TILE_ATTR =
 const SHOP_IMAGE = "/location.png";
 
 const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-  ADDRESS,
+  `${BRAND_NAME}, ${ADDRESS}`
 )}`;
 
 /**
@@ -277,7 +277,7 @@ export default function ShopMap() {
 
       L.marker(MAP_COORDS, { icon })
         .addTo(map)
-        .bindPopup(popupHost, { maxWidth: 260 });
+        .bindPopup(popupHost, { maxWidth: 260, className: "shop-map-popup" });
 
       // Force a resize after mount to fix zero-height container issues
       setTimeout(() => {

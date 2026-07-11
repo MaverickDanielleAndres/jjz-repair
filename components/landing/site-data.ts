@@ -58,7 +58,7 @@ export const PHONE_DISPLAY = "0928 066 3629";
 export const PHONE_TEL = "+639280663629";
 export const EMAIL_TO = "jjztechph@gmail.com";
 export const ADDRESS = "1544 Manila E Rd, Binangonan, Rizal";
-export const BRAND_NAME = "JJZ TECH";
+export const BRAND_NAME = "JJZ-TECH";
 
 // Map coordinates for 1544 Manila E Rd, Binangonan, Rizal
 // (resolved via OpenStreetMap Nominatim for the exact shop location)
@@ -84,7 +84,7 @@ export type ServiceCategory =
 export const CATEGORY_LABELS: Record<ServiceCategory, string> = {
   cellphone: "Cellphone",
   laptop: "Laptop",
-  computer: "Computer",
+  computer: "Desktop Work",
   advanced: "Advanced",
   accessory: "Accessories",
 };
@@ -99,307 +99,67 @@ export type Service = {
 
 export const EVERYTHING: Service[] = [
   // ─── Cellphone ─────────────────────────────────────────
-  {
-    title: "LCD / Screen Replacement",
-    icon: Smartphone,
-    description:
-      "Cracked or shattered display? OEM-grade replacement, same-day turnaround on most models.",
-    category: "cellphone",
-    keywords: ["screen", "lcd", "display", "broken", "glass"],
-  },
-  {
-    title: "Battery Replacement",
-    icon: Battery,
-    description: "Restore full-day battery life with a fresh OEM cell.",
-    category: "cellphone",
-    keywords: ["battery", "power", "drain"],
-  },
-  {
-    title: "Charging Port / Mic / Speaker",
-    icon: Plug,
-    description: "Loose charging, muffled audio, dead mic — fixed.",
-    category: "cellphone",
-    keywords: ["charging", "port", "mic", "speaker", "audio"],
-  },
-  {
-    title: "Water Damage",
-    icon: Droplets,
-    description:
-      "Board-level cleaning and recovery for liquid-damaged devices.",
-    category: "cellphone",
-    keywords: ["water", "liquid", "wet", "submerged"],
-  },
-  {
-    title: "Camera Repair",
-    icon: Camera,
-    description: "Front and rear camera module swaps and calibration.",
-    category: "cellphone",
-    keywords: ["camera", "lens"],
-  },
-  {
-    title: "Software / Unlock / Bypass",
-    icon: Unlock,
-    description:
-      "iCloud, FRP, pattern, PIN, MI account — clean removals on all models.",
-    category: "cellphone",
-    keywords: ["unlock", "bypass", "icloud", "frp", "google", "mi", "account"],
-  },
-  {
-    title: "Network / Signal Fix",
-    icon: Signal,
-    description: "No-service, no-SIM, baseband and IMEI repair.",
-    category: "cellphone",
-    keywords: ["network", "signal", "imei", "baseband", "sim"],
-  },
-  {
-    title: "Hang on Logo",
-    icon: RotateCcw,
-    description: "Boot-loop and stuck-on-logo recovery.",
-    category: "cellphone",
-    keywords: ["boot", "loop", "hang", "logo", "stuck"],
-  },
-  {
-    title: "iPhone / iPad Disabled",
-    icon: Lock,
-    description: "Disabled-device unlock, activation lock support.",
-    category: "cellphone",
-    keywords: ["iphone", "ipad", "disabled", "locked"],
-  },
-  {
-    title: "iCloud Issue",
-    icon: CloudOff,
-    description: "Activation lock, iCloud sign-in, Find My iPhone issues.",
-    category: "cellphone",
-    keywords: ["icloud", "apple", "find my", "activation"],
-  },
+  { title: "No Power", icon: Power, description: "Dead device diagnostics and board-level repair.", category: "cellphone" },
+  { title: "No Display", icon: EyeOff, description: "Black screen and display circuit fixes.", category: "cellphone" },
+  { title: "Network Unlock", icon: Signal, description: "Carrier unlock and network open-line service.", category: "cellphone" },
+  { title: "Password", icon: Lock, description: "PIN, pattern, and lock screen password removal.", category: "cellphone" },
+  { title: "FRP / Google Acc.", icon: Unlock, description: "Google Factory Reset Protection bypass.", category: "cellphone" },
+  { title: "iCloud Bypass", icon: CloudOff, description: "Activation lock and iCloud sign-in issues.", category: "cellphone" },
+  { title: "MI Account", icon: Unlock, description: "Clean removal for Xiaomi / Poco accounts.", category: "cellphone" },
+  { title: "Parts Replacement", icon: Wrench, description: "General hardware and internal parts swapping.", category: "cellphone" },
+  { title: "LCD / Touch Screen", icon: Smartphone, description: "Cracked or shattered display replacement.", category: "cellphone" },
+  { title: "Built-In Battery", icon: Battery, description: "Restore battery life with a fresh OEM cell.", category: "cellphone" },
+  { title: "Charging Port", icon: Plug, description: "Loose or broken charging port replacement.", category: "cellphone" },
+  { title: "Camera", icon: Camera, description: "Front and rear camera module swaps.", category: "cellphone" },
+  { title: "Storage Upgrade", icon: HardDrive, description: "Memory / NAND upgrade for select devices.", category: "cellphone" },
+  { title: "And Others", icon: Settings2, description: "Water damage, signal fix, boot loop, etc.", category: "cellphone" },
 
-  // ─── Laptop ─────────────────────────────────────────────
-  {
-    title: "No Power / Not Turning On",
-    icon: Power,
-    description: "Dead laptop diagnostics, board-level power repair.",
-    category: "laptop",
-    keywords: ["power", "dead", "turn on", "boot"],
-  },
-  {
-    title: "Screen Replacement",
-    icon: Monitor,
-    description: "LCD, LED, and touch panel swaps for all major brands.",
-    category: "laptop",
-    keywords: ["screen", "lcd", "led", "display"],
-  },
-  {
-    title: "Keyboard / Touchpad Repair",
-    icon: Keyboard,
-    description: "Stuck keys, missing keys, touchpad not responding.",
-    category: "laptop",
-    keywords: ["keyboard", "touchpad", "keys"],
-  },
-  {
-    title: "Battery Replacement",
-    icon: Battery,
-    description: "Genuine battery cells with proper calibration.",
-    category: "laptop",
-  },
-  {
-    title: "Heating / Overheating Fix",
-    icon: Thermometer,
-    description: "Fan service, repaste, thermal pad replacement.",
-    category: "laptop",
-    keywords: ["heat", "hot", "fan", "thermal"],
-  },
-  {
-    title: "OS Install / Windows Repair",
-    icon: Settings2,
-    description: "Clean Windows, macOS, Linux installs and boot repair.",
-    category: "laptop",
-    keywords: ["os", "windows", "macos", "linux", "install"],
-  },
-  {
-    title: "Data Backup & Recovery",
-    icon: HardDriveDownload,
-    description: "Recover lost files, clone failing drives.",
-    category: "laptop",
-    keywords: ["data", "backup", "recovery", "files"],
-  },
-  {
-    title: "No Display / Backlight Fix",
-    icon: EyeOff,
-    description: "Black screen, dim display, backlight circuit repair.",
-    category: "laptop",
-    keywords: ["display", "backlight", "black screen"],
-  },
+  // ─── Laptop & Desktop ─────────────────────────────────────
+  { title: "No Power", icon: Power, description: "Dead laptop/desktop diagnostics and power repair.", category: "laptop" },
+  { title: "No Display", icon: EyeOff, description: "Black screen and backlight fixes.", category: "laptop" },
+  { title: "Reformat", icon: HardDrive, description: "Clean system wipe and fresh start.", category: "laptop" },
+  { title: "EFI Password", icon: Lock, description: "BIOS/EFI password removal and unlocking.", category: "laptop" },
+  { title: "OS Upgrade/Install", icon: Settings2, description: "Windows, macOS, or Linux installations.", category: "laptop" },
+  { title: "Mobo Problem", icon: PcCase, description: "Motherboard repairs and board-level diagnostics.", category: "laptop" },
+  { title: "GPU Problem", icon: Monitor, description: "Graphics card issues and display artifacts.", category: "laptop" },
+  { title: "Not Charging", icon: BatteryCharging, description: "Charging circuit repair and testing.", category: "laptop" },
+  { title: "LCD Replacement", icon: Monitor, description: "Screen, LED, and touch panel replacements.", category: "laptop" },
+  { title: "SSD/HDD Replacement", icon: MemoryStick, description: "Storage drive replacements and data transfers.", category: "laptop" },
+  { title: "RAM Upgrade", icon: Cpu, description: "Memory upgrades for faster performance.", category: "laptop" },
+  { title: "Keyboard Replacement", icon: Keyboard, description: "Stuck keys, missing keys, full board swaps.", category: "laptop" },
+  { title: "Hinges Problem", icon: Wrench, description: "Broken, loose, or damaged laptop hinges.", category: "laptop" },
+  { title: "Software Installation", icon: Settings2, description: "App setup, configuration, and diagnostics.", category: "laptop" },
+  { title: "Driver Installation", icon: Database, description: "Missing drivers and hardware recognition fixes.", category: "laptop" },
 
-  // ─── Computer ───────────────────────────────────────────
-  {
-    title: "No Power / Boot Problem",
-    icon: Power,
-    description: "PSU, motherboard, and front-panel diagnostics.",
-    category: "computer",
-  },
-  {
-    title: "Blue Screen / System Error",
-    icon: Bug,
-    description: "BSOD troubleshooting, driver and registry repair.",
-    category: "computer",
-    keywords: ["bsod", "blue screen", "error", "crash"],
-  },
-  {
-    title: "Slow PC / Hanging",
-    icon: Cpu,
-    description: "Cleanup, RAM check, thermal and process profiling.",
-    category: "computer",
-    keywords: ["slow", "lag", "hanging", "freeze"],
-  },
-  {
-    title: "Virus Removal",
-    icon: Shield,
-    description: "Malware, ransomware, and rootkit cleanup.",
-    category: "computer",
-    keywords: ["virus", "malware", "ransomware"],
-  },
-  {
-    title: "Format / OS Installation",
-    icon: HardDrive,
-    description: "Clean Windows install, dual-boot, driver setup.",
-    category: "computer",
-  },
-  {
-    title: "Hard Drive / SSD Upgrade",
-    icon: MemoryStick,
-    description: "NVMe / SATA SSD migration with data transfer.",
-    category: "computer",
-    keywords: ["ssd", "hdd", "upgrade", "storage"],
-  },
-  {
-    title: "Data Recovery",
-    icon: Database,
-    description: "Failing drives, deleted partitions, SD cards.",
-    category: "computer",
-  },
-  {
-    title: "Short Circuit Fix",
-    icon: ZapOff,
-    description: "Component-level short detection and board repair.",
-    category: "computer",
-    keywords: ["short", "circuit", "smoke", "burnt"],
-  },
+  // ─── Computer (Desktop specific) ───────────────────────────
+  { title: "Desktop No Power / Boot Problem", icon: Power, description: "PSU, motherboard, and front-panel diagnostics.", category: "computer" },
+  { title: "Blue Screen / System Error", icon: Bug, description: "BSOD troubleshooting, driver and registry repair.", category: "computer" },
+  { title: "Slow PC / Hanging", icon: Cpu, description: "Cleanup, RAM check, thermal and process profiling.", category: "computer" },
+  { title: "Virus Removal", icon: Shield, description: "Malware, ransomware, and rootkit cleanup.", category: "computer" },
+  { title: "Data Recovery", icon: Database, description: "Failing drives, deleted partitions, SD cards.", category: "computer" },
+  { title: "Short Circuit Fix", icon: ZapOff, description: "Component-level short detection and board repair.", category: "computer" },
 
   // ─── Advanced ───────────────────────────────────────────
-  {
-    title: "JTAG / Reball",
-    icon: CircuitBoard,
-    description: "CPU reballing, JTAG services for dead devices.",
-    category: "advanced",
-    keywords: ["jtag", "reball", "cpu", "chip"],
-  },
-  {
-    title: "OpenLine",
-    icon: KeyRound,
-    description: "Carrier unlock, network open-line service.",
-    category: "advanced",
-  },
-  {
-    title: "Microsoldering",
-    icon: Zap,
-    description: "Component-level soldering under microscope.",
-    category: "advanced",
-    keywords: ["microsoldering", "solder", "board"],
-  },
-  {
-    title: "Motherboard Repair",
-    icon: PcCase,
-    description: "Board-level diagnostics and component replacement.",
-    category: "advanced",
-    keywords: ["motherboard", "board", "logic"],
-  },
-  {
-    title: "Dead Boot Repair",
-    icon: Power,
-    description: "Recover devices stuck in dead-boot state.",
-    category: "advanced",
-  },
-  {
-    title: "General Troubleshooting",
-    icon: Wrench,
-    description: "We diagnose what others can't figure out.",
-    category: "advanced",
-  },
-  {
-    title: "Console Repair (PS / Xbox / Nintendo)",
-    icon: Gamepad2,
-    description: "HDMI port, disc drive, power and overheating fixes.",
-    category: "advanced",
-    keywords: ["ps5", "ps4", "xbox", "nintendo", "switch", "console"],
-  },
-  {
-    title: "Steam Deck Repair",
-    icon: Gamepad2,
-    description: "Screen, stick drift, battery, charging port on Steam Deck.",
-    category: "advanced",
-    keywords: ["steam", "deck", "valve"],
-  },
-  {
-    title: "Tablet Repair",
-    icon: Tablet,
-    description: "iPad, Android tablets — screen, battery, charging.",
-    category: "advanced",
-    keywords: ["tablet", "ipad"],
-  },
+  { title: "JTAG / Reball", icon: CircuitBoard, description: "CPU reballing, JTAG services for dead devices.", category: "advanced" },
+  { title: "OpenLine", icon: KeyRound, description: "Carrier unlock, network open-line service.", category: "advanced" },
+  { title: "Microsoldering", icon: Zap, description: "Component-level soldering under microscope.", category: "advanced" },
+  { title: "Motherboard Repair", icon: PcCase, description: "Board-level diagnostics and component replacement.", category: "advanced" },
+  { title: "Dead Boot Repair", icon: Power, description: "Recover devices stuck in dead-boot state.", category: "advanced" },
+  { title: "General Troubleshooting", icon: Wrench, description: "We diagnose what others can't figure out.", category: "advanced" },
+  { title: "Console Repair (PS / Xbox / Nintendo)", icon: Gamepad2, description: "HDMI port, disc drive, power and overheating fixes.", category: "advanced" },
+  { title: "Steam Deck Repair", icon: Gamepad2, description: "Screen, stick drift, battery, charging port on Steam Deck.", category: "advanced" },
+  { title: "Tablet Repair", icon: Tablet, description: "iPad, Android tablets — screen, battery, charging.", category: "advanced" },
 
   // ─── Accessories (in-store) ────────────────────────────
-  {
-    title: "Tempered Glass",
-    icon: ShieldCheck,
-    description: "Premium tempered glass for all phone models.",
-    category: "accessory",
-  },
-  {
-    title: "Fast Charger",
-    icon: BatteryCharging,
-    description: "Genuine fast-charging wall blocks and cables.",
-    category: "accessory",
-    keywords: ["charger", "cable", "adapter"],
-  },
-  {
-    title: "Headset / Earphones",
-    icon: Headphones,
-    description: "Wired and wireless audio accessories in stock.",
-    category: "accessory",
-  },
-  {
-    title: "Cables & Adapters",
-    icon: Cable,
-    description: "USB-C, Lightning, micro-USB, OTG, HDMI — all on hand.",
-    category: "accessory",
-  },
-  {
-    title: "Power Banks",
-    icon: BatteryCharging,
-    description:
-      "Reliable power banks for travel, long days, and emergency top-ups.",
-    category: "accessory",
-  },
-  {
-    title: "Phone Holders & Mounts",
-    icon: Smartphone,
-    description: "Car mounts, desk stands, ring holders — for hands-free use.",
-    category: "accessory",
-  },
-  {
-    title: "Wireless Chargers",
-    icon: BatteryCharging,
-    description: "Qi-certified wireless charging pads and stands for any phone.",
-    category: "accessory",
-    keywords: ["wireless", "qi", "charger", "charging pad"],
-  },
-  {
-    title: "Phone Cases & Covers",
-    icon: ShieldCheck,
-    description: "Rugged, silicone, and clear cases for every phone model.",
-    category: "accessory",
-    keywords: ["case", "cover", "casing", "protection"],
-  },
+  { title: "Tempered Glass", icon: ShieldCheck, description: "Premium tempered glass for all phone models.", category: "accessory" },
+  { title: "Fast Charger", icon: BatteryCharging, description: "Genuine fast-charging wall blocks and cables.", category: "accessory" },
+  { title: "Headset / Earphones", icon: Headphones, description: "Wired and wireless audio accessories in stock.", category: "accessory" },
+  { title: "Cables & Adapters", icon: Cable, description: "USB-C, Lightning, micro-USB, OTG, HDMI — all on hand.", category: "accessory" },
+  { title: "Power Banks", icon: BatteryCharging, description: "Reliable power banks for travel, long days, and emergency top-ups.", category: "accessory" },
+  { title: "Phone Holders & Mounts", icon: Smartphone, description: "Car mounts, desk stands, ring holders — for hands-free use.", category: "accessory" },
+  { title: "Wireless Chargers", icon: BatteryCharging, description: "Qi-certified wireless charging pads and stands for any phone.", category: "accessory" },
+  { title: "Phone Cases & Covers", icon: ShieldCheck, description: "Rugged, silicone, and clear cases for every phone model.", category: "accessory" },
+  { title: "LCD & Phone Parts", icon: Smartphone, description: "LCD screens, batteries, flexible cables, and other cellphone repair parts.", category: "accessory" },
 ];
 
 // Backwards-compatible flat lists used by the v1 sections.
@@ -420,6 +180,7 @@ export const ALL_SERVICES = EVERYTHING;
 export type Brand = { name: string };
 
 export const SUPPORTED_BRANDS: Brand[] = [
+  // Phone / Ecosystem Brands
   { name: "Apple" },
   { name: "Samsung" },
   { name: "Xiaomi" },
@@ -427,17 +188,33 @@ export const SUPPORTED_BRANDS: Brand[] = [
   { name: "OPPO" },
   { name: "vivo" },
   { name: "Huawei" },
+  { name: "Infinix" },
+  { name: "Tecno" },
+  { name: "Readme" },
+  { name: "Sony" },
+  { name: "LG" },
+  { name: "Android" },
+  
+  // Computer / Laptop Brands
   { name: "ASUS" },
   { name: "Acer" },
   { name: "Dell" },
   { name: "HP" },
   { name: "Lenovo" },
-  { name: "Infinix" },
-  { name: "Tecno" },
-  { name: "Readme" },
   { name: "Razer" },
-  { name: "Sony" },
-  { name: "LG" },
+  { name: "Predator" },
+  { name: "Toshiba" },
+  { name: "Sony VAIO" },
+  { name: "MSI" },
+  { name: "Alienware" },
+  { name: "Republic of Gamers (ROG)" },
+  { name: "Compaq" },
+  { name: "Motorola" },
+  { name: "Nokia" },
+  { name: "PlayStation" },
+  { name: "Xbox" },
+
+
 ];
 
 // ─────────────────────────────────────────────────────────────────────

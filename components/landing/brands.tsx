@@ -11,7 +11,7 @@ export function Brands() {
   // `<slug>.svg / .png / .webp / .jpg` in `/public/brands/` and falls back
   // to a typographic placeholder, so a missing file won't break the page.
   const logos = SUPPORTED_BRANDS.map((brand) => ({
-    src: `/brands/${brand.name.toLowerCase()}.svg`,
+    src: `/brands/${encodeURIComponent(brand.name.toLowerCase())}.svg?v=2`,
     alt: `${brand.name} logo`,
   }));
 
@@ -38,9 +38,9 @@ export function Brands() {
         >
           <InfiniteSlider
             gap={40}
-            duration={(size) => (size < 640 ? 18 : size < 1024 ? 24 : 32)}
+            duration={(size) => (size < 640 ? 36 : size < 1024 ? 48 : 64)}
             durationOnHover={(size) =>
-              size < 640 ? 36 : size < 1024 ? 46 : 60
+              size < 640 ? 72 : size < 1024 ? 92 : 120
             }
           >
             {SUPPORTED_BRANDS.map((brand) => (

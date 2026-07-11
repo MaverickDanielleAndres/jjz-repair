@@ -26,26 +26,38 @@ const LOGO_SCALE: Record<string, number> = {
   samsung: 1.7,
   xiaomi: 1.0,
   realme: 1.0,
-  oppo: 1.7,
-  vivo: 1.7,
-  huawei: 1.0,
-  asus: 1.7,
-  acer: 1.6,
-  dell: 1.7,
-  hp: 1.0,
-  lenovo: 1.4,
-  infinix: 1.0,
-  tecno: 1.0,
-  readme: 1.0,
-  razer: 1.0,
-  sony: 1.6,
-  lg: 1.4,
+  oppo: 2.5,
+  vivo: 2.5,
+  huawei: 1.8,
+  asus: 1.8,
+  acer: 1.8,
+  dell: 1.4,
+  hp: 1.2,
+  lenovo: 2.0,
+  infinix: 1.1,
+  tecno: 1.1,
+  readme: 1.1,
+  razer: 1.6,
+  sony: 1.8,
+  lg: 1.8,
+  android: 1.5,
+  toshiba: 2.2,
+  msi: 1.7,
+  alienware: 1.5,
+  compaq: 1.2,
+  motorola: 1.0,
+  playstation: 1.6,
+  xbox: 1.6,
+  predator: 2.5,
+  "sony vaio": 1.8,
+  "republic of gamers (rog)": 1.8,
+  nokia: 2.2,
 };
 
 const slugFromSrc = (src: string): string => {
-  // /brands/apple.svg -> apple
-  const m = src.match(/\/([^/]+)\.[a-z]+$/i);
-  return m ? m[1] : "";
+  const clean = src.split('?')[0];
+  const m = clean.match(/\/([^/]+)\.[a-z]+$/i);
+  return m ? decodeURIComponent(m[1]) : "";
 };
 
 const scaleFor = (src: string): number =>

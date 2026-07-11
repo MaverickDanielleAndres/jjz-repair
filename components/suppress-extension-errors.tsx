@@ -54,6 +54,7 @@ export function SuppressExtensionErrors() {
         // that pile up EventEmitter listeners in the page context.
         /MaxListenersExceededWarning/i.test(message) ||
         /Resetting the streams/i.test(message) ||
+        /ObjectMultiplex/i.test(message) ||
         // React 19 hydration mismatches that React logs to console.error
         // when server-rendered HTML differs from the client DOM. The most
         // common cause on this site is browser extensions (LastPass,

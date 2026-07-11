@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion, useAnimation } from "motion/react";
 import { Quote } from "lucide-react";
 
-type Testimonial = {
+export type Testimonial = {
   quote: string;
   name: string;
   service: string;
@@ -15,10 +15,12 @@ export const TestimonialsColumn = ({
   className,
   testimonials,
   duration = 18,
+  onTestimonialClick,
 }: {
   className?: string;
   testimonials: Testimonial[];
   duration?: number;
+  onTestimonialClick?: (testimonial: Testimonial) => void;
 }) => {
   // Pause the infinite marquee when the column isn't visible. The original
   // implementation ran `repeat: Infinity` 24/7 for the lifetime of the
@@ -67,7 +69,8 @@ export const TestimonialsColumn = ({
             {testimonials.map((t, i) => (
               <div
                 key={`${index}-${i}`}
-                className="p-5 rounded-2xl border border-zinc-200 bg-white shadow-sm max-w-xs w-full"
+                onClick={() => onTestimonialClick?.(t)}
+                className="p-5 rounded-2xl border border-zinc-200 bg-white shadow-sm max-w-xs w-full cursor-pointer hover:shadow-md hover:border-amber-200 transition-all duration-200"
               >
                 <div className="flex items-center justify-between">
                   <Quote className="w-4 h-4 text-amber-500" strokeWidth={1.8} />

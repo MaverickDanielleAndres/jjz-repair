@@ -30,10 +30,10 @@ const cards = [
   },
   {
     icon: Monitor,
-    title: "Computer Repair",
+    title: "Desktop Work",
     summary: "Boot issues, virus removal, SSD upgrades, data recovery.",
     services: COMPUTER_SERVICES,
-    imageLabel: "Computer repair",
+    imageLabel: "Desktop work",
     imageSrc: "/computerrepair.png",
   },
 ];
@@ -51,17 +51,17 @@ export function WhatWeOffer() {
         <StaggerReveal
           amount={0.15}
           staggerDelay={0.12}
-          className="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6"
+          className="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 auto-rows-fr"
         >
           {cards.map(
             ({ icon: Icon, title, summary, services, imageLabel, imageSrc }, i) => (
               <StaggerItem
                 key={title}
                 variant={i === 0 ? "fadeLeft" : i === 1 ? "fadeUp" : "fadeRight"}
-                className="h-full"
+                className="flex"
               >
                 <SpotlightCard
-                  className="!p-0 group flex flex-col overflow-hidden rounded-2xl hover:shadow-lg hover:shadow-amber-500/10 transition-all h-full"
+                  className="!p-0 group grid grid-rows-[auto_1fr] overflow-hidden rounded-2xl hover:shadow-lg hover:shadow-amber-500/10 transition-all h-full w-full"
                   spotlightColor="rgba(245, 158, 11, 0.18)"
                 >
                   <div className="relative w-full aspect-[16/10] overflow-hidden bg-zinc-900">
@@ -74,7 +74,7 @@ export function WhatWeOffer() {
                       className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
                     />
                   </div>
-                  <div className="p-4 flex flex-col flex-1">
+                  <div className="p-4 grid grid-rows-[auto_auto_1fr_auto] gap-0 h-full">
                     <div className="flex items-center gap-2">
                       <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 shrink-0">
                         <Icon className="w-4 h-4" strokeWidth={1.8} />
@@ -94,13 +94,15 @@ export function WhatWeOffer() {
                         </li>
                       ))}
                     </ul>
-                    <a
-                      href="#services"
-                      className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-amber-600 hover:text-amber-700"
-                    >
-                      See all {services.length} services
-                      <ArrowRight className="w-3 h-3" />
-                    </a>
+                    <div className="pt-4 flex items-end">
+                      <a
+                        href="#services"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-600 hover:text-amber-700"
+                      >
+                        See all {services.length} services
+                        <ArrowRight className="w-3 h-3" />
+                      </a>
+                    </div>
                   </div>
                 </SpotlightCard>
               </StaggerItem>

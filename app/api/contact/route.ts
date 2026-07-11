@@ -57,58 +57,62 @@ export async function POST(req: NextRequest) {
   ].join("\n");
 
   // ─── Wire your email service below ────────────────────────────
-  //
-  // Option A — Resend (recommended, simplest):
-  //
-  //   if (process.env.RESEND_API_KEY) {
-  //     const res = await fetch("https://api.resend.com/emails", {
-  //       method: "POST",
-  //       headers: {
-  //         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         from: "JJZ TECH Site <noreply@jjztech.ph>",
-  //         to: [to],
-  //         reply_to: email,
-  //         subject: fullSubject,
-  //         text: body_text,
-  //       }),
-  //     });
-  //     if (!res.ok) {
-  //       const detail = await res.text();
-  //       return NextResponse.json(
-  //         { ok: false, error: "Email service failed", detail },
-  //         { status: 502 },
-  //       );
-  //     }
-  //     return NextResponse.json({ ok: true, mode: "sent" });
-  //   }
-  //
-  // Option B — generic SMTP via nodemailer:
-  //
-  //   if (process.env.SMTP_HOST) {
-  //     const nodemailer = await import("nodemailer");
-  //     const transporter = nodemailer.createTransport({
-  //       host: process.env.SMTP_HOST,
-  //       port: Number(process.env.SMTP_PORT ?? 587),
-  //       secure: process.env.SMTP_SECURE === "1",
-  //       auth: process.env.SMTP_USER
-  //         ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
-  //         : undefined,
-  //     });
-  //     await transporter.sendMail({
-  //       from: `"${name}" <${process.env.SMTP_USER}>`,
-  //       to,
-  //       replyTo: email,
-  //       subject: fullSubject,
-  //       text: body_text,
-  //     });
-  //     return NextResponse.json({ ok: true, mode: "smtp" });
-  //   }
 
-  // Default: log only (replace with one of the options above).
-  console.log("[contact] would send email to", to);
+  if (process.env.RESEND_API_KEY) {
+    const htmlContent = `
+      <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e7eb; border-radius: 12px; background-color: #ffffff;">
+        <h2 style="color: #111827; margin-top: 0; font-size: 20px; font-weight: 600;">New Contact Form Submission</h2>
+        <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">You have received a new message from the JJZ TECH website contact form.</p>
+        
+        <div style="background-color: #f9fafb; padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid #f3f4f6;">
+          <p style="margin: 0 0 12px 0; color: #374151; font-size: 14px;"><strong>Name:</strong> ${name}</p>
+          <p style="margin: 0 0 12px 0; color: #374151; font-size: 14px;"><strong>Email:</strong> <a href="mailto:${email}" style="color: #0284c7; text-decoration: none;">${email}</a></p>
+          <p style="margin: 0; color: #374151; font-size: 14px;"><strong>Subject:</strong> ${subject || "(None)"}</p>
+        </div>
+        
+        <h3 style="color: #111827; font-size: 16px; font-weight: 600; margin-bottom: 12px;">Message:</h3>
+        <div style="background-color: #f9fafb; padding: 16px; border-radius: 8px; white-space: pre-wrap; font-family: inherit; font-size: 14px; color: #374151; line-height: 1.6; border: 1px solid #f3f4f6;">
+          ${message}
+        </div>
+        
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+        <p style="color: #9ca3af; font-size: 12px; text-align: center; margin: 0;">
+          This email was sent automatically from the JJZ TECH Contact Form.
+        </p>
+      </div>
+    `;
+
+    const fromEmail = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: \`JJZ TECH Site <\${fromEmail}>\`,
+        to: [to],
+        reply_to: email,
+        subject: fullSubject,
+        text: body_text,
+        html: htmlContent,
+      }),
+    });
+
+    if (!res.ok) {
+      const detail = await res.text();
+      console.error("[contact] Resend API error:", detail);
+      return NextResponse.json(
+        { ok: false, error: "Email service failed", detail },
+        { status: 502 },
+      );
+    }
+    return NextResponse.json({ ok: true, mode: "sent" });
+  }
+
+  // Fallback if no API key is provided
+  console.log("[contact] RESEND_API_KEY not set. Would send email to", to);
   console.log("[contact] subject:", fullSubject);
   console.log("[contact] body:", body_text);
 
