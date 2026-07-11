@@ -18,6 +18,7 @@ import {
   PHONE_TEL,
 } from "./site-data";
 import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
+import { SectionContainer, SectionHeader } from "./section-header";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -66,34 +67,24 @@ export function ContactForm() {
   return (
     <section
       id="contact"
-      className="bg-stone-50 border-t border-stone-200 py-20 md:py-28 jjz-defer"
+      className="bg-stone-50 border-t border-stone-200 py-12 md:py-16 jjz-defer"
     >
-      <div className="mx-auto max-w-6xl px-6">
-        <ScrollReveal
-          variant="fadeUp"
-          amount={0.4}
-          className="text-center max-w-2xl mx-auto"
-        >
-          <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
-            Contact us
-          </p>
-          <h2 className="mt-3 font-display text-3xl md:text-4xl font-bold tracking-tight text-zinc-900">
-            Let’s talk about your device.
-          </h2>
-          <p className="mt-4 text-zinc-600 leading-relaxed">
-            Send us a message and we’ll get back to you within the day. For
-            urgent repairs, message us on Messenger or call directly.
-          </p>
-        </ScrollReveal>
+      <SectionContainer>
+        <SectionHeader
+          eyebrow="Contact us"
+          title="Let's talk about your device."
+          lede="Send us a message and we'll get back to you within the day. For
+          urgent repairs, message us on Messenger or call directly."
+        />
 
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-5 gap-5">
           {/* Form */}
           <form
             onSubmit={onSubmit}
-            className="lg:col-span-3 rounded-2xl border border-zinc-200 bg-white p-6 md:p-8 space-y-4"
+            className="lg:col-span-3 rounded-2xl border border-zinc-200 bg-white p-5 md:p-6 space-y-3"
             noValidate
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Field
                 id="name"
                 label="Your name"
@@ -120,23 +111,23 @@ export function ContactForm() {
             <div>
               <label
                 htmlFor="message"
-                className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5"
+                className="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1"
               >
                 Message <span className="text-amber-600">*</span>
               </label>
               <textarea
                 id="message"
                 required
-                rows={5}
+                rows={4}
                 value={form.message}
                 onChange={update("message")}
                 placeholder="Tell us about your device and the issue…"
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-400 resize-none"
+                className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-400 resize-none"
                 suppressHydrationWarning
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-1">
               <p className="text-xs text-zinc-500">
                 Or email us directly at{" "}
                 <a
@@ -149,16 +140,16 @@ export function ContactForm() {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-zinc-950 font-semibold shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-shadow disabled:opacity-60 disabled:cursor-not-allowed"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-zinc-950 font-semibold shadow-md shadow-amber-500/25 hover:shadow-amber-500/40 transition-shadow text-xs disabled:opacity-60 disabled:cursor-not-allowed"
                 suppressHydrationWarning
               >
                 {status === "sending" ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" /> Sending…
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" /> Sending…
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4" /> Send message
+                    <Send className="w-3.5 h-3.5" /> Send message
                   </>
                 )}
               </button>
@@ -167,15 +158,15 @@ export function ContactForm() {
             {status === "success" && (
               <p
                 role="status"
-                className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2.5"
+                className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2"
               >
-                Thanks — we received your message. We’ll reply soon.
+                Thanks — we received your message. We'll reply soon.
               </p>
             )}
             {status === "error" && (
               <p
                 role="alert"
-                className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl px-3.5 py-2.5"
+                className="text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2"
               >
                 {errorMsg || "Something went wrong."}
               </p>
@@ -183,48 +174,48 @@ export function ContactForm() {
           </form>
 
           {/* Socials column */}
-          <aside className="lg:col-span-2 space-y-3">
-            <h3 className="font-display text-lg font-semibold text-zinc-900">
+          <aside className="lg:col-span-2 space-y-2.5">
+            <h3 className="text-base font-semibold text-zinc-900">
               Reach us directly
             </h3>
-            <p className="text-sm text-zinc-600">
+            <p className="text-xs text-zinc-600">
               For the fastest response, message us on Messenger or call.
             </p>
 
             <SocialCard
               href={MESSENGER_URL}
-              icon={<MessageCircle className="w-5 h-5" />}
+              icon={<MessageCircle className="w-4 h-4" />}
               label="Messenger"
               handle="@jjztech"
               highlight
             />
             <SocialCard
               href={`tel:${PHONE_TEL}`}
-              icon={<Phone className="w-5 h-5" />}
+              icon={<Phone className="w-4 h-4" />}
               label="Call us"
               handle={PHONE_DISPLAY}
             />
             <SocialCard
               href={`mailto:${EMAIL_TO}`}
-              icon={<Mail className="w-5 h-5" />}
+              icon={<Mail className="w-4 h-4" />}
               label="Email"
               handle={EMAIL_TO}
             />
             <SocialCard
               href={FACEBOOK_URL}
-              icon={<FacebookIcon className="w-5 h-5" />}
+              icon={<FacebookIcon className="w-4 h-4" />}
               label="Facebook"
               handle="Follow our page"
             />
             <SocialCard
               href={INSTAGRAM_URL}
-              icon={<InstagramIcon className="w-5 h-5" />}
+              icon={<InstagramIcon className="w-4 h-4" />}
               label="Instagram"
               handle="@jjztech"
             />
           </aside>
         </div>
-      </div>
+      </SectionContainer>
     </section>
   );
 }
@@ -250,7 +241,7 @@ function Field({
     <div>
       <label
         htmlFor={id}
-        className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5"
+        className="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1"
       >
         {label} {required && <span className="text-amber-600">*</span>}
       </label>
@@ -261,7 +252,7 @@ function Field({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-400"
+        className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-400"
         // See HydrationSafeButtons — password managers / autofill
         // heuristics inject `fdprocessedid` on form fields at runtime.
         suppressHydrationWarning
@@ -289,7 +280,7 @@ function SocialCard({
       target={href.startsWith("http") ? "_blank" : undefined}
       rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
       className={
-        "group flex items-center gap-3 rounded-2xl border p-4 transition-all hover:-translate-y-0.5 hover:shadow-lg " +
+        "group flex items-center gap-2.5 rounded-xl border p-2.5 transition-all hover:-translate-y-0.5 hover:shadow-md " +
         (highlight
           ? "border-amber-300 bg-gradient-to-r from-amber-50 to-amber-100/60 hover:shadow-amber-500/15"
           : "border-zinc-200 bg-white hover:border-amber-300 hover:shadow-amber-500/5")
@@ -297,7 +288,7 @@ function SocialCard({
     >
       <span
         className={
-          "inline-flex w-10 h-10 items-center justify-center rounded-xl shrink-0 " +
+          "inline-flex w-8 h-8 items-center justify-center rounded-lg shrink-0 " +
           (highlight
             ? "bg-amber-500 text-zinc-950"
             : "bg-amber-50 text-amber-700")
@@ -311,7 +302,7 @@ function SocialCard({
         </span>
         <span className="block text-xs text-zinc-500 truncate">{handle}</span>
       </span>
-      <span className="text-amber-600 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="text-amber-600 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
         →
       </span>
     </a>

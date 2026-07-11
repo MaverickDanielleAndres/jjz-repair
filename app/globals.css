@@ -195,3 +195,97 @@ body {
   content-visibility: auto;
   contain-intrinsic-size: 1px 600px;
 }
+
+/*
+ * Global section scaling — keeps every section header/body at a
+ * consistent compact density without needing to hand-tune each file.
+ *
+ * `.jjz-section`  — any main <section> on the page. Tighter vertical
+ *                   padding, narrower container, plus generous
+ *                   horizontal padding so content never touches the
+ *                   viewport edge.
+ * `.jjz-section-header` — the eyebrow + h2 + lede block at the top of
+ *                         each section. Smaller than the unstyled
+ *                         font-display defaults for a "professional"
+ *                         density (24-32px range, not 36-56px).
+ * `.jjz-eyebrow`  — the small all-caps amber label above a section
+ *                   header. Universal sizing.
+ *
+ * These classes are additive; section-level classes opt in only where
+ * the section has a fresh `.jjz-section` wrapper. Existing sections
+ * can apply `.jjz-section-tight` or `.jjz-section-header-tight` etc. on
+ * top of their existing layout for instant compaction.
+ */
+.jjz-section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+@media (min-width: 768px) {
+  .jjz-section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+.jjz-section .jjz-container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 72rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+@media (min-width: 768px) {
+  .jjz-section .jjz-container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* Section header typography — tame the display sizes. */
+.jjz-h-eyebrow {
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.jjz-h-title {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #18181b;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  margin-top: 0.5rem;
+}
+@media (min-width: 768px) {
+  .jjz-h-title {
+    font-size: 1.75rem;
+  }
+}
+@media (min-width: 1024px) {
+  .jjz-h-title {
+    font-size: 2rem;
+  }
+}
+.jjz-h-lede {
+  margin-top: 0.75rem;
+  color: #52525b;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  max-width: 38rem;
+}
+@media (min-width: 768px) {
+  .jjz-h-lede {
+    font-size: 0.9375rem;
+  }
+}
+
+/*
+ * Every `<section>` on the page sets `scroll-margin-top` so that when
+ * the user clicks an anchor link (e.g. "Location" in the nav), the
+ * destination lands below the fixed nav bar instead of being hidden
+ * behind it.
+ */
+section[id] {
+  scroll-margin-top: 5rem;
+}

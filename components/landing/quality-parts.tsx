@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
+import { SectionContainer, SectionHeader } from "./section-header";
 
 const parts = [
   {
@@ -62,29 +63,19 @@ const guarantees = [
 
 export function QualityParts() {
   return (
-    <section className="bg-amber-50/30 border-t border-amber-100/60 py-16 md:py-20">
-      <div className="mx-auto max-w-6xl px-6">
-        <ScrollReveal
-          variant="fadeUp"
-          amount={0.4}
-          className="text-center max-w-2xl mx-auto"
-        >
-          <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
-            Our finest parts
-          </p>
-          <h2 className="mt-3 font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900">
-            We use quality parts.
-          </h2>
-          <p className="mt-4 text-zinc-600 leading-relaxed">
-            Screens, batteries, charging ports, and motherboards — sourced
-            from trusted suppliers, backed by a parts warranty.
-          </p>
-        </ScrollReveal>
+    <section className="bg-amber-50/30 border-t border-amber-100/60 py-12 md:py-16">
+      <SectionContainer>
+        <SectionHeader
+          eyebrow="Our finest parts"
+          title="We use quality parts."
+          lede="Screens, batteries, charging ports, and motherboards — sourced
+          from trusted suppliers, backed by a parts warranty."
+        />
 
         <StaggerReveal
           amount={0.15}
           staggerDelay={0.1}
-          className="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5"
+          className="mt-8 md:mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4"
         >
           {parts.map(
             ({ icon: Icon, title, blurb, price, imageLabel, imageSrc }, i) => (
@@ -94,7 +85,7 @@ export function QualityParts() {
                 className="h-full"
               >
                 <SpotlightCard
-                  className="!p-0 group flex flex-col overflow-hidden hover:shadow-xl hover:shadow-amber-500/10 transition-all h-full"
+                  className="!p-0 group flex flex-col overflow-hidden rounded-xl hover:shadow-lg hover:shadow-amber-500/10 transition-all h-full"
                   spotlightColor="rgba(245, 158, 11, 0.18)"
                 >
                   <div className="relative w-full aspect-square overflow-hidden bg-zinc-900">
@@ -107,20 +98,20 @@ export function QualityParts() {
                       className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
                     />
                   </div>
-                  <div className="p-5 flex flex-col flex-1">
-                    <div className="flex items-center gap-2 text-amber-600">
-                      <Icon className="w-4 h-4" strokeWidth={1.8} />
-                      <span className="text-[10px] uppercase tracking-[0.2em] font-semibold">
+                  <div className="p-3.5 flex flex-col flex-1">
+                    <div className="flex items-center gap-1.5 text-amber-600">
+                      <Icon className="w-3.5 h-3.5" strokeWidth={1.8} />
+                      <span className="text-[9px] uppercase tracking-[0.2em] font-semibold">
                         Premium
                       </span>
                     </div>
-                    <h3 className="mt-2 text-base font-semibold text-zinc-900">
+                    <h3 className="mt-1.5 text-sm font-semibold text-zinc-900">
                       {title}
                     </h3>
-                    <p className="mt-1.5 text-xs text-zinc-500 leading-relaxed flex-1">
+                    <p className="mt-1 text-xs text-zinc-500 leading-relaxed flex-1">
                       {blurb}
                     </p>
-                    <p className="mt-3 font-display text-base font-bold text-amber-600">
+                    <p className="mt-2 font-display text-sm font-bold text-amber-600">
                       {price}
                     </p>
                   </div>
@@ -130,24 +121,24 @@ export function QualityParts() {
           )}
         </StaggerReveal>
 
-        {/* Guarantee strip */}
+        {/* Guarantee strip — tighter for compact density */}
         <StaggerReveal
           amount={0.3}
           staggerDelay={0.15}
           delay={0.3}
-          className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-3.5 md:gap-4"
+          className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3"
         >
           {guarantees.map(({ icon: Icon, title, blurb }) => (
             <StaggerItem key={title} variant="fadeUp">
               <SpotlightCard
-                className="!p-5 flex items-start gap-4 hover:shadow-md hover:shadow-amber-500/5 transition-all"
+                className="!p-4 flex items-start gap-3 hover:shadow-md hover:shadow-amber-500/5 transition-all"
                 spotlightColor="rgba(245, 158, 11, 0.18)"
               >
-                <div className="inline-flex w-10 h-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600 shrink-0">
+                <div className="inline-flex w-9 h-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600 shrink-0">
                   <Icon className="w-4 h-4" strokeWidth={1.8} />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-zinc-900">
+                  <h3 className="text-sm font-semibold text-zinc-900">
                     {title}
                   </h3>
                   <p className="mt-1 text-xs text-zinc-500">{blurb}</p>
@@ -156,7 +147,7 @@ export function QualityParts() {
             </StaggerItem>
           ))}
         </StaggerReveal>
-      </div>
+      </SectionContainer>
     </section>
   );
 }

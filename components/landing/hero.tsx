@@ -231,8 +231,13 @@ export function Hero() {
         }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 pt-16 md:pt-20 pb-10 md:pb-14">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      {/* Tighter container + more horizontal padding — desktop gets
+          ~10% breathing room, the rest scales down to a max-w-6xl so
+          the hero never feels "stretched" against the viewport edges.
+          Generous top padding keeps the hero content clear of the
+          fixed-top nav bar (which sits ~58px from the viewport edge). */}
+      <div className="relative mx-auto max-w-6xl px-6 sm:px-8 lg:px-10 pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
           {/* Left column — copy + CTAs + trust chips.
               The inline `transform: translateX(-80px)` mirrors the GSAP
               `from` state so the column is already off-screen on first
@@ -254,26 +259,27 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Headline.
-                The H1 carries the primary keyword + city + service category
-                — this is the single most important on-page ranking signal
-                for the homepage, so the words below are deliberate. */}
+            {/* Headline — down-sized one step across the board so it
+                reads as "compact, professional" instead of "stretched".
+                The H1 still carries the primary keyword + city +
+                service category — that's the single most important
+                on-page ranking signal — but at a more controlled size. */}
             <h1
               ref={headlineRef}
-              className="mt-4 font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight text-zinc-900"
+              className="mt-3 font-display text-2xl sm:text-3xl md:text-[2rem] lg:text-[2.25rem] font-bold leading-[1.15] tracking-tight text-zinc-900"
             >
               <span className="block">JJZ TECH — Cellphone, Laptop</span>
               <span className="block text-brand-gradient">
                 &amp; Computer Repair
               </span>
-              <span className="block text-zinc-700 text-lg sm:text-xl md:text-2xl lg:text-3xl mt-1">
+              <span className="block text-zinc-700 text-base sm:text-lg md:text-xl mt-0.5">
                 in Binangonan, Rizal
               </span>
             </h1>
 
             <p
               ref={descriptionRef}
-              className="mt-4 max-w-xl mx-auto lg:mx-0 text-center lg:text-left text-zinc-600 text-sm md:text-base leading-relaxed"
+              className="mt-3 max-w-lg mx-auto lg:mx-0 text-center lg:text-left text-zinc-600 text-xs md:text-sm leading-relaxed"
               style={{ transform: "translateY(12px)" }}
             >
               JJZ-repair: same-day diagnostics on phone, laptop and computer
@@ -281,16 +287,16 @@ export function Hero() {
               parts, board-level specialists.
             </p>
 
-            {/* CTAs */}
+            {/* CTAs — slightly smaller padding for the more compact feel */}
             <div
               ref={ctasRef}
-              className="mt-5 flex flex-col sm:flex-row gap-2 items-center lg:items-start lg:justify-start justify-center"
+              className="mt-4 flex flex-col sm:flex-row gap-2 items-center lg:items-start lg:justify-start justify-center"
             >
               <a
                 href={MESSENGER_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-zinc-950 font-bold shadow-md shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02] transition-all text-xs"
+                className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-zinc-950 font-bold shadow-md shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02] transition-all text-xs"
               >
                 <MessageCircle className="w-3.5 h-3.5" />
                 Book a Repair
@@ -298,7 +304,7 @@ export function Hero() {
               </a>
               <a
                 href={`tel:${PHONE_TEL}`}
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-zinc-200 bg-white text-zinc-900 font-semibold hover:border-amber-300 hover:bg-amber-50 transition-colors shadow-sm text-xs"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-zinc-200 bg-white text-zinc-900 font-semibold hover:border-amber-300 hover:bg-amber-50 transition-colors shadow-sm text-xs"
               >
                 <Phone className="w-3.5 h-3.5" />
                 {PHONE_DISPLAY}
@@ -308,12 +314,12 @@ export function Hero() {
             {/* Trust chips */}
             <ul
               ref={trustChipsRef}
-              className="mt-4 flex flex-wrap items-center lg:items-start lg:justify-start justify-center gap-1.5"
+              className="mt-3 flex flex-wrap items-center lg:items-start lg:justify-start justify-center gap-1.5"
             >
               {trustChips.map(({ icon: Icon, label }) => (
                 <li
                   key={label}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-zinc-200 bg-white text-zinc-700 text-[10px] md:text-xs"
+                  className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-zinc-200 bg-white text-zinc-700 text-[10px] md:text-xs"
                 >
                   <Icon className="w-3 h-3 text-amber-500" />
                   {label}
@@ -325,10 +331,12 @@ export function Hero() {
           {/* Right column — before/after image comparison slider.
               `transform: translateX(100px) scale(0.96)` mirrors the GSAP
               `from` state so the comparison card is already off to the
-              right on first paint; useLayoutEffect animates it left. */}
+              right on first paint; useLayoutEffect animates it left.
+              The max-w-md cap keeps the slider from getting too wide on
+              large displays. */}
           <div
             ref={comparisonRef}
-            className="relative"
+            className="relative mx-auto w-full max-w-md lg:max-w-none"
             style={{ transform: "translateX(100px) scale(0.96)" }}
           >
             <ImageComparison
@@ -344,22 +352,22 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Stats bar */}
+      {/* Stats bar — narrower container + smaller stat sizes */}
       <div
         ref={statsRef}
-        className="relative mx-auto max-w-5xl px-6 pb-10 md:pb-14"
+        className="relative mx-auto max-w-4xl px-6 sm:px-8 pb-8 md:pb-10"
         style={{ transform: "translateY(18px)" }}
       >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
           {stats.map((s) => (
             <div
               key={s.label}
-              className="rounded-xl border border-zinc-200 bg-white p-3 md:p-4 text-center"
+              className="rounded-lg border border-zinc-200 bg-white p-2.5 md:p-3 text-center"
             >
-              <p className="font-display text-xl md:text-2xl font-bold text-brand-gradient">
+              <p className="font-display text-base md:text-lg font-bold text-brand-gradient">
                 {s.value}
               </p>
-              <p className="mt-0.5 text-[11px] md:text-xs text-zinc-500">
+              <p className="mt-0.5 text-[10px] md:text-xs text-zinc-500">
                 {s.label}
               </p>
             </div>
@@ -367,48 +375,49 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Quick info strip — three SpotlightCard hovers */}
+      {/* Quick info strip — three SpotlightCard hovers.
+          Tighter padding + smaller icons for the compact feel. */}
       <div className="relative bg-white border-t border-zinc-200">
         <div
           ref={bottomCardsRef}
-          className="mx-auto max-w-6xl px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-4"
+          className="mx-auto max-w-5xl px-6 sm:px-8 py-6 grid grid-cols-1 md:grid-cols-3 gap-3"
         >
-          <SpotlightCard className="!p-5" spotlightColor="rgba(245, 158, 11, 0.18)">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="inline-flex w-9 h-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+          <SpotlightCard className="!p-4" spotlightColor="rgba(245, 158, 11, 0.18)">
+            <div className="flex items-center gap-2.5 mb-1.5">
+              <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
                 <Smartphone className="w-4 h-4" strokeWidth={1.8} />
               </span>
-              <p className="text-[11px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
                 Cellphone
               </p>
             </div>
-            <p className="text-zinc-700 text-sm leading-relaxed">
+            <p className="text-zinc-700 text-xs leading-relaxed">
               Screen, battery, water damage, iCloud, FRP, hang on logo.
             </p>
           </SpotlightCard>
-          <SpotlightCard className="!p-5" spotlightColor="rgba(245, 158, 11, 0.18)">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="inline-flex w-9 h-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+          <SpotlightCard className="!p-4" spotlightColor="rgba(245, 158, 11, 0.18)">
+            <div className="flex items-center gap-2.5 mb-1.5">
+              <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
                 <Laptop className="w-4 h-4" strokeWidth={1.8} />
               </span>
-              <p className="text-[11px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
                 Laptop
               </p>
             </div>
-            <p className="text-zinc-700 text-sm leading-relaxed">
+            <p className="text-zinc-700 text-xs leading-relaxed">
               No-power, screen, keyboard, battery, overheating, OS install.
             </p>
           </SpotlightCard>
-          <SpotlightCard className="!p-5" spotlightColor="rgba(245, 158, 11, 0.18)">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="inline-flex w-9 h-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+          <SpotlightCard className="!p-4" spotlightColor="rgba(245, 158, 11, 0.18)">
+            <div className="flex items-center gap-2.5 mb-1.5">
+              <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
                 <Monitor className="w-4 h-4" strokeWidth={1.8} />
               </span>
-              <p className="text-[11px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
                 Computer
               </p>
             </div>
-            <p className="text-zinc-700 text-sm leading-relaxed">
+            <p className="text-zinc-700 text-xs leading-relaxed">
               Blue screen, virus removal, SSD upgrade, data recovery.
             </p>
           </SpotlightCard>

@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 const ShopMap = dynamic(() => import("./map"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full min-h-[320px] lg:min-h-[420px] rounded-2xl border border-zinc-200 bg-zinc-100 grid place-items-center text-sm text-zinc-500">
+    <div className="w-full h-full min-h-64 sm:min-h-72 lg:min-h-full rounded-2xl border border-zinc-200 bg-zinc-100 grid place-items-center text-sm text-zinc-500">
       Loading map…
     </div>
   ),
@@ -16,10 +16,9 @@ const ShopMap = dynamic(() => import("./map"), {
 
 /**
  * Wrapper that defers mounting the Leaflet map until the section
- * approaches the viewport. Without this gate the Leaflet bundle,
- * tile-layer requests, and tile image decodes all kick off during
- * initial paint — even though the section is far below the fold and
- * the user may never scroll there.
+ * approaches the viewport. The wrapper container is `h-full` so it
+ * inherits the height from its parent grid cell — Leaflet does not
+ * get to choose how tall the map is.
  */
 export default function LazyShopMap() {
   const ref = useRef<HTMLDivElement>(null);
@@ -28,8 +27,6 @@ export default function LazyShopMap() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // Mount ~300px before the section enters the viewport, so by the
-    // time the user scrolls to it the tiles have already loaded.
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -43,15 +40,12 @@ export default function LazyShopMap() {
     return () => io.disconnect();
   }, []);
 
-  // Render the wrapper on every server / first-paint so layout doesn't
-  // shift when the dynamic chunk loads. The dynamic component is only
-  // mounted once `shouldMount` flips true.
   return (
-    <div ref={ref} className="w-full h-full min-h-[320px] lg:min-h-[420px]">
+    <div ref={ref} className="w-full h-full min-h-64 sm:min-h-72 lg:min-h-full">
       {shouldMount ? (
         <ShopMap />
       ) : (
-        <div className="w-full h-full min-h-[320px] lg:min-h-[420px] rounded-2xl border border-zinc-200 bg-zinc-100 grid place-items-center text-sm text-zinc-500">
+        <div className="w-full h-full min-h-64 sm:min-h-72 lg:min-h-full rounded-2xl border border-zinc-200 bg-zinc-100 grid place-items-center text-sm text-zinc-500">
           Map will load as you scroll…
         </div>
       )}

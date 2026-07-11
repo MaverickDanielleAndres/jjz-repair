@@ -3,6 +3,7 @@
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { LogoCloud } from "@/components/ui/logo-cloud-2";
 import { ScrollReveal, StaggerReveal } from "@/components/ui/scroll-reveal";
+import { SectionContainer, SectionHeader } from "./section-header";
 import { SUPPORTED_BRANDS } from "./site-data";
 
 export function Brands() {
@@ -15,12 +16,12 @@ export function Brands() {
   }));
 
   return (
-    <section className="bg-stone-100/70 border-y border-stone-200 py-6 md:py-8">
-      <div className="mx-auto max-w-6xl px-6">
+    <section className="bg-stone-100/70 border-y border-stone-200 py-8 md:py-10">
+      <SectionContainer>
         <ScrollReveal
           variant="fadeUp"
           amount={0.5}
-          className="text-center text-xs md:text-sm uppercase tracking-[0.25em] text-amber-700 font-semibold"
+          className="text-center text-[11px] md:text-xs uppercase tracking-[0.22em] text-amber-700 font-semibold"
         >
           We service all major brands
         </ScrollReveal>
@@ -47,7 +48,7 @@ export function Brands() {
                 key={brand.name}
                 className="flex items-center justify-center min-w-[110px] h-9 px-4"
               >
-                <span className="text-zinc-800 font-bold text-base md:text-lg tracking-tight whitespace-nowrap select-none hover:text-amber-600 transition-colors">
+                <span className="text-zinc-800 font-bold text-sm md:text-base tracking-tight whitespace-nowrap select-none hover:text-amber-600 transition-colors">
                   {brand.name}
                 </span>
               </div>
@@ -64,11 +65,11 @@ export function Brands() {
           variant="scaleUp"
           amount={0.15}
           delay={0.2}
-          className="mt-2 md:mt-3"
+          className="mt-3 md:mt-4"
         >
           <LogoCloud logos={logos} />
         </ScrollReveal>
-      </div>
+      </SectionContainer>
     </section>
   );
 }

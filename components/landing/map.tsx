@@ -311,7 +311,10 @@ export default function ShopMap() {
   }, []);
 
   return (
-    <div className="relative w-full h-full min-h-[320px] lg:min-h-[420px] rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-100">
+    // The outer container is `h-full` (not `min-h-*`) so it strictly
+    // inherits its parent's height — Leaflet's `.invalidateSize()` calls
+    // on mount can no longer balloon the column past the grid cell.
+    <div className="relative w-full h-full rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-100">
       <div ref={containerRef} className="absolute inset-0" />
       {!ready && !failed && (
         <div className="absolute inset-0 grid place-items-center text-sm text-zinc-500">

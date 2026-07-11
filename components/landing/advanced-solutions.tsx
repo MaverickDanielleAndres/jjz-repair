@@ -18,6 +18,7 @@ import {
   type CarouselFeature,
 } from "@/components/ui/feature-carousel";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { SectionContainer, SectionHeader } from "./section-header";
 
 const features: CarouselFeature[] = [
   {
@@ -89,7 +90,8 @@ const features: CarouselFeature[] = [
     label: "Tablet Repair",
     icon: Tablet,
     image: "",
-    description: "iPad, Android tablets — screen, battery, charging, software.",
+    description:
+      "iPad, Android tablets — screen, battery, charging, software.",
   },
   {
     id: "motherboard",
@@ -121,35 +123,25 @@ export function AdvancedSolutions() {
   return (
     <section
       id="solutions"
-      className="bg-stone-50 border-t border-stone-200 py-16 md:py-20"
+      className="bg-stone-50 border-t border-stone-200 py-12 md:py-16"
     >
-      <div className="mx-auto max-w-6xl px-6">
-        <ScrollReveal
-          variant="fadeUp"
-          amount={0.4}
-          className="text-center max-w-2xl mx-auto"
-        >
-          <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
-            Advanced solutions
-          </p>
-          <h2 className="mt-3 font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900">
-            Beyond the standard repair.
-          </h2>
-          <p className="mt-4 text-zinc-600 leading-relaxed">
-            Box &amp; dongle activations, schematics, credit services, and
-            chip-level work for the hard cases. No job is too deep.
-          </p>
-        </ScrollReveal>
+      <SectionContainer>
+        <SectionHeader
+          eyebrow="Advanced solutions"
+          title="Beyond the standard repair."
+          lede="Box & dongle activations, schematics, credit services, and
+          chip-level work for the hard cases. No job is too deep."
+        />
 
         <ScrollReveal
           variant="scaleUp"
           amount={0.15}
           delay={0.2}
-          className="mt-8"
+          className="mt-6"
         >
           <FeatureCarousel features={features} accentBg="#1a1d24" />
         </ScrollReveal>
-      </div>
+      </SectionContainer>
     </section>
   );
 }

@@ -79,8 +79,8 @@ export function Header() {
         className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
         style={{ transform: "translateY(-100px)" }}
       >
-        <div className="mx-auto max-w-5xl px-3 md:px-5 pt-2.5 md:pt-3">
-          <div className="flex items-center justify-between gap-2 rounded-full border border-zinc-200 bg-white/90 backdrop-blur-md shadow-sm px-2 md:px-3 py-1.5 md:py-1.5 pointer-events-auto">
+        <div className="mx-auto max-w-6xl px-3 sm:px-6 md:px-8 pt-2 md:pt-3">
+          <div className="flex items-center justify-between gap-2 rounded-full border border-zinc-200 bg-white/90 backdrop-blur-md shadow-sm px-2 md:px-3 py-1.5 pointer-events-auto">
             {/* Logo + brand */}
             <a
               href="#home"
@@ -90,8 +90,8 @@ export function Header() {
               <Image
                 src="/logo-nobg.png"
                 alt={BRAND_NAME}
-                width={40}
-                height={40}
+                width={36}
+                height={36}
                 className="h-7 w-7 md:h-8 md:w-8 object-contain"
                 priority
               />
@@ -103,7 +103,7 @@ export function Header() {
             {/* Center — JJZ REPAIR name on mobile/tablet, full nav on desktop */}
             <div className="flex-1 flex items-center justify-center md:justify-center">
               {/* Mobile + tablet: brand name fills the middle */}
-              <span className="md:hidden font-display text-base font-bold text-zinc-900 tracking-tight select-none">
+              <span className="md:hidden font-display text-sm font-bold text-zinc-900 tracking-tight select-none">
                 JJZ <span className="text-amber-500">REPAIR</span>
               </span>
               {/* Desktop: full nav links */}

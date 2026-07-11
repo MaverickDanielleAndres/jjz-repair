@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { motion } from "motion/react";
-import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
+import { SectionContainer, SectionHeader } from "./section-header";
 
 const faqs = [
   {
@@ -46,82 +45,71 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      className="bg-stone-50 border-t border-stone-200 py-16 md:py-20 jjz-defer"
+      className="bg-stone-50 border-t border-stone-200 py-12 md:py-16 jjz-defer"
     >
-      <div className="mx-auto max-w-3xl px-6">
-        {/* Centered header like the reference */}
-        <ScrollReveal
-          variant="fadeUp"
-          amount={0.4}
-          delay={0.05}
-          className="text-center"
-        >
-          <p className="text-[11px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
-            FAQ&apos;s
-          </p>
-          <h2 className="mt-2 font-display text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-zinc-900">
-            Looking for answer?
-          </h2>
-          <p className="mt-3 text-sm md:text-base text-zinc-600 leading-relaxed max-w-xl mx-auto">
-            Quick answers to the things customers ask most — from pricing
-            and turnaround to warranty and what to do if your phone gets wet.
-          </p>
-        </ScrollReveal>
+      <SectionContainer>
+        <SectionHeader
+          eyebrow="FAQ's"
+          title={<>Looking for answer?</>}
+          lede="Quick answers to the things customers ask most — from pricing
+          and turnaround to warranty and what to do if your phone gets wet."
+        />
 
-        {/* Accordion */}
-        <StaggerReveal
-          amount={0.15}
-          staggerDelay={0.06}
-          className="mt-10 space-y-2.5"
-        >
+        {/*
+          Plain centered container — no ScrollReveal wrapper, no
+          transforms. `mx-auto w-full max-w-2xl` centers the
+          accordion inside the SectionContainer's wider max-w-6xl,
+          and `space-y-2` gives an even 8px gap between rows. Left and
+          right margins always line up regardless of viewport.
+        */}
+        <div className="mt-8 mx-auto w-full max-w-2xl space-y-2">
           {faqs.map((f, i) => {
             const isOpen = open === i;
             return (
-              <StaggerItem key={f.q} variant="fadeLeft">
-                <li
-                  className="rounded-xl border border-zinc-200 bg-white overflow-hidden hover:border-amber-300 transition-colors"
+              <div
+                key={f.q}
+                className="w-full rounded-xl border border-zinc-200 bg-white overflow-hidden hover:border-amber-300 transition-colors"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  aria-expanded={isOpen}
+                  className="w-full flex items-center gap-3 text-left px-4 py-3 text-sm md:text-base"
+                  // Browser extensions (LastPass, 1Password, etc.)
+                  // inject `fdprocessedid` onto interactive elements
+                  // at runtime, which causes React to log a hydration
+                  // mismatch warning. See HydrationSafeButtons.
+                  suppressHydrationWarning
                 >
-                  <button
-                    type="button"
-                    onClick={() => setOpen(isOpen ? null : i)}
-                    aria-expanded={isOpen}
-                    className="w-full flex items-center gap-3 text-left px-4 py-3.5"
-                    // Browser extensions (LastPass, 1Password, etc.)
-                    // inject `fdprocessedid` onto interactive elements
-                    // at runtime, which causes React to log a hydration
-                    // mismatch warning. See HydrationSafeButtons.
-                    suppressHydrationWarning
-                  >
-                    <span className="font-medium text-zinc-900 text-sm md:text-base flex-1">
-                      {f.q}
-                    </span>
-                    <ChevronDown
-                      className={
-                        "w-4 h-4 text-zinc-500 shrink-0 transition-transform duration-300 " +
-                        (isOpen ? "rotate-180 text-amber-600" : "")
-                      }
-                    />
-                  </button>
-                  <div
+                  <span className="font-medium text-zinc-900 flex-1">
+                    {f.q}
+                  </span>
+                  <ChevronDown
                     className={
-                      "grid transition-all duration-300 ease-out " +
-                      (isOpen
-                        ? "grid-rows-[1fr] opacity-100"
-                        : "grid-rows-[0fr] opacity-0")
+                      "w-4 h-4 text-zinc-500 shrink-0 transition-transform duration-300 " +
+                      (isOpen ? "rotate-180 text-amber-600" : "")
                     }
-                  >
-                    <div className="overflow-hidden">
-                      <p className="px-4 pb-4 text-sm text-zinc-600 leading-relaxed">
-                        {f.a}
-                      </p>
-                    </div>
+                  />
+                </button>
+                <div
+                  className={
+                    "grid transition-all duration-300 ease-out " +
+                    (isOpen
+                      ? "grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0")
+                  }
+                >
+                  <div className="overflow-hidden">
+                    <p className="px-4 pb-4 text-sm text-zinc-600 leading-relaxed">
+                      {f.a}
+                    </p>
                   </div>
-                </li>
-              </StaggerItem>
+                </div>
+              </div>
             );
           })}
-        </StaggerReveal>
-      </div>
+        </div>
+      </SectionContainer>
     </section>
   );
 }

@@ -11,6 +11,7 @@ import {
 import { FeatureCard } from "@/components/ui/grid-feature-cards";
 import { PixelCard } from "@/components/ui/pixel-card";
 import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/ui/scroll-reveal";
+import { SectionContainer, SectionHeader } from "./section-header";
 
 const FILTERS: ({ value: "all" | ServiceCategory; label: string })[] = [
   { value: "all", label: "All" },
@@ -49,28 +50,18 @@ export function ServicesGrid() {
   return (
     <section
       id="services"
-      className="bg-stone-50 border-t border-stone-200 py-16 md:py-20"
+      className="bg-stone-50 border-t border-stone-200 py-12 md:py-16"
     >
-      <div className="mx-auto max-w-6xl px-6">
-        <ScrollReveal
-          variant="blurIn"
-          amount={0.4}
-          className="text-center max-w-2xl mx-auto"
-        >
-          <p className="text-xs uppercase tracking-[0.25em] text-amber-600 font-semibold">
-            Services offered
-          </p>
-          <h2 className="mt-3 font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900">
-            Everything we can fix.
-          </h2>
-          <p className="mt-4 text-zinc-600 leading-relaxed">
-            From a cracked screen to a dead motherboard — if it has a chip in
-            it, we probably service it. Search or filter to find what you need.
-          </p>
-        </ScrollReveal>
+      <SectionContainer>
+        <SectionHeader
+          eyebrow="Services offered"
+          title="Everything we can fix."
+          lede="From a cracked screen to a dead motherboard — if it has a chip in
+          it, we probably service it. Search or filter to find what you need."
+        />
 
         {/* Search + filter row */}
-        <div className="mt-8 flex flex-col items-center gap-4 md:flex-row md:items-center md:justify-center md:gap-6">
+        <div className="mt-6 flex flex-col items-center gap-3 md:flex-row md:items-center md:justify-center md:gap-6">
           <div className="relative w-full md:max-w-md">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400"
@@ -82,14 +73,14 @@ export function ServicesGrid() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search services (e.g. screen, battery, iCloud)"
               aria-label="Search services"
-              className="w-full pl-10 pr-9 py-2.5 rounded-full border border-zinc-200 bg-white text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-400"
+              className="w-full pl-9 pr-9 py-2 rounded-full border border-zinc-200 bg-white text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-400"
             />
             {query && (
               <button
                 type="button"
                 aria-label="Clear search"
                 onClick={() => setQuery("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -105,8 +96,8 @@ export function ServicesGrid() {
           </p>
         </div>
 
-        {/* Filter pills */}
-        <div className="mt-4 flex flex-wrap gap-2 justify-center">
+        {/* Filter pills — compact size for professional density */}
+        <div className="mt-3 flex flex-wrap gap-2 justify-center">
           {FILTERS.map((f) => {
             const active = f.value === filter;
             return (
@@ -116,7 +107,7 @@ export function ServicesGrid() {
                 onClick={() => setFilter(f.value)}
                 aria-pressed={active}
                 className={
-                  "px-3.5 py-1.5 rounded-full text-sm font-medium border transition-colors " +
+                  "px-3 py-1 rounded-full text-xs font-medium border transition-colors " +
                   (active
                     ? "bg-amber-500 text-zinc-950 border-amber-500"
                     : "bg-white text-zinc-700 border-zinc-200 hover:border-amber-300 hover:text-amber-700")
@@ -133,40 +124,40 @@ export function ServicesGrid() {
           <StaggerReveal
             amount={0.1}
             staggerDelay={0.05}
-            className="mt-10 flex flex-wrap justify-center gap-4 md:gap-5"
+            className="mt-8 flex flex-wrap justify-center gap-3 md:gap-4"
           >
             {filtered.map((service, i) => (
               <div
                 key={`${service.title}-${i}`}
-                className="w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.83rem)] lg:w-[calc(25%-0.9375rem)]"
+                className="w-[calc(50%-0.4rem)] md:w-[calc(33.333%-0.7rem)] lg:w-[calc(25%-0.85rem)]"
               >
                 <PixelCard
                   variant="amber"
-                  className="h-full rounded-2xl"
+                  className="h-full rounded-xl"
                 >
                   <FeatureCard
                     feature={service}
-                    className="rounded-2xl h-full !border-transparent hover:!border-transparent bg-transparent"
+                    className="rounded-xl h-full !border-transparent hover:!border-transparent bg-transparent !p-3 md:!p-4"
                   />
                 </PixelCard>
               </div>
             ))}
           </StaggerReveal>
         ) : (
-          <div className="mt-12 rounded-2xl border border-dashed border-zinc-300 bg-zinc-50 p-10 text-center">
-            <p className="text-zinc-600">
+          <div className="mt-10 rounded-2xl border border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
+            <p className="text-zinc-600 text-sm">
               No services match your search.
             </p>
             <button
               type="button"
               onClick={reset}
-              className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-500 text-zinc-950 text-sm font-semibold hover:bg-amber-400"
+              className="mt-3 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-500 text-zinc-950 text-xs font-semibold hover:bg-amber-400"
             >
-              <X className="w-3.5 h-3.5" /> Clear filters
+              <X className="w-3 h-3" /> Clear filters
             </button>
           </div>
         )}
-      </div>
+      </SectionContainer>
     </section>
   );
 }
