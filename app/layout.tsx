@@ -204,7 +204,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-white text-zinc-900 font-sans overflow-x-hidden">
+      <body className="min-h-full flex flex-col bg-white text-zinc-900 font-sans overflow-x-clip max-w-full">
         <HydrationSafeButtons />
         <SuppressExtensionErrors />
         {children}
