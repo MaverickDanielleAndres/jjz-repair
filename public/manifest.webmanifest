@@ -1,0 +1,17 @@
+{
+  "name": "JJZ TECH",
+  "short_name": "JJZ TECH",
+  "description": "Cellphone, Laptop & Computer Repair in Binangonan, Rizal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f59e0b",
+  "icons": [
+    {
+      "src": "/logo-nobg.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

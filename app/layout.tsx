@@ -111,7 +111,6 @@ export const metadata: Metadata = {
     shortcut: "/logo-nobg.png",
     apple: "/logo-nobg.png",
   },
-  manifest: `${SITE_URL}/manifest.webmanifest`,
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
@@ -168,6 +167,8 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        <link rel="manifest" href="/manifest.webmanifest" crossOrigin="use-credentials" />
+
         {/* LocalBusiness / RepairShop structured data. Emitted once at the
             root so every route inherits the same NAP graph. */}
         <script
