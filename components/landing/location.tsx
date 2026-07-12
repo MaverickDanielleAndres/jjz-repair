@@ -19,7 +19,7 @@ export function Location() {
   return (
     <section
       id="location"
-      className="bg-white border-t border-zinc-200 py-12 md:py-16"
+      className="bg-white border-t border-zinc-200 py-12 md:py-16 overflow-hidden"
     >
       <SectionContainer>
         <SectionHeader

@@ -40,7 +40,7 @@ const cards = [
 
 export function WhatWeOffer() {
   return (
-    <section className="bg-white border-t border-zinc-200 py-12 md:py-16">
+    <section className="bg-white border-t border-zinc-200 py-12 md:py-16 overflow-hidden">
       <SectionContainer>
         <SectionHeader
           eyebrow="Our services"

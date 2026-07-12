@@ -14,7 +14,7 @@ const PAYMENT_METHODS: PaymentMethod[] = [
 
 export function PaymentInfo() {
   return (
-    <section className="bg-amber-50/30 border-t border-amber-100/40 py-12 md:py-16 jjz-defer">
+    <section className="bg-amber-50/30 border-t border-amber-100/40 py-12 md:py-16 jjz-defer overflow-hidden">
       <SectionContainer>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
           <ScrollReveal variant="fadeLeft" amount={0.4}>

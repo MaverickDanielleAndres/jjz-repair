@@ -16,7 +16,7 @@ export function Brands() {
   }));
 
   return (
-    <section className="bg-stone-100/70 border-y border-stone-200 py-8 md:py-10">
+    <section className="bg-stone-100/70 border-y border-stone-200 py-8 md:py-10 overflow-hidden">
       <SectionContainer>
         <ScrollReveal
           variant="fadeUp"
