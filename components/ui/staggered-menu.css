@@ -4,6 +4,7 @@
   height: 100%;
   z-index: 40;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .staggered-menu-wrapper.fixed-wrapper {
