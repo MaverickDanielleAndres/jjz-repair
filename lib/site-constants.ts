@@ -33,15 +33,15 @@ export const ADDRESS = {
   region: "Rizal",
   country: "PH",
   /** Single-line for display + schema `streetAddress`. */
-  formatted: "1544 Manila E Rd, Binangonan, Rizal, Philippines",
+  formatted: "1544 Manila E Rd, Binangonan, 1940 Rizal, Philippines",
   /** Comma-separated for `addressLocality, addressRegion, addressCountry`. */
   postal: "1940",
 } as const;
 
 /** OpenStreetMap coordinates used by the on-site Leaflet map. */
 export const GEO = {
-  latitude: 14.5179341,
-  longitude: 121.1587085,
+  latitude: 14.5141276,
+  longitude: 121.16231,
 } as const;
 
 export const HOURS = [

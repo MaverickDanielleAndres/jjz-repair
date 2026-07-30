@@ -55,7 +55,7 @@ export function localBusinessJsonLd(): string {
           longitude: GEO.longitude,
         },
         hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-          ADDRESS.formatted,
+          `${BRAND.displayName}, ${ADDRESS.formatted}`,
         )}`,
         openingHoursSpecification: HOURS.map((h) => {
           const spec: Record<string, unknown> = {

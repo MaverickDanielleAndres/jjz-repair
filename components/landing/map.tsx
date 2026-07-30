@@ -25,9 +25,7 @@ const TILE_ATTR =
 
 const SHOP_IMAGE = "/location.png";
 
-const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-  `${BRAND_NAME}, ${ADDRESS}`
-)}`;
+const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=14.5141276,121.16231`;
 
 /**
  * The fullscreen image modal. Renders via createPortal into document.body

@@ -139,8 +139,8 @@ export const metadata: Metadata = {
   other: {
     "geo.region": "PH-RIZ",
     "geo.placename": "Binangonan, Rizal, Philippines",
-    "geo.position": `14.5179341;121.1587085`,
-    ICBM: "14.5179341, 121.1587085",
+    "geo.position": `14.5141276;121.16231`,
+    ICBM: "14.5141276, 121.16231",
     "business:contact_data:street_address": "1544 Manila East Road",
     "business:contact_data:locality": "Binangonan",
     "business:contact_data:region": "Rizal",

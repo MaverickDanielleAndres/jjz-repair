@@ -11,9 +11,7 @@ import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { SectionContainer, SectionHeader } from "./section-header";
 
-const directionsURL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-  `${BRAND_NAME}, ${ADDRESS}`
-)}`;
+const directionsURL = `https://www.google.com/maps/dir/?api=1&destination=14.5141276,121.16231`;
 
 export function Location() {
   return (

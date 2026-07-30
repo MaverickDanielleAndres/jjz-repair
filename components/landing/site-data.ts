@@ -57,12 +57,12 @@ export const MESSENGER_URL = "https://m.me/jjztech";
 export const PHONE_DISPLAY = "0928 066 3629";
 export const PHONE_TEL = "+639280663629";
 export const EMAIL_TO = "jjztechph@gmail.com";
-export const ADDRESS = "1544 Manila E Rd, Binangonan, Rizal";
-export const BRAND_NAME = "JJZ-TECH";
+export const ADDRESS = "1544 Manila E Rd, Binangonan, 1940 Rizal";
+export const BRAND_NAME = "JJZ TECH";
 
-// Map coordinates for 1544 Manila E Rd, Binangonan, Rizal
+// Map coordinates for 1544 Manila E Rd, Binangonan, 1940 Rizal
 // (resolved via OpenStreetMap Nominatim for the exact shop location)
-export const MAP_COORDS: [number, number] = [14.5179341, 121.1587085];
+export const MAP_COORDS: [number, number] = [14.5141276, 121.16231];
 export const MAP_ZOOM = 17;
 
 // Social links — fill in real handles
@@ -382,7 +382,7 @@ SHOP INFORMATION
 ═══════════════════════════════════════════
 
 - Name: JJZ TECH (Gadget Repair Shop)
-- Address: 1544 Manila E Rd, Binangonan, Rizal, Philippines
+- Address: 1544 Manila E Rd, Binangonan, 1940 Rizal, Philippines
 - Phone: 0928 066 3629
 - Hours: Mon–Sat 9:00 AM – 7:00 PM | Sun by appointment / Messenger only
 - Messenger: m.me/jjztech (or facebook.com/jjztech)
@@ -505,7 +505,7 @@ Q: "Do you do remote services?"
 A: "Yes. Remote unlock, remote FRP, remote tool setup. Message us on Messenger with your device details and we'll confirm eligibility."
 
 Q: "Where are you located?"
-A: "1544 Manila E Rd, Binangonan, Rizal. We're along Manila East Road — search 'JJZ TECH Binangonan' on Google Maps for directions."
+A: "1544 Manila E Rd, Binangonan, 1940 Rizal. We're along Manila East Road — search 'JJZ TECH Binangonan' on Google Maps for directions."
 
 Q: "What are your hours?"
 A: "Mon–Sat 9 AM to 7 PM. Sunday by appointment or via Messenger only."
