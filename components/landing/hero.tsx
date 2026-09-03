@@ -32,7 +32,7 @@ const trustChips = [
 ];
 
 const stats = [
-  { value: "5+", label: "Years of experience" },
+  { value: "20+", label: "Years of experience" },
   { value: "3,000+", label: "Devices repaired" },
   { value: "16/7", label: "Messenger support" },
   { value: "98%", label: "Customer satisfaction" },
@@ -46,9 +46,11 @@ const stats = [
 function ComparisonPhoto({
   src,
   alt,
+  preload,
 }: {
   src: string;
   alt: string;
+  preload?: boolean;
 }) {
   return (
     <Image
@@ -58,7 +60,8 @@ function ComparisonPhoto({
       sizes="(max-width: 1024px) 100vw, 50vw"
       className="object-cover object-left"
       draggable={false}
-      priority
+      preload={preload}
+      fetchPriority={preload ? "high" : undefined}
     />
   );
 }
@@ -341,7 +344,7 @@ export function Hero() {
             <ImageComparison
               aspect="video"
               beforeSlot={
-                <ComparisonPhoto src="/after.jpg" alt="Phone after JJZ TECH repair" />
+                <ComparisonPhoto src="/after.jpg" alt="Phone after JJZ TECH repair" preload />
               }
               afterSlot={
                 <ComparisonPhoto src="/before.jpg" alt="Cracked phone before repair" />
@@ -384,10 +387,10 @@ export function Hero() {
         >
           <SpotlightCard className="!p-4" spotlightColor="rgba(245, 158, 11, 0.18)">
             <div className="flex items-center gap-2.5 mb-1.5">
-              <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+              <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
                 <Smartphone className="w-4 h-4" strokeWidth={1.8} />
               </span>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-amber-700 font-semibold">
                 Cellphone
               </p>
             </div>
@@ -397,10 +400,10 @@ export function Hero() {
           </SpotlightCard>
           <SpotlightCard className="!p-4" spotlightColor="rgba(245, 158, 11, 0.18)">
             <div className="flex items-center gap-2.5 mb-1.5">
-              <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+              <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
                 <Laptop className="w-4 h-4" strokeWidth={1.8} />
               </span>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-amber-700 font-semibold">
                 Laptop
               </p>
             </div>
@@ -410,10 +413,10 @@ export function Hero() {
           </SpotlightCard>
           <SpotlightCard className="!p-4" spotlightColor="rgba(245, 158, 11, 0.18)">
             <div className="flex items-center gap-2.5 mb-1.5">
-              <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+              <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
                 <Monitor className="w-4 h-4" strokeWidth={1.8} />
               </span>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-amber-600 font-semibold">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-amber-700 font-semibold">
                 Computer
               </p>
             </div>

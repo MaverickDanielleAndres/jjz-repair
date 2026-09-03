@@ -10,7 +10,7 @@ const reasons = [
     icon: Wrench,
     title: "Experienced Technicians",
     description:
-      "Years of board-level experience across cellphone, laptop, and computer repair.",
+      "20+ years of board-level experience across cellphone, laptop, and computer repair.",
   },
   {
     icon: Clock,
@@ -62,7 +62,7 @@ export function WhyChooseUs() {
                   aria-hidden
                   className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-amber-50 opacity-0 group-hover:opacity-100 transition-opacity"
                 />
-                <div className="relative inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 mx-auto">
+                <div className="relative inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-50 text-amber-700 mx-auto">
                   <r.icon className="w-4 h-4" strokeWidth={1.8} />
                 </div>
                 <h3 className="relative mt-3 text-sm font-semibold text-zinc-900">

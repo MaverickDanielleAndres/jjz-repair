@@ -83,18 +83,19 @@ export function Footer() {
                 <p className="font-display text-base font-bold text-zinc-900 tracking-tight">
                   {BRAND_NAME}
                 </p>
-                <p className="text-[10px] text-amber-600">
+                <p className="text-[10px] text-amber-700">
                   Gadget Repair Services
                 </p>
               </div>
             </div>
             <p className="mt-3 text-xs text-zinc-600 leading-relaxed max-w-xs">
-              Your trusted partner in gadget repair &amp; solutions. Cellphone,
-              laptop, computer — same-day service, fair prices, quality parts.
+              Your trusted partner in gadget repair &amp; solutions with 20+ years
+              of experience. Cellphone, laptop, computer — same-day service, fair
+              prices, quality parts.
             </p>
             <ul className="mt-4 space-y-2 text-xs flex flex-col items-center md:items-start text-center md:text-left w-full">
               <li className="flex flex-row items-center justify-center md:justify-start gap-1.5 md:gap-2">
-                <MapPin className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-amber-700 shrink-0" />
                 <span>{ADDRESS}</span>
               </li>
               <li>
@@ -102,7 +103,7 @@ export function Footer() {
                   href={`tel:${PHONE_TEL}`}
                   className="flex flex-row items-center justify-center md:justify-start gap-1.5 md:gap-2 hover:text-amber-700"
                 >
-                  <Phone className="w-3.5 h-3.5 text-amber-600" /> 
+                  <Phone className="w-3.5 h-3.5 text-amber-700" />
                   <span>{PHONE_DISPLAY}</span>
                 </a>
               </li>
@@ -111,7 +112,7 @@ export function Footer() {
                   href={`mailto:${EMAIL_TO}`}
                   className="flex flex-row items-center justify-center md:justify-start gap-1.5 md:gap-2 hover:text-amber-700"
                 >
-                  <Mail className="w-3.5 h-3.5 text-amber-600" /> 
+                  <Mail className="w-3.5 h-3.5 text-amber-700" />
                   <span>{EMAIL_TO}</span>
                 </a>
               </li>
@@ -121,15 +122,15 @@ export function Footer() {
           {/* Link columns */}
           {linkColumns.map((col) => (
             <StaggerItem key={col.title} variant="fadeUp" className="md:col-span-2">
-              <h4 className="text-[10px] uppercase tracking-[0.22em] text-amber-600 font-semibold">
+              <h4 className="text-[10px] uppercase tracking-[0.22em] text-amber-700 font-semibold">
                 {col.title}
               </h4>
-              <ul className="mt-3 space-y-1.5 text-xs">
+              <ul className="mt-3 space-y-1 text-xs">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     <a
                       href={l.href}
-                      className="text-zinc-700 hover:text-amber-700"
+                      className="text-zinc-700 hover:text-amber-700 inline-block py-1.5"
                     >
                       {l.label}
                     </a>
@@ -141,7 +142,7 @@ export function Footer() {
 
           {/* Social + hours col */}
           <StaggerItem variant="fadeUp" className="md:col-span-2 flex flex-col items-center md:items-start">
-            <h4 className="text-[10px] uppercase tracking-[0.22em] text-amber-600 font-semibold">
+            <h4 className="text-[10px] uppercase tracking-[0.22em] text-amber-700 font-semibold">
               Connect
             </h4>
             <ul className="mt-3 flex gap-1.5">
@@ -191,7 +192,7 @@ export function Footer() {
               </li>
             </ul>
 
-            <h4 className="mt-4 text-[10px] uppercase tracking-[0.22em] text-amber-600 font-semibold">
+            <h4 className="mt-4 text-[10px] uppercase tracking-[0.22em] text-amber-700 font-semibold">
               Hours
             </h4>
             <ul className="mt-2 text-xs space-y-0.5 text-zinc-700">

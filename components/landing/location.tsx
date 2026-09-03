@@ -68,7 +68,7 @@ export function Location() {
                 <span className="inline-flex w-9 h-9 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
                   <MapPin className="w-4 h-4" strokeWidth={1.8} />
                 </span>
-                <p className="text-[11px] uppercase tracking-[0.22em] text-amber-600 font-semibold">
+                <p className="text-[11px] uppercase tracking-[0.22em] text-amber-700 font-semibold">
                   Our Location
                 </p>
               </div>
@@ -78,9 +78,9 @@ export function Location() {
 
               <dl className="mt-4 space-y-3 text-xs">
                 <div className="flex gap-2.5">
-                  <Clock className="w-3.5 h-3.5 text-amber-600 mt-0.5 shrink-0" />
+                  <Clock className="w-3.5 h-3.5 text-amber-700 mt-0.5 shrink-0" />
                   <div>
-                    <dt className="text-zinc-500 text-[10px] uppercase tracking-[0.18em] font-semibold">
+                    <dt className="text-zinc-700 text-[10px] uppercase tracking-[0.18em] font-semibold">
                       Hours
                     </dt>
                     <dd className="text-zinc-800 mt-0.5 leading-relaxed">
@@ -91,9 +91,9 @@ export function Location() {
                   </div>
                 </div>
                 <div className="flex gap-2.5">
-                  <Phone className="w-3.5 h-3.5 text-amber-600 mt-0.5 shrink-0" />
+                  <Phone className="w-3.5 h-3.5 text-amber-700 mt-0.5 shrink-0" />
                   <div>
-                    <dt className="text-zinc-500 text-[10px] uppercase tracking-[0.18em] font-semibold">
+                    <dt className="text-zinc-700 text-[10px] uppercase tracking-[0.18em] font-semibold">
                       Phone
                     </dt>
                     <dd className="text-zinc-800 mt-0.5">
@@ -107,9 +107,9 @@ export function Location() {
                   </div>
                 </div>
                 <div className="flex gap-2.5">
-                  <Navigation className="w-3.5 h-3.5 text-amber-600 mt-0.5 shrink-0" />
+                  <Navigation className="w-3.5 h-3.5 text-amber-700 mt-0.5 shrink-0" />
                   <div>
-                    <dt className="text-zinc-500 text-[10px] uppercase tracking-[0.18em] font-semibold">
+                    <dt className="text-zinc-700 text-[10px] uppercase tracking-[0.18em] font-semibold">
                       Getting here
                     </dt>
                     <dd className="text-zinc-800 mt-0.5 leading-relaxed">

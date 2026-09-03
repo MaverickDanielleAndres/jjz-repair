@@ -113,7 +113,7 @@ export function ContactForm() {
                 htmlFor="message"
                 className="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1"
               >
-                Message <span className="text-amber-600">*</span>
+                Message <span className="text-amber-700">*</span>
               </label>
               <textarea
                 id="message"
@@ -243,7 +243,7 @@ function Field({
         htmlFor={id}
         className="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1"
       >
-        {label} {required && <span className="text-amber-600">*</span>}
+        {label} {required && <span className="text-amber-700">*</span>}
       </label>
       <input
         id={id}
@@ -302,7 +302,7 @@ function SocialCard({
         </span>
         <span className="block text-xs text-zinc-500 truncate">{handle}</span>
       </span>
-      <span className="text-amber-600 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="text-amber-700 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
         →
       </span>
     </a>

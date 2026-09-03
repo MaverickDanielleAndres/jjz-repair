@@ -176,7 +176,7 @@ export function FeatureCarousel({
                   <feature.icon
                     size={16}
                     strokeWidth={1.8}
-                    className={isActive ? "text-amber-600" : "text-white/70"}
+                    className={isActive ? "text-amber-700" : "text-white/70"}
                   />
                   <span
                     className={cn(
@@ -300,7 +300,7 @@ export function FeatureCarousel({
                     strokeWidth={1.8}
                     className={cn(
                       "shrink-0",
-                      isActive ? "text-amber-600" : "text-white/70",
+                      isActive ? "text-amber-700" : "text-white/70",
                     )}
                   />
                   <span
@@ -410,14 +410,21 @@ export function FeatureCarousel({
                 aria-label={`Go to ${f.label}`}
                 onClick={() => handleChipClick(i)}
                 className={cn(
-                  "h-1.5 rounded-full transition-all duration-300",
-                  i === currentIndex
-                    ? "w-6 bg-amber-500"
-                    : "w-1.5 bg-zinc-300 hover:bg-zinc-400",
+                  "min-h-[24px] min-w-[24px] flex items-center justify-center rounded-full transition-all duration-300 group/dot p-0",
                 )}
                 // See comment on the chip button above — same reason.
                 suppressHydrationWarning
-              />
+              >
+                <span
+                  aria-hidden
+                  className={cn(
+                    "h-2 rounded-full transition-all duration-300",
+                    i === currentIndex
+                      ? "w-6 bg-amber-500"
+                      : "w-2 bg-zinc-300 group-hover/dot:bg-zinc-400",
+                  )}
+                />
+              </button>
             ))}
           </div>
         </div>

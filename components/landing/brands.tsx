@@ -48,7 +48,7 @@ export function Brands() {
                 key={brand.name}
                 className="flex items-center justify-center min-w-[110px] h-9 px-4"
               >
-                <span className="text-zinc-800 font-bold text-sm md:text-base tracking-tight whitespace-nowrap select-none hover:text-amber-600 transition-colors">
+                <span className="text-zinc-800 font-bold text-sm md:text-base tracking-tight whitespace-nowrap select-none hover:text-amber-700 transition-colors">
                   {brand.name}
                 </span>
               </div>

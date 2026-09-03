@@ -93,7 +93,6 @@ function ShopImageModal({ onClose }: { onClose: () => void }) {
             fill
             sizes="(max-width: 1024px) 96vw, 1080px"
             className="object-contain"
-            priority
           />
         </div>
         <button
@@ -326,7 +325,7 @@ export default function ShopMap() {
             href={googleMapsDirections}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-amber-600 underline ml-1"
+            className="text-amber-700 underline ml-1"
           >
             Open in Google Maps
           </a>

@@ -169,6 +169,15 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.webmanifest" crossOrigin="use-credentials" />
 
+        {/* Resource hints. The hero `<Image>` above the fold is served
+            from `/_next/image` — warming that connection cuts ~100ms off
+            LCP on first paint. `dns-prefetch` is the fallback for
+            browsers without preconnect support. The hero `<Image
+            preload>` prop already emits a matching `<link rel="preload">`
+            at the top of <head>, so we don't add one here too. */}
+        <link rel="preconnect" href={SITE_URL} crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href={SITE_URL} />
+
         {/* LocalBusiness / RepairShop structured data. Emitted once at the
             root so every route inherits the same NAP graph. */}
         <script
@@ -184,7 +193,7 @@ export default function RootLayout({
         <script
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: `(function(){if(typeof window==='undefined')return;var p=/MetaMask|chrome-extension:.*\\\\binpage\\\\.js|ethereum|fdprocessedid|window\\\\.ethereum|Receiving end does not exist|Unchecked runtime\\\\.lastError|MaxListenersExceededWarning|Resetting the streams|ObjectMultiplex|A tree hydrated but some attributes|Hydration failed because the initial UI does not match|attribute did not match|Text content does not match server-rendered HTML/i;var a=function(){var m=Array.prototype.slice.call(arguments).map(function(x){if(x&&x.stack)return x.stack;if(x&&x.message)return x.message;if(typeof x==='string')return x;try{return JSON.stringify(x)}catch(_){return String(x)}}).join(' ');return p.test(m)};var oe=console.error.bind(console),ow=console.warn.bind(console),oi=console.info.bind(console);console.error=function(){if(a.apply(null,arguments))return;oe.apply(console,arguments)};console.warn=function(){if(a.apply(null,arguments))return;ow.apply(console,arguments)};console.info=function(){if(a.apply(null,arguments))return;oi.apply(console,arguments)};window.addEventListener('error',function(e){if(e&&e.filename&&/chrome-extension:/.test(e.filename)){e.preventDefault();e.stopImmediatePropagation();return false}})})();`,
+            __html: `(function(){try{if(typeof window==='undefined')return;var p=/MetaMask|chrome-extension|ethereum|fdprocessedid|window\\.ethereum|Receiving end does not exist|Unchecked runtime\\.lastError|MaxListenersExceededWarning|Resetting the streams|ObjectMultiplex|A tree hydrated but some attributes|Hydration failed because the initial UI does not match|attribute did not match|Text content does not match server-rendered HTML/i;var isNoise=function(){var m=Array.prototype.map.call(arguments,function(x){if(x&&x.stack)return x.stack;if(x&&x.message)return x.message;return typeof x==='string'?x:String(x)}).join(' ');return p.test(m)};var oe=console.error.bind(console),ow=console.warn.bind(console),oi=console.info.bind(console);console.error=function(){if(isNoise.apply(null,arguments))return;oe.apply(console,arguments)};console.warn=function(){if(isNoise.apply(null,arguments))return;ow.apply(console,arguments)};console.info=function(){if(isNoise.apply(null,arguments))return;oi.apply(console,arguments)};window.addEventListener('error',function(e){if(e&&e.filename&&/chrome-extension:/.test(e.filename)){e.preventDefault();e.stopImmediatePropagation();return false}})}catch(_){}})();`,
           }}
         />
 
@@ -200,7 +209,7 @@ export default function RootLayout({
         <script
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var attrs=['fdprocessedid','data-extension-id','data-lastpass-icon-added','data-kwgh-uid','data-form-type'];var q=function(){for(var i=0;i<attrs.length;i++){var sel='['+attrs[i]+']';var els=document.querySelectorAll(sel);for(var j=0;j<els.length;j++){els[j].removeAttribute(attrs[i]);}}};q();document.addEventListener('DOMContentLoaded',q);new MutationObserver(function(ms){for(var k=0;k<ms.length;k++){var m=ms[k];if(m.type==='attributes'&&attrs.indexOf(m.attributeName)>=0){m.target.removeAttribute(m.attributeName);}else if(m.type==='childList'){for(var n=0;n<m.addedNodes.length;n++){var node=m.addedNodes[n];if(node.nodeType===1&&node.querySelectorAll){for(var i=0;i<attrs.length;i++){var sub=node.querySelectorAll('['+attrs[i]+']');for(var s=0;s<sub.length;s++){sub[s].removeAttribute(attrs[i]);}}}}}}}}).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:attrs});}catch(e){}})();`,
+            __html: `(function(){try{var a=['fdprocessedid','data-extension-id','data-lastpass-icon-added','data-kwgh-uid','data-form-type'];var clean=function(el){if(!el||!el.removeAttribute)return;for(var i=0;i<a.length;i++){if(el.hasAttribute&&el.hasAttribute(a[i]))el.removeAttribute(a[i])}if(el.querySelectorAll){var subs=el.querySelectorAll('['+a.join('],[')+']');for(var j=0;j<subs.length;j++){for(var k=0;k<a.length;k++){subs[j].removeAttribute(a[k])}}}};clean(document);document.addEventListener('DOMContentLoaded',function(){clean(document)});new MutationObserver(function(ms){for(var x=0;x<ms.length;x++){var m=ms[x];if(m.type==='attributes'&&a.indexOf(m.attributeName)>=0){m.target.removeAttribute(m.attributeName)}else if(m.type==='childList'){for(var y=0;y<m.addedNodes.length;y++)clean(m.addedNodes[y])}}}}).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:a})}catch(_){}})();`,
           }}
         />
       </head>

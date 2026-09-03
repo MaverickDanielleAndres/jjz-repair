@@ -57,7 +57,7 @@ const guarantees = [
   {
     icon: Cpu,
     title: "Trusted technicians",
-    blurb: "Years of board-level experience across every major brand.",
+    blurb: "20+ years of board-level experience across every major brand.",
   },
 ];
 
@@ -94,12 +94,11 @@ export function QualityParts() {
                       alt={imageLabel}
                       fill
                       sizes="(max-width: 768px) 50vw, 25vw"
-                      unoptimized
                       className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
                     />
                   </div>
                   <div className="p-3.5 grid grid-rows-[auto_auto_1fr_auto] gap-0 h-full">
-                    <div className="flex items-center gap-1.5 text-amber-600">
+                    <div className="flex items-center gap-1.5 text-amber-700">
                       <Icon className="w-3.5 h-3.5" strokeWidth={1.8} />
                       <span className="text-[9px] uppercase tracking-[0.2em] font-semibold">
                         Premium
@@ -111,7 +110,7 @@ export function QualityParts() {
                     <p className="mt-1 text-xs text-zinc-500 leading-relaxed">
                       {blurb}
                     </p>
-                    <p className="pt-3 font-display text-sm font-bold text-amber-600">
+                    <p className="pt-3 font-display text-sm font-bold text-amber-700">
                       {price}
                     </p>
                   </div>
@@ -134,7 +133,7 @@ export function QualityParts() {
                 className="!p-4 flex items-start gap-3 hover:shadow-md hover:shadow-amber-500/5 transition-all w-full flex-1"
                 spotlightColor="rgba(245, 158, 11, 0.18)"
               >
-                <div className="inline-flex w-9 h-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600 shrink-0">
+                <div className="inline-flex w-9 h-9 items-center justify-center rounded-lg bg-amber-50 text-amber-700 shrink-0">
                   <Icon className="w-4 h-4" strokeWidth={1.8} />
                 </div>
                 <div>

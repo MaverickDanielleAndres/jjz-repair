@@ -15,7 +15,7 @@ export function RepairGallery() {
           amount={0.3}
           className="relative pt-12 md:pt-16 pb-4 text-center"
         >
-          <p className="text-[11px] uppercase tracking-[0.22em] text-amber-600 font-semibold">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-amber-700 font-semibold">
             Repair gallery
           </p>
           <h2 className="mt-2 font-display text-xl sm:text-2xl md:text-[1.6rem] lg:text-[1.75rem] font-bold tracking-tight">

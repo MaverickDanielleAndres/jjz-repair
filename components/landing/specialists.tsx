@@ -9,7 +9,7 @@ const specialists = [
   {
     name: "Board-Level Specialist",
     role: "Motherboard · Microsoldering · Reball",
-    bio: "Years of experience under the microscope. The person you bring the dead phones to.",
+    bio: "20+ years of experience under the microscope. The person you bring the dead phones to.",
     icon: Cpu,
     imageLabel: "Board-level specialist",
     imageSrc: "/ourspecialist1.jpg",
@@ -73,9 +73,7 @@ export function Specialists() {
                       alt={imageLabel}
                       fill
                       sizes="8rem"
-                      unoptimized
                       className="object-cover"
-                      priority
                     />
                   </div>
 
@@ -86,14 +84,14 @@ export function Specialists() {
                       boundary. */}
                   <div className="flex-1 min-w-0 p-4 sm:pr-5 flex flex-col gap-1">
                     <div className="flex items-start gap-2">
-                      <span className="inline-flex w-6 h-6 items-center justify-center rounded-md bg-amber-50 text-amber-600 shrink-0">
+                      <span className="inline-flex w-6 h-6 items-center justify-center rounded-md bg-amber-50 text-amber-700 shrink-0">
                         <Icon className="w-3.5 h-3.5" strokeWidth={1.8} />
                       </span>
                       <h3 className="flex-1 min-w-0 text-sm md:text-[15px] font-bold text-zinc-900 leading-tight break-words">
                         {name}
                       </h3>
                     </div>
-                    <p className="text-[11px] font-medium text-amber-600 break-words">
+                    <p className="text-[11px] font-medium text-amber-700 break-words">
                       {role}
                     </p>
                     <p className="text-xs md:text-[13px] text-zinc-600 leading-snug break-words">

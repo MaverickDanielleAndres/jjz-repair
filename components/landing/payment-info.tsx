@@ -18,7 +18,7 @@ export function PaymentInfo() {
       <SectionContainer>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
           <ScrollReveal variant="fadeLeft" amount={0.4}>
-            <p className="text-[11px] uppercase tracking-[0.22em] text-amber-600 font-semibold">
+            <p className="text-[11px] uppercase tracking-[0.22em] text-amber-700 font-semibold">
               Payment accepted
             </p>
             <h2 className="mt-2 font-display text-xl sm:text-2xl md:text-[1.6rem] font-bold tracking-tight text-zinc-900">
@@ -52,7 +52,6 @@ export function PaymentInfo() {
                     alt={`${m.name} payment logo`}
                     width={40}
                     height={40}
-                    unoptimized
                     className="h-9 w-auto object-contain"
                   />
                 </div>

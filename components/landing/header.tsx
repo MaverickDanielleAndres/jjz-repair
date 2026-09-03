@@ -93,7 +93,7 @@ export function Header() {
                 width={36}
                 height={36}
                 className="h-7 w-7 md:h-8 md:w-8 object-contain"
-                priority
+                preload
               />
               <span className="hidden sm:inline font-display text-sm md:text-base font-bold text-zinc-900 tracking-tight">
                 JJZ <span className="text-amber-500">TECH</span>
