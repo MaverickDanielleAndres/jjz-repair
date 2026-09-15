@@ -326,7 +326,7 @@ const brandsNew = `export const SUPPORTED_BRANDS: Brand[] = [
   { name: "Huawei" },
   { name: "Infinix" },
   { name: "Tecno" },
-  { name: "Readme" },
+  { name: "Redmi" },
   { name: "Sony" },
   { name: "LG" },
   { name: "Android" },

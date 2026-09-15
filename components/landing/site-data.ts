@@ -190,7 +190,7 @@ export const SUPPORTED_BRANDS: Brand[] = [
   { name: "Huawei" },
   { name: "Infinix" },
   { name: "Tecno" },
-  { name: "Readme" },
+  { name: "Redmi" },
   { name: "Sony" },
   { name: "LG" },
   { name: "Android" },
@@ -455,7 +455,7 @@ WHAT WE SERVICE
 BRANDS WE SERVICE
 ═══════════════════════════════════════════
 
-Cellphone (18 brands): Apple, Samsung, Xiaomi, realme, OPPO, vivo, Huawei, ASUS, Acer, Dell, HP, Lenovo, Infinix, Tecno, Readme, Razer, Sony, LG
+Cellphone (18 brands): Apple, Samsung, Xiaomi, realme, OPPO, vivo, Huawei, ASUS, Acer, Dell, HP, Lenovo, Infinix, Tecno, Redmi, Razer, Sony, LG
 
 Laptop & PC: Apple (MacBook), ASUS, Acer, Dell, HP, Lenovo, plus all major brands
 

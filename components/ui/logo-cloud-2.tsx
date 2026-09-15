@@ -36,7 +36,7 @@ const LOGO_SCALE: Record<string, number> = {
   lenovo: 2.0,
   infinix: 1.1,
   tecno: 1.1,
-  readme: 1.1,
+  redmi: 1.1,
   razer: 1.6,
   sony: 1.8,
   lg: 1.8,
